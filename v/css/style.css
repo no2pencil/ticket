@@ -1,0 +1,62 @@
+/* layout stuff */
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: sans-serif;
+}
+
+.wrapper {
+	margin: 20px 15%;
+	border: 1px solid black;
+	min-height: 500px;
+}
+
+.leftMenu {
+	width: 200px;
+	overflow: hidden;
+	float: left;
+	margin-right: 10px;
+}
+
+.leftMenu a {
+	display: block;
+	padding: 15px 30px;
+	width: 100%;
+	border-bottom: 1px solid black;
+	text-decoration: none;
+}
+
+.content {
+	padding: 10px;
+	min-height: 500px;
+	border-left: 1px solid black;
+	margin-left: 200px;
+}
+
+/* Misc. */
+.button {
+	padding: 10px 15px;
+	border: 1px solid black;
+	border-radius: 10px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+form {
+	display: inline;
+}
+
+.center {
+	text-align: center;
+}
+
+table tr td {
+	padding: 5px 10px;
+}
+
+table.zebra tr:nth-of-type(odd) {
+	background-color: #ccc;
+}
