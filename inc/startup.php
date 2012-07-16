@@ -4,6 +4,10 @@ if(!isset($_SESSION)){
 }
 if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 	// Todo: login scripts
+	require_once("login.php");
 }
-require("autoload.php");
+else {
+	// Todo: ???
+	require_once("autoload.php");
+}
 ?>
