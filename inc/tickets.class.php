@@ -14,12 +14,6 @@ class tickets extends framework {
 		return false;
 	}
 	
-	public function delete($id){
-		$sql = "DELETE FROM tickets WHERE id=" . (int)$id;
-		$result = parent::get('db')->mysqli()->query($sql);
-		return $result;
-	}
-	
 	public function getTicketById($id){
 		$sql = "SELECT t.id AS ID, t.createDate AS 'Created on', u.name AS Creator, c.name as Customer, s.status AS Status, s.description AS 'status_description', t.priority AS Priority, t.dueDate AS 'Due date' FROM tickets AS t " .
 					"JOIN statuses AS s ON t.status = s.id " .

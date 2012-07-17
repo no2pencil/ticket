@@ -14,21 +14,6 @@ class customers extends framework {
 		return false;
 	}
 	
-	public function delete($id){
-		$sql = "DELETE FROM customers WHERE id=?";
-		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
-			$stmt->bind_param('i', $id);
-			$stmt->execute();
-			$stmt->store_result();
-			if($stmt->affected_rows > 0){
-				$sql = "UPDATE tickets SET notes = CONCAT(notes, '<timestamp>" . parent::get('utils')->timestamp() . "</timestamp><user>System</user><note>(system-generated message) The customer has been deleted.</note> <!!!> '), status = 0 WHERE customer=" . $id;
-				parent::get('db')->mysqli()->query($sql);
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	public function search($query){
 		$sql = "SELECT id FROM customers WHERE customers.name LIKE ? OR customers.primaryPhone LIKE ? OR customers.email LIKE ?";
 		if($stmt = parent::get("db")->mysqli()->prepare($sql)){
