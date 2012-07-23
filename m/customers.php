@@ -81,7 +81,17 @@ if(isset($_GET['search']) && !empty($_GET['search'])){
 							<tr><td>Primary Phone</td><td><input type="text" name="primaryPhone"></td></tr>
 							<tr><td>Secondary Phone</td><td><input type="text" name="secondaryPhone"></td></tr>
 							<tr><td>Address</td><td><input type="text" name="address"></td></tr>
-							<tr><td>Referral</td><td><input type="text" name="referral"></td></tr>
+							<tr><td>Referral</td><td>
+		<select>
+	';
+
+require_once("/inc/db.class.php");
+$connect = new mysqli();
+if($connect->status()) echo "Blah!";
+		
+	$content .= '
+		</select> 
+							</td></tr>
 							<tr><td></td><td><input type="submit" value="Create" style="width: 100%;"></td></tr>
 						</table>
 				  </form>';

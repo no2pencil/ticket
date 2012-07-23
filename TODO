@@ -1,0 +1,27 @@
+Home :
+Breakdown of open invoices
+
+Customers :
+Search for existing customers, assign tickets
+Add new customers
+
+Tickets :
+Search for existing tickets
+Create new tickets
+
+Administration :
+Manage users for the site
+Manage details, such as :
+  Ticket statuses
+  Ticket types (on site, drop off, specific repair/ipod/ds lite/& so on)
+  Customer status (non pay/don't take new tickets)
+  Sub Ticket numbering scheme (repairs, web hosting/services)
+
+Functionality :
+Email users of newly assigned tickets
+Email administration of tickets ready for invoice
+Users can view all tickets open, & just their own tickets
+Administrators can view reporting
+One click to invoice printing (using pdf/graphic api)
+VOIP Api (One Click Dial)
+Google Charts Api
