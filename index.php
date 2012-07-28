@@ -1,4 +1,4 @@
 <?php
-include("c/index.php");
+require_once("c/index.php");
 new page();
 ?>
