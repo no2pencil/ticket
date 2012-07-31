@@ -35,5 +35,11 @@ if(isset($_GET['view'])){
 		$content .= '<h3>Are you sure you want to delete ticket ' . $id . '?</h3>Deleted tickets cannot be recovered. The ticket will be gone forever.<br>'; // I lied here, it'll be gone 5evr.
 		$content .= '<a href="tickets.php?delete=' . $id . '&dodelete=yes">Yes</a> | <a href="tickets.php?view=' . $id . '">No</a>';
 	}
+} else if(isset($_GET['viewall'])){
+	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 0;
+	$data = $framework->get('tickets')->getBulk(10, $page * 10);
+	foreach($data as $key => $ticket){
+		$content .= '<tr><td>';
+	}
 }
 ?>
