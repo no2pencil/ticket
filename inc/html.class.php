@@ -1,6 +1,9 @@
 <?php
+/*
+ * html.class.php
+ * Used for creating heavy/large HTML elements through single lines of PHP
+*/
 class html extends framework {
-
 	/*
 	 * buildTable(data:array, hide:array(default:empty));
 	 * Builds tables based on data provided.
