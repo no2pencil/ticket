@@ -1,3 +1,0 @@
-<?php
-$content = 'Todo: About';
-?>
