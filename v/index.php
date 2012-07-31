@@ -18,7 +18,8 @@
 				<a class="btn" style="text-align: left;" href="index.php">Home</a> 
 				<a class="btn" style="text-align: left;" href="customers.php">Customers</a>
 				<a class="btn" style="text-align: left;" href="tickets.php">Tickets</a>
-				<a class="btn" style="text-align: left;" href="about.php">About</a>
+				<a class="btn" style="text-align: left;" href="users.php">Users</a>
+				<a href="#" style="padding: 0px;"><hr></a>
 				<a class="btn btn-danger" style="text-align: left;" href="logout.php">Logout</a>
 			</div>
 			<div class="content">
