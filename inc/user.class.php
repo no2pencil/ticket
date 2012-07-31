@@ -8,16 +8,60 @@ class user extends framework {
 	/*
 	 * add(string $name, string $username, string $password, int $type)
 	 * Adds a new user to the system with the given info
+	 * Returns false on error
+	 * Returns string on error w/ message
 	*/
 	public function add($name, $username, $password, $type){
-		$sql = "INSERT INTO users(username, name, password) VALUES(?, ?, ?)";
+		if(!$this->get_user_info($username)){
+			$sql = "INSERT INTO users(username, name, password) VALUES(?, ?, ?)";
+			if($stmt = $framework->get("db")->mysqli()->prepare($sql)){
+				$password = hash("sha512", "8iur9wurei" . $password . "jd3w8j8sl");
+				$stmt->bind_param('sss', $username, $name, $password);
+				$stmt->execute();
+				$stmt->store_result();
+				if($stmt->affected_rows > 0){
+					return true;
+				}
+			}
+			return false;
+		} else {
+			return "Username taken";
+		}
+	}
+	
+	/*
+	 * login(string $username, string $password)
+	 * Checks to see if creds are right, if so change $_SESSION['logged_in'] to true
+	*/
+	public function login($username, $password){
+		$sql = "SELECT * FROM users WHERE username=? AND password=?";
 		if($stmt = $framework->get("db")->mysqli()->prepare($sql)){
 			$password = hash("sha512", "8iur9wurei" . $password . "jd3w8j8sl");
-			$stmt->bind_param('sss', $username, $name, $password);
+			$stmt->bind_param('ss', $username, $password);
 			$stmt->execute();
 			$stmt->store_result();
-			if($stmt->affected_rows > 0){
+			if($stmt->num_rows > 0){
+				$_SESSION['logged_in'] = true;
 				return true;
+			}
+		}
+		return false;
+	}
+	
+	/*
+	 * get_user_info(string $username)
+	 * Returns the user's info belonging to the username
+	 * Returns false if username not found
+	*/
+	public function get_user_info($username){
+		$sql = "SELECT id, name, password, type FROM users WHERE username=?";
+		if($stmt = $framework->get("db")->mysqli()->prepare($sql)){
+			$stmt->bind_param('s', $username);
+			$stmt->execute();
+			$stmt->store_result();
+			if($stmt->num_rows > 0){
+				$stmt->bind_result($id, $name, $password, $type);
+				return array("id" => $id, "name" => $name, "password" => $password, "type" => $type);
 			}
 		}
 		return false;
