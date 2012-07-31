@@ -6,6 +6,6 @@ $(document).ready(function() {
 		}
 		$_GET[decode(arguments[1])] = decode(arguments[2]);
 	});
-
+	
 	
 });

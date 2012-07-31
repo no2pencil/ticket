@@ -1,3 +1,13 @@
+<?php
+if(isset($_POST['username'], $_POST['password'])){
+	// TODO: An actual login script
+	if($_POST['username'] == "admin" && $_POST['password'] = "pass"){
+		$_SESSION['logged_in'] = true;
+		header('location: index.php');
+		die();
+	}
+}
+?>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -14,7 +24,7 @@
 			<img src="http://www.imagine-net-tech.com/images/network.jpg" width="50%">
 		</p>
 
-		<form class="box login" action="login-2.php" method="POST">
+		<form class="box login" action="index.php" method="POST">
 			<fieldset class="boxBody">
 			  <label>Username</label>
 			  <input type="text" name="username" tabindex="1" placeholder="" required>
