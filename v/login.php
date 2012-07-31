@@ -1,13 +1,3 @@
-<?php
-if(isset($_POST['username'], $_POST['password'])){
-	// TODO: An actual login script
-	if($_POST['username'] == "admin" && $_POST['password'] = "pass"){
-		$_SESSION['logged_in'] = true;
-		header('location: index.php');
-		die();
-	}
-}
-?>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -23,8 +13,14 @@ if(isset($_POST['username'], $_POST['password'])){
 		<p align=center>
 			<img src="http://www.imagine-net-tech.com/images/network.jpg" width="50%">
 		</p>
-
-		<form class="box login" action="index.php" method="POST">
+		<form class="box login" action="index.php" method="POST" <?php if(isset($_GET['err'])) echo 'style="height: 300px;"'; ?>>
+			<?php
+			if(isset($_GET['err'])){
+				echo '<fieldset class="boxBody">
+					<label>Error: ' . $_GET['err'] . '</label>
+				</fieldset>';
+			}
+			?>
 			<fieldset class="boxBody">
 			  <label>Username</label>
 			  <input type="text" name="username" tabindex="1" placeholder="" required>

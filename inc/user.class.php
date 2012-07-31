@@ -14,7 +14,7 @@ class user extends framework {
 	public function add($name, $username, $password, $type){
 		if(!$this->get_user_info($username)){
 			$sql = "INSERT INTO users(username, name, password) VALUES(?, ?, ?)";
-			if($stmt = $framework->get("db")->mysqli()->prepare($sql)){
+			if($stmt = parent::get("db")->mysqli()->prepare($sql)){
 				$password = hash("sha512", "8iur9wurei" . $password . "jd3w8j8sl");
 				$stmt->bind_param('sss', $username, $name, $password);
 				$stmt->execute();
@@ -35,7 +35,7 @@ class user extends framework {
 	*/
 	public function login($username, $password){
 		$sql = "SELECT * FROM users WHERE username=? AND password=?";
-		if($stmt = $framework->get("db")->mysqli()->prepare($sql)){
+		if($stmt = parent::get("db")->mysqli()->prepare($sql)){
 			$password = hash("sha512", "8iur9wurei" . $password . "jd3w8j8sl");
 			$stmt->bind_param('ss', $username, $password);
 			$stmt->execute();
@@ -55,7 +55,7 @@ class user extends framework {
 	*/
 	public function get_user_info($username){
 		$sql = "SELECT id, name, password, type FROM users WHERE username=?";
-		if($stmt = $framework->get("db")->mysqli()->prepare($sql)){
+		if($stmt = parent::get("db")->mysqli()->prepare($sql)){
 			$stmt->bind_param('s', $username);
 			$stmt->execute();
 			$stmt->store_result();

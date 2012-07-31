@@ -1,5 +1,6 @@
 <?php
   $db_server = 'localhost';
+  global $db_env;
   if($db_env=="PROD") {
     $db_server = '192.168.0.121';
   }

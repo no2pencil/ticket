@@ -9,7 +9,10 @@ class page {
 		try {
 			require_once('inc/startup.php');
 			
+			$framework = new framework();
+			
 			if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
+				require "m/login.php";
 				require "v/login.php";
 				die();
 			}
@@ -19,8 +22,6 @@ class page {
 			} else {
 				$page = "default";
 			}
-			
-			$framework = new framework();
 			
 			if(file_exists('m/' . $page . '.php')){
 				include('m/' . $page . '.php');
