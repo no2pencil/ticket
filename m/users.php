@@ -81,5 +81,8 @@ if(isset($_GET['new'])){
 			</form>
 		</div>';
 	}
+} else if(isset($_GET['viewall'])){
+	// View all users
+	
 }
 ?>

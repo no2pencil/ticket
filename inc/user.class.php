@@ -61,8 +61,33 @@ class user extends framework {
 			$stmt->store_result();
 			if($stmt->num_rows > 0){
 				$stmt->bind_result($id, $name, $password, $type);
+				$stmt->fetch();
 				return array("id" => $id, "name" => $name, "password" => $password, "type" => $type);
 			}
+		}
+		return false;
+	}
+	
+	/*
+	 * get_bulk(int $count, int $page)
+	 * Returns an array of users info.
+	 * Will limit the result to $count. 0 for no limit.
+	 * $page for multiple pages
+	*/
+	public function get_bulk($count, $page){
+		$result = array();
+		$offset = $page * $count;
+		$sql = "SELECT id, name, password, type FROM users LIMIT " . $count . " OFFSET " . $offset;
+		if($stmt = parent::get("db")->mysqli()->prepare($sql)){
+			$stmt->execute();
+			$stmt->store_result();
+			if($stmt->num_rows > 0){
+				$stmt->bind_result($id, $name, $password, $type);
+				while($stmt->fetch()){
+					$result[] = array("id" => $id, "name" => $name, "password" => $password, "type" => $type);
+				}
+			}
+			return array(); // I guess we've reached the end?
 		}
 		return false;
 	}
