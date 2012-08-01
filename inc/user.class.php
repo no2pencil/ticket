@@ -62,7 +62,7 @@ class user extends framework {
 			if($stmt->num_rows > 0){
 				$stmt->bind_result($id, $name, $password, $type);
 				$stmt->fetch();
-				return array("id" => $id, "name" => $name, "password" => $password, "type" => $type);
+				return array("id" => $id, "name" => $name, "username" => $username, "password" => $password, "type" => $type);
 			}
 		}
 		return false;
@@ -77,15 +77,16 @@ class user extends framework {
 	public function get_bulk($count, $page){
 		$result = array();
 		$offset = $page * $count;
-		$sql = "SELECT id, name, password, type FROM users LIMIT " . $count . " OFFSET " . $offset;
+		$sql = "SELECT id, name, username, password, type FROM users LIMIT " . $count . " OFFSET " . $offset;
 		if($stmt = parent::get("db")->mysqli()->prepare($sql)){
 			$stmt->execute();
 			$stmt->store_result();
 			if($stmt->num_rows > 0){
-				$stmt->bind_result($id, $name, $password, $type);
+				$stmt->bind_result($id, $name, $username, $password, $type);
 				while($stmt->fetch()){
-					$result[] = array("id" => $id, "name" => $name, "password" => $password, "type" => $type);
+					$result[] = array("id" => $id, "name" => $name, "username" => $username, "password" => $password, "type" => $type);
 				}
+				return $result;
 			}
 			return array(); // I guess we've reached the end?
 		}

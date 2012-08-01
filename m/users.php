@@ -83,6 +83,56 @@ if(isset($_GET['new'])){
 	}
 } else if(isset($_GET['viewall'])){
 	// View all users
+	$page = (isset($_GET['page'])) ? $_GET['page'] : 0;
 	
+	if($page<1){
+		$previousBtn = '<li class="disabled">
+							<a href="#">Previous</a>
+						</li>';
+	} else {
+		$previousBtn = '<li>
+							<a href="users.php?viewall=true&page=' . ($page-1) . '">Previous</a>
+						</li>';
+	}
+	
+	$results = $framework->get('user')->get_bulk(10, $page);
+	
+	$viewall_results = '';
+	foreach($results as $user){
+		$viewall_results .= '<tr><td>' . $user['name'] . '</td><td>' . $user['username'] . '</td></tr>';
+	}
+	
+	if(empty($viewall_results)){
+		$viewall_results .= '
+			<tr><td colspan="2"><div class="alert alert-error">
+				<strong>No more users found</strong>
+			</div></td></tr>';
+		$nextBtn = '<li class="disabled">
+						<a href="#">Next</a>
+					</li>';
+	} else {
+		$nextBtn = '<li>
+						<a href="users.php?viewall=true&page=' . ($page+1) . '">Next</a>
+					</li>';
+	}
+	
+	$content .= '
+		<div class="well">
+			<legend>Viewing all users</legend>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Username</th>
+					</tr>
+				</thead>
+				<tbody>
+					' . $viewall_results . '
+				</tbody>
+			</table>
+			<ul class="pager">
+				' . $previousBtn . $nextBtn . '
+			</ul>
+		</div>';
 }
 ?>
