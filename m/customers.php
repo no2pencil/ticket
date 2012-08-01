@@ -1,4 +1,5 @@
 <?php
+require_once("inc/db.class.php");
 $content = '<h2>Customers</h2>
 <form action="customers.php"><input type="text" name="search" placeholder="Name, phone, ticket number, or email" style="width: 225px;"><input type="submit" value="Search"></form> | <a href="customers.php?viewall=true">View all</a> | <a href="customers.php?newcustomer=true">New customer</a><br><br>';
 
@@ -85,10 +86,11 @@ if(isset($_GET['search']) && !empty($_GET['search'])){
 		<select>
 	';
 
-require_once("/inc/db.class.php");
 $connect = new mysqli();
-if($connect->status()) echo "Blah!";
+//if($connect->status()) echo "Blah!";
 		
+// Gather all referrences to auto fill the select javascript
+//$connect->reff();
 	$content .= '
 		</select> 
 							</td></tr>

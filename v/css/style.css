@@ -20,12 +20,14 @@ body {
 	margin-right: 10px;
 }
 
+/*
 .leftMenu a {
-	display: block;
-	padding: 15px 30px;
+	//display: block;
+	//padding: 15px 30px;
 	width: 100%;
 	text-decoration: none;
 }
+*/
 
 .content {
 	padding: 10px;
