@@ -1,4 +1,5 @@
 <?php
+  // PRODUCTION: Remove testing environment variables
   GLOBAL $db_env;
   $db_env="TEST";
   if(gethostname()=="xrms.akroncdnr.com") {

@@ -31,23 +31,5 @@ class html extends framework {
 		$result .= '</table>';
 		return $result;
 	}
-	
-	private function buildTable_recursiveArrays($array){
-		
-	}
-	
-	/*
-	 * buildForm(action:string, method:string, data:array)
-	 * Builds a form based on data provided
-	 * Acts much like buildTable. Loops through data and creates inputs based on them.
-	 * Data's keys are the displayed name, value should be an array(name:string, type:string, value:string)
-	*/
-	public function buildForm($action, $method, $data){
-		$result = '<table>';
-		foreach($data as $key => $value){
-			$result .= '<tr><td>' . $key . '</td><td><input type="' . $data[1] . '" name="' . $data[0] . '" value="' . $data[2] . '"></td></tr>';
-		}
-		$result .= '</table>';
-	}
 }
 ?>
