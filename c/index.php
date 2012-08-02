@@ -30,6 +30,7 @@ class page {
 			}
 			
 			include('v/index.php');
+			//include('v/index-experimental_nav.php');
 			
 		} catch (Exception $e){
 			echo "There was a problem with the program.<br>Check the exceptions log for more info.";
