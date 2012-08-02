@@ -68,13 +68,22 @@ class customers extends framework {
 		return false;
 	}
 	
-	public function getBulk($limit, $offset){
+	/*
+	 * get_bulk(int $count, int $page)
+	 * Gets bulk information of customers
+	 * Returns their information in an array
+	 * Limited to $count, 0 for unlimited
+	 * Use $page if you have $count set for multiple pages
+	*/
+	public function get_bulk($count, $page){
+		$result = array();
+		$offset = $page * $count;
+	
 		$sql = "SELECT id FROM customers LIMIT ? OFFSET ?;";
 		if($stmt = parent::get("db")->mysqli()->prepare($sql)){
-			$stmt->bind_param('ii', $limit, $offset);
+			$stmt->bind_param('ii', $count, $offset);
 			$stmt->execute();
 			$stmt->bind_result($id);
-			$result = array();
 			while($stmt->fetch()){
 				$result[] = $id;
 			}
