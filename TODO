@@ -28,4 +28,7 @@ Users can view all tickets open, & just their own tickets
 Administrators can view reporting
 One click to invoice printing (using pdf/graphic api)
 VOIP Api (One Click Dial)
-Google Charts Api
+
+Services :
+Windows Scheduled task to automate db backup/maintance/updates
+Linux/Unix crontab to automate db backup/maintance/updates
