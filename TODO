@@ -1,11 +1,15 @@
 Home :
-Breakdown of open invoices
+Navigational menu
+Graphs (Google Charts API) breakdown of current open invoices
 
 Customers :
-Search for existing customers, assign tickets
+Display most recent customers
+Search for existing customers, assign ticket to that customer
 Add new customers
 
 Tickets :
+Tickets Home Page : Display all currently open invoices
+Display users assigned tickets
 Search for existing tickets
 Create new tickets
 
