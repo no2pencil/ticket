@@ -14,6 +14,7 @@
   <link href="v/css/bootstrap/docs/assets/js/google-code-prettify/prettify.css" rel="stylesheet"> 
 </head>
 <body>
+
 <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
@@ -59,7 +60,7 @@
       <ul class="nav pull-right">
         <!-- if user is admin -->
         <li><a href="admin.php">
-          <i class="icon-white  icon-cog"></i> Administration
+          <i class="icon-white icon-cog"></i> Administration
         </a></li>
         <li><a href="logout.php">
           <i class="icon-white icon-off"></i> Logout

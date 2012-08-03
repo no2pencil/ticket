@@ -13,22 +13,6 @@ body {
 	min-height: 500px;
 }
 
-.leftMenu {
-	width: 200px;
-	overflow: hidden;
-	float: left;
-	margin-right: 10px;
-}
-
-/*
-.leftMenu a {
-	//display: block;
-	//padding: 15px 30px;
-	width: 100%;
-	text-decoration: none;
-}
-*/
-
 .content {
 	padding: 10px;
 	min-height: 500px;
@@ -37,26 +21,6 @@ body {
 }
 
 /* Misc. */
-.button {
-	padding: 10px 15px;
-	border: 1px solid black;
-	border-radius: 10px;
-	font-weight: bold;
-	text-decoration: none;
-}
-
-form {
-	display: inline;
-}
-
 .center {
 	text-align: center;
-}
-
-table tr td {
-	padding: 5px 10px;
-}
-
-table.zebra tr:nth-of-type(odd) {
-	background-color: #ccc;
 }
