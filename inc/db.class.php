@@ -1,9 +1,11 @@
 <?php
 class db {
-	function mysqli(){
+	public function mysqli(){
 		require_once("inc/db_creds.php");
 		if(!isset($this->mysqli)){
-			$this->mysqli = new mysqli($db_server, $db_user, $db_pass, $db_db);
+			if(!$this->mysqli = new mysqli($db_server, $db_user, $db_pass, $db_db)) {
+				die(":(");
+			}
 		}
 		return $this->mysqli;
 	}

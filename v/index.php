@@ -13,6 +13,10 @@
 		<link href="v/css/bootstrap/docs/assets/js/google-code-prettify/prettify.css" rel="stylesheet"> 
 	</head>
 	<body>
+<div class="alert">
+  <button class="close" data-dismiss="alert">x</button>
+  <strong>Warning!</strong> this project is still under heavy construciton. Tread lightly!
+</div>
 		<div class="wrapper">
 			<div class="leftMenu">
 				<a class="btn btn-primary" href="index.php">Home</a>

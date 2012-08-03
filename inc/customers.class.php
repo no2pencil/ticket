@@ -13,6 +13,28 @@ class customers extends framework {
 		}
 		return false;
 	}
+
+	public function ring_cntrl($rng_id) {
+		$sql = "SELECT rng_num, rng_pss, rng_frm FROM ring_cntrl WHERE id='$rng_id';";	
+		if($stmt = parent::get("db")->mysqli()->prepare($sql)) {
+			$stmt->bind_param($rng_id, $rnd_id, $rnd_id);
+			$stmt->execute();
+			$stmt->bind_result($rng_num, $rng_pss, $rng_frm);	
+			$stmt->store_result();
+			if($stmt->num_rows == 0) {
+				return array();
+			}
+			$result = array();
+			while($stmt->fetch()){
+				$result[] = $id;
+			}
+			foreach($result as $key => $id) {
+				$result[$key] = $this->getInfoById($id);
+			}
+			return $result;	
+		}
+		return false;
+	}
 	
 	public function search($query){
 		$sql = "SELECT id FROM customers WHERE customers.name LIKE ? OR customers.primaryPhone LIKE ? OR customers.email LIKE ?";
