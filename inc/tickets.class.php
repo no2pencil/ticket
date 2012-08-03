@@ -31,7 +31,7 @@ class tickets extends framework {
 	}
 	
 	public function getTypes(){
-		$sql = "SELECT id, name, description, specialFields FROM ticketTypes";
+		$sql = "SELECT id, name, description, specialFields FROM tickettypes";
 		//$result = parent::get('db')->mysqli()->query($sql);
 		$result = parent::get('db')->mysqli()->query($sql);
 		$fresult = array();

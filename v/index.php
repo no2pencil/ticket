@@ -28,7 +28,7 @@
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="tickets.php">My Tickets</a></li>
+            <li><a href="tickets.php?viewall=true">My Tickets</a></li>
             <li><a href="tickets.php?new=true">New Ticket</a></li>
             <li><a href="#">Search </a></li>
           </ul>
@@ -57,6 +57,10 @@
         </li>
       </ul>
       <ul class="nav pull-right">
+        <!-- if user is admin -->
+        <li><a href="admin.php">
+          <i class="icon-white  icon-cog"></i> Administration
+        </a></li>
         <li><a href="logout.php">
           <i class="icon-white icon-off"></i> Logout
         </a></li>
