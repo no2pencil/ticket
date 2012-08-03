@@ -38,11 +38,11 @@ if(isset($_GET['search'])){
 		// View all customers
 	$page = (isset($_GET['page'])) ? $_GET['page'] : 0;
 	$rng=$framework->get("customers")->ring_cntrl(1);
-	echo "<pre>".print_r($rng)."</pre>";
+	/* echo "<pre>".print_r($rng)."</pre>"; */
 	$rng_url = "https://service.ringcentral.com/ringout.asp?cmd=call&username=";
-	$rng_num = "";
-	$rng_frm = "";
-	$rng_pss = "";
+	$rng_num = $rng[rng_num];
+	$rng_frm = $rng[rng_frm];
+	$rng_pss = $rng[rng_pss];
 	$rng_url .= $rng_num."&password=".$rng_pss."&to=";
 	$rng_end = "&from=".$rng_frm."&clid=";
 	$rng_end .= $rng_frm."&prompt=1";
