@@ -19,7 +19,7 @@ class customers extends framework {
 	 * Retrieves Ring Central login information so Ring Central can be used on the site
 	*/
 	public function ring_cntrl($rng_id) {
-		$sql = "SELECT rng_num, rng_pss, rng_frm FROM ring_cntrl WHERE id=?";	
+		$sql = "SELECT rng_num, rng_pss, rng_frm FROM ring_cntrl WHERE id=? LIMIT 1";	
 		if($stmt = parent::get("db")->mysqli()->prepare($sql)) {
 			$stmt->bind_param('i', $rng_id);
 			$stmt->execute();
@@ -28,6 +28,7 @@ class customers extends framework {
 			if($stmt->num_rows == 0) {
 				return array();
 			} else {
+				$stmt->fetch();
 				return array("rng_num" => $rng_num, "rng_pss" => $rng_pss, "rng_frm" => $rng_frm);
 			}
 		}
