@@ -12,3 +12,21 @@ http://github.com/no2pencil/ticket/wiki
 Bug Tracker
 ======
 TBD
+
+History :
+======
+Since 2007, I have used the XRMS ticket system for administrating invoices & repair tickets at my computer repair shop. 
+This software has sadly fallen out of support from it's original developers via Sourceforge.  From the time of it's 
+initial implimentation it has served it's purpose.  However the software is largly designed for much more than my shop
+utilizes.  What we needed was an encredibly stripped down version to just handle tickets, customers, & users.  After
+spending months looking on the web for software, I became distraught with the amount of 'simple' implimentations that 
+still required some Java plug-in, or other software additions.  There is no reason why this can't just be implimneted
+with PHP/Mysql.
+
+Because the XRMS software was written on PHP4, maintaing our customized instalation just got to the point that I have 
+given up.  It is my opinion that it will be far easier to re-write the entire system to include the Twitter Bootstrap, 
+email notifications, & continue to imporove on the functionality that I have already added to the XRMS code base.
+
+After being unable to find software simple enough to impliment, & light weight enough to use, I got with Sean & we 
+decided to just write it ourselves.  We will offer our new ticket software creation to the world to use, much the same
+as wordpress.
