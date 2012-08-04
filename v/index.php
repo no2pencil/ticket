@@ -9,9 +9,9 @@
   <script type="text/javascript" src="v/js/jquery-ui-1.8.21.custom.min.js"></script>
   <script type="text/javascript" src="v/js/scripts.js"></script>
   <script type="text/javascript" src="v/css/bootstrap/docs/assets/js/bootstrap-dropdown.js"></script>
-  <link href="v/css/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet"> 
-  <link href="v/css/bootstrap/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
-  <link href="v/css/bootstrap/docs/assets/js/google-code-prettify/prettify.css" rel="stylesheet"> 
+  <link href="v/css/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+  <link href="v/css/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+  <link href="v/css/bootstrap/js/google-code-prettify/prettify.css" rel="stylesheet"> 
 </head>
 <body>
 
