@@ -12,6 +12,7 @@
   <link href="v/css/bootstrap/css/bootstrap.css" rel="stylesheet"> 
   <link href="v/css/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
   <link href="v/css/bootstrap/js/google-code-prettify/prettify.css" rel="stylesheet"> 
+  <link href="v/css/chosen/chosen/chosen.css" rel="stylesheet"> 
 </head>
 <body>
 
@@ -86,6 +87,12 @@
 				?>
 			</div>
 		</div>
+
+<script src="v/css/chosen/chosen/chosen.jquery.js" type="text/javascript"></script> 
+<script type="text/javascript"> 
+  $(".chzn-select").chosen();
+  $(".chzn-select-deselect").chosen({allow_single_deselect:true});
+</script> 
 
 	</body>
 </html>

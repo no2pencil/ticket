@@ -65,7 +65,7 @@ if(isset($_GET['search'])){
 	
 	$viewall_results = '';
 	$content .= '<form action="customers.php" class="form-search">
-	<select data-placeholder="Customers..." class="chzn-select" style="width:350px;" tabindex="2">
+        <select data-placeholder="Customers..." class="chzn-select" style="width:350px;" tabindex="2">
 	<option value=""></option>';
 /*
 	<input type="text" name="search" class="input-medium search-query">
