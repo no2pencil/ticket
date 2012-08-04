@@ -13,6 +13,26 @@ class tickets extends framework {
 		}
 		return false;
 	}
+
+	public function createType() {
+/*
+mysql> select * from tickettypes;
++----+-----------+-------------+------------------------------------------------------+
+| id | name      | description | specialFields                                        |
++----+-----------+-------------+------------------------------------------------------+
+|  1 | Drop off  |             |                                                      |
+|  2 | ebay item |             | text ^^^ item number ^^^  ;;; text ^^^ seller ^^^ me |
++----+-----------+-------------+------------------------------------------------------+
+*/
+		$sql = "INSERT INTO tickettypes(name, description, specialFields) VALUES (?, ?, ?)";
+		if($stmt = parent::get('db')->mysqli()->prepare($sql)) {
+			$stmt->bind_param('sss', $Typename, $Typedescription, $Typespecial);
+			$stmt->execute();
+			$stmt->store_result();
+			if($stmt->affected_rows > 0) {
+			}
+		}
+	}
 	
 	public function getTicketById($id){
 		$sql = "SELECT t.id AS ID, t.createDate AS 'Created on', u.name AS Creator, c.name as Customer, s.status AS Status, s.description AS 'status_description', t.priority AS Priority, t.dueDate AS 'Due date' FROM tickets AS t " .

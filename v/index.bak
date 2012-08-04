@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<title>Ticketing system</title>
-		<link rel="stylesheet" href="v/css/style.css" type="text/css">
-		<link type="text/css" href="v/css/jquery-ui/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
-		<script type="text/javascript" src="v/js/jquery-1.7.2.min.js"></script>
-		<script type="text/javascript" src="v/js/jquery-ui-1.8.21.custom.min.js"></script>
-		<script type="text/javascript" src="v/js/scripts.js"></script>
-		<script type="text/javascript" src="v/css/bootstrap/docs/assets/js/bootstrap-dropdown.js"></script>
-		<link href="v/css/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet"> 
-		<link href="v/css/bootstrap/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
-		<link href="v/css/bootstrap/docs/assets/js/google-code-prettify/prettify.css" rel="stylesheet"> 
-	</head>
-	<body>
-
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>Ticketing system</title>
+  <link rel="stylesheet" href="v/css/style.css" type="text/css">
+  <link type="text/css" href="v/css/jquery-ui/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
+  <script type="text/javascript" src="v/js/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="v/js/jquery-ui-1.8.21.custom.min.js"></script>
+  <script type="text/javascript" src="v/js/scripts.js"></script>
+  <script type="text/javascript" src="v/css/bootstrap/docs/assets/js/bootstrap-dropdown.js"></script>
+  <link href="v/css/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet"> 
+  <link href="v/css/bootstrap/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
+  <link href="v/css/bootstrap/docs/assets/js/google-code-prettify/prettify.css" rel="stylesheet"> 
+  <link rel="stylesheet" href="v/css/chosen/chosen/chosen.css" />
+</head>
+<body>
 <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
@@ -29,7 +29,7 @@
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="tickets.php">My Tickets</a></li>
+            <li><a href="tickets.php?viewall=true">My Tickets</a></li>
             <li><a href="tickets.php?new=true">New Ticket</a></li>
             <li><a href="#">Search </a></li>
           </ul>
@@ -58,8 +58,12 @@
         </li>
       </ul>
       <ul class="nav pull-right">
+        <!-- if user is admin -->
+        <li><a href="admin.php">
+          <i class='icon-white  icon-cog'></i> Administration
+        </a></li>
         <li><a href="logout.php">
-          <i class="icon-white icon-off"></i> Logout
+          <i class='icon-white icon-off'></i> Logout
         </a></li>
       </ul>
     </div>
