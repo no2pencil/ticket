@@ -79,11 +79,8 @@
 		<div class="wrapper">
 			<div class="content">
 				<?php
-				if(isset($content)){
-					echo $content;
-				} else {
-					echo 'Internal error: No content was set...';
-				}
+				if(isset($content)) echo $content;
+				else echo 'Internal error: No content was set...';
 				?>
 			</div>
 		</div>

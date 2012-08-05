@@ -1,12 +1,5 @@
 <?php
 $content = '<h2>Customers</h2>';
-/*
-<input type="submit" value="Search" class="btn">';
-// View all and new customer
-$content .= ' | <a href="customers.php?viewall=true" class="btn">View all</a>';
-$content .= ' | <a href="customers.php?new=true" class="btn">New customer</a>';
-$content .= '<div style="margin-bottom: 15px;"></div>';
-*/
 
 if(isset($_GET['search'])){
 	$results = $framework->get('customers')->search($_GET['search']);
@@ -19,7 +12,15 @@ if(isset($_GET['search'])){
 		$search_results = '';
 
 		foreach($results as $row){
-			$search_results .= '<tr><td>' . $row['name'] . '</td><td>' . $row['email'] . '</td><td>' . $row['primaryPhone'] . '</td></tr>';
+			$search_results .= '<tr><td>' . $row[name] . '</td><td>';
+			$search_results .= $row[email] . '</td><td>';
+			if($row['primaryPhone']) {
+				$search_results .= $row['primaryPhone'];
+			}
+			else {
+				$search_results .= '$nbsp;';
+			}
+			$search_results .= '</td></tr>';
 		}
 		
 		$content .= '
@@ -38,7 +39,7 @@ if(isset($_GET['search'])){
 	}
 	$content .= '</div>';
 } else if(isset($_GET['viewall'])){
-		// View all customers
+	// View all customers
 	$page = (isset($_GET['page'])) ? $_GET['page'] : 0;
 	$rng=$framework->get("customers")->ring_cntrl(1);
 	/* echo "<pre>".print_r($rng)."</pre>"; */
@@ -67,10 +68,6 @@ if(isset($_GET['search'])){
 	$content .= '<form action="customers.php" class="form-search">
         <select data-placeholder="Customers..." class="chzn-select" style="width:350px;" tabindex="2">
 	<option value=""></option>';
-/*
-	<input type="text" name="search" class="input-medium search-query">
-	<input type="submit" value="Search" class="btn">
-*/
 	foreach($results as $row){
 		$content .= '<option value="'.$row[name].'">'.$row[name].'</option>'; 
 		$viewall_results .= '<tr><td>';
@@ -124,6 +121,7 @@ if(isset($_GET['search'])){
 			</ul>
 		</div>';
 } else if(isset($_GET['new'])){
+	$content .= 'New Customer Form...';
 	
 }
 ?>
