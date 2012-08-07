@@ -43,9 +43,9 @@ if(isset($_GET['search'])){
 	$rng=$framework->get("customers")->ring_cntrl(1);
 	/* echo "<pre>".print_r($rng)."</pre>"; */
 	$rng_url = "https://service.ringcentral.com/ringout.asp?cmd=call&username=";
-	$rng_num = $rng[rng_num];
-	$rng_frm = $rng[rng_frm];
-	$rng_pss = $rng[rng_pss];
+	$rng_num = $rng['rng_num'];
+	$rng_frm = $rng['rng_frm'];
+	$rng_pss = $rng['rng_pss'];
 	$rng_url .= $rng_num."&password=".$rng_pss."&to=";
 	$rng_end = "&from=".$rng_frm."&clid=";
 	$rng_end .= $rng_frm."&prompt=1";
@@ -69,7 +69,7 @@ if(isset($_GET['search'])){
         <select data-placeholder="Customers..." class="chzn-select" style="width:350px;" tabindex="2">
 	<option value=""></option>';
 	foreach($results as $row){
-		$content .= '<option value="'.$row[name].'">'.$row[name].' '.$row[primaryPhone].'</option>'; 
+		$content .= '<option value="'.$row['name'].'">'.$row['name'].' '.$row['primaryPhone'].'</option>'; 
 	}
 	$content .= '</select>';
 

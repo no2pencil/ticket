@@ -121,10 +121,5 @@ class customers extends framework {
 		//return $this->getBulk(10, 0);
 		return true;
 	}
-	
-	public function formatPhone($phone){
-		$result = '(' . substr($phone, 0, 3) . ') ' . substr($phone, 3, 3) . '-' . substr($phone, 6, 3);
-		return $result;
-	}
 }
 ?>
