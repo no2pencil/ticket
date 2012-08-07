@@ -8,7 +8,7 @@ $content .= '
 			<option value=""></option>';
 $results = $framework->get('customers')->search("");;
 foreach($results as $row){
-	$content .= '<option value="'.$row['name'].'">'.$row['name'].' '.$row['primaryPhone'].'</option>'; 
+	$content .= '<option value="'.$row['name'].'">'.$row['name'].' '.$row['primaryPhoneSearch'].'</option>'; 
 }
 $content .= '</select>';
 
