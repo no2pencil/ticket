@@ -69,7 +69,7 @@ if(isset($_GET['search'])){
         <select data-placeholder="Customers..." class="chzn-select" style="width:350px;" tabindex="2">
 	<option value=""></option>';
 	foreach($results as $row){
-		$content .= '<option value="'.$row[name].'">'.$row[name].' '.$row[primaryPhone].'</option>'; 
+		$content .= '<option value="'.$row[name].'">'.$row[name].' '.$row[primaryPhoneSearch].'</option>'; 
 	}
 	$content .= '</select>';
 
@@ -81,7 +81,7 @@ if(isset($_GET['search'])){
 		$viewall_results .= $row['email'];
 		$viewall_results .= '</td><td><a href="';
 		$viewall_results .= $rng_url;
-		$viewall_results .= $row['primaryPhone'];
+		$viewall_results .= $row['primaryPhoneDial'];
 		$viewall_results .= '" target="_blank">';
 		$viewall_results .= $row['primaryPhone'];
 		$viewall_results .= '</a></td></tr>';

@@ -67,7 +67,19 @@ class customers extends framework {
 			$stmt->store_result();
 			if($stmt->num_rows > 0){
 				$stmt->fetch();
-				return array("id" => $id, "name" => $name, "email" => $email, "primaryPhone" => $this->formatPhone($primaryPhone), "secondaryPhone" => $this->formatPhone($secondaryPhone), "address" => $address, "referral" => $referral, "totalTickets" => $this->getTicketCountForId($id), "openTickets" => $this->getTicketCountForId($id, true));
+				return array(
+"id" => $id, 
+"name" => $name, 
+"email" => $email, 
+"primaryPhoneDial" => $primaryPhone,
+"secondaryPhoneDial" => $secondaryPhone,
+"primaryPhone" => $this->formatPhone($primaryPhone), 
+"secondaryPhone" => $this->formatPhone($secondaryPhone), 
+"primaryPhoneSearch" => $this->formatSearchPhone($primaryPhone),
+"address" => $address, 
+"referral" => $referral, 
+"totalTickets" => $this->getTicketCountForId($id), 
+"openTickets" => $this->getTicketCountForId($id, true));
 			}
 		} else {
 			echo parent::get("db")->mysqli()->error . "<br>";
@@ -123,7 +135,15 @@ class customers extends framework {
 	}
 	
 	public function formatPhone($phone){
-		$result = '(' . substr($phone, 0, 3) . ') ' . substr($phone, 3, 3) . '-' . substr($phone, 6, 3);
+		$result = '(' . substr($phone, 0, 3) . ') ' . substr($phone, 3, 3) . '-' . substr($phone, 6, 4);
+		return $result;
+	}
+	public function formatSearchPhone($phone){
+		$result = substr($phone, 0, 3);
+		$result .= ' ';
+		$result .= substr($phone, 3, 3);
+		$result .= ' ';
+		$result .= substr($phone, 6, 4);
 		return $result;
 	}
 }
