@@ -1,8 +1,8 @@
 <?php
 // Load the db from prod to dev
 $db_prod_user="root";
-$db_prod_pass="R3m0t3w@r3";
-$db_prod_sql ="192.168.0.121";
+$db_prod_pass="";
+$db_prod_sql ="";
 $db_prod_db  ="xrms";
 $db_prod_table="contacts";
 
