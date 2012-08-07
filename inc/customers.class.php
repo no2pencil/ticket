@@ -14,6 +14,12 @@ class customers extends framework {
 		return false;
 	}
 	
+	/*
+	 * search(string $query)
+	 * Searches for a customer using LIKE and the query
+	 *
+	 * TODO: Refine to make more accurate
+	*/
 	public function search($query){
 		$sql = "SELECT id FROM customers WHERE customers.name LIKE ? OR customers.primaryPhone LIKE ? OR customers.email LIKE ?";
 		if($stmt = parent::get("db")->mysqli()->prepare($sql)){
