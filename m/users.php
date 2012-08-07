@@ -87,15 +87,16 @@ if(isset($_GET['new'])){
 	
 	if($page<1){
 		$previousBtn = '<li class="disabled">
-							<a href="#">Previous</a>
-						</li>';
+		<a href="#">Previous</a>
+		</li>';
 	} else {
 		$previousBtn = '<li>
-							<a href="users.php?viewall=true&page=' . ($page-1) . '">Previous</a>
-						</li>';
+		<a href="users.php?viewall=true&page=' . ($page-1) . '">Previous</a>
+		</li>';
 	}
 	
 	$results = $framework->get('user')->get_bulk(10, $page);
+	//$results = $frameork->get('user')->search($_GET['search']);
 	
 	$viewall_results = '';
 	foreach($results as $user){

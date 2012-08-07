@@ -2,7 +2,6 @@
 $content = '<h2>Customers</h2>';
 
 if(isset($_GET['search'])){
-	$results = $framework->get('customers')->search($_GET['search']);
 	$content .= '<div class="well">';
 	$content .= '<legend>Search</legend>';
         
@@ -62,14 +61,20 @@ if(isset($_GET['search'])){
 		</li>';
 	}
 	
-	$results = $framework->get('customers')->get_bulk(10, $page);
+	//$results = $framework->get('customers')->get_bulk(10, $page);
 	
-	$viewall_results = '';
+	$results = $framework->get('customers')->search($_GET['search']);;
+	$vieall_results = ' ';
 	$content .= '<form action="customers.php" class="form-search">
         <select data-placeholder="Customers..." class="chzn-select" style="width:350px;" tabindex="2">
 	<option value=""></option>';
 	foreach($results as $row){
-		$content .= '<option value="'.$row[name].'">'.$row[name].'</option>'; 
+		$content .= '<option value="'.$row[name].'">'.$row[name].' '.$row[primaryPhone].'</option>'; 
+	}
+	$content .= '</select>';
+
+	$results = $framework->get('customers')->get_bulk(10, $page);
+	foreach($results as $row) {
 		$viewall_results .= '<tr><td>';
 		$viewall_results .= $row['name'];
 		$viewall_results .= '</td><td>';
