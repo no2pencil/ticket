@@ -13,27 +13,6 @@ class customers extends framework {
 		}
 		return false;
 	}
-
-	/*
-	 * ring_cntrl(string $rng_id);
-	 * Retrieves Ring Central login information so Ring Central can be used on the site
-	*/
-	public function ring_cntrl($rng_id) {
-		$sql = "SELECT rng_num, rng_pss, rng_frm FROM ring_cntrl WHERE id=? LIMIT 1";	
-		if($stmt = parent::get("db")->mysqli()->prepare($sql)) {
-			$stmt->bind_param('i', $rng_id);
-			$stmt->execute();
-			$stmt->bind_result($rng_num, $rng_pss, $rng_frm);
-			$stmt->store_result();
-			if($stmt->num_rows == 0) {
-				return array();
-			} else {
-				$stmt->fetch();
-				return array("rng_num" => $rng_num, "rng_pss" => $rng_pss, "rng_frm" => $rng_frm);
-			}
-		}
-		return false;
-	}
 	
 	public function search($query){
 		$sql = "SELECT id FROM customers WHERE customers.name LIKE ? OR customers.primaryPhone LIKE ? OR customers.email LIKE ?";
@@ -58,6 +37,10 @@ class customers extends framework {
 		return false;
 	}
 	
+	/*
+	 * getInfoById(int $id)
+	 * Returns an array with customer information based on the ID given
+	*/
 	public function getInfoById($id){
 		$sql = "SELECT name, email, primaryPhone, secondaryPhone, address, referral FROM customers WHERE id=?;";
 		if($stmt = parent::get("db")->mysqli()->prepare($sql)){
@@ -67,7 +50,7 @@ class customers extends framework {
 			$stmt->store_result();
 			if($stmt->num_rows > 0){
 				$stmt->fetch();
-				return array("id" => $id, "name" => $name, "email" => $email, "primaryPhone" => $this->formatPhone($primaryPhone), "secondaryPhone" => $this->formatPhone($secondaryPhone), "address" => $address, "referral" => $referral, "totalTickets" => $this->getTicketCountForId($id), "openTickets" => $this->getTicketCountForId($id, true));
+				return array("id" => $id, "name" => $name, "email" => $email, "primaryPhone" => parent::get('utils')->formatPhone($primaryPhone), "primaryPhone_raw" => $primaryPhone, "secondaryPhone" => parent::get('utils')->formatPhone($secondaryPhone), "secondaryPhone_raw" => $secondaryPhone, "address" => $address, "referral" => $referral, "totalTickets" => $this->getTicketCountForId($id), "openTickets" => $this->getTicketCountForId($id, true));
 			}
 		} else {
 			echo parent::get("db")->mysqli()->error . "<br>";
