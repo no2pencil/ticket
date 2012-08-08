@@ -21,7 +21,6 @@ class settings extends framework {
 				return $value;
 			}
 		}
-		return false;
 	}
 	
 	/*

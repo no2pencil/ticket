@@ -13,8 +13,17 @@ foreach($results as $row){
 $content .= '</select>';
 
 // View all and new customer
-$content .= ' | <a href="customers.php?viewall=true" class="btn">View all</a>';
+$content .= '
+        <div class="btn-group" style="margin: 9px 0;">
+          <a href="customers.php?viewall=true" class="btn">View All</a>
+          <a href="customers.php?new=true" class="btn">New Customer</a>
+          <a id="newticket" href="tickets.php?new=true" class="btn disabled">New Ticket</a>
+        </div>';
+/*
+$content .= '<a href="customers.php?viewall=true" class="btn">View all</a>';
 $content .= ' | <a href="customers.php?new=true" class="btn">New customer</a>';
+$content .= ' | <a href="tickets.php?new=true" class=" <a class="btn btn-primary btn-large">New Ticket</a>';
+*/
 $content .= '<div style="margin-bottom: 15px;"></div></form>';
 
 if(isset($_GET['search'])){
@@ -117,10 +126,13 @@ if(isset($_GET['search'])){
 				' . $previousBtn . $nextBtn . '
 			</ul>
 		</div>
-<script> 
-$("name=customers").chosen().change( function()
-  alert("this is an alert"); 
-});
+<script type="text/javascript"> 
+  $(document).ready(function() {
+    $(".chzn-select").chosen().change(function (event) {
+      alert("Test?");
+      $("#newticket").attr("disabled", false);
+    });
+  });
 </script> 
 ';
 

@@ -10,9 +10,9 @@ class ring_central extends framework {
 	 * Returns false if not all information is filled out
 	*/
 	public function get_creds(){
-		$rng_num = parent::get('settings')->get('ringcentral_num');
-		$rng_pss = parent::get('settings')->get('ringcentral_pss');
-		$rng_frm = parent::get('settings')->get('ringcentral_frm');
+		$rng_num = parent::get('settings')->get('rng_num');
+		$rng_pss = parent::get('settings')->get('rng_pss');
+		$rng_frm = parent::get('settings')->get('rng_frm');
 		if(empty($rng_num) || empty($rng_pss) || empty($rng_frm)){
 			return false;
 		}
