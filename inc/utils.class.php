@@ -22,8 +22,8 @@ class utils extends framework {
         }
 
 	/*
+	 * formatSearchPhone(int $phone)
 	 * formats a 10 digit phone number using only spaces, for the search bar
-	 *
 	*/
         public function formatSearchPhone($phone){
                 $result = substr($phone, 0, 3);
