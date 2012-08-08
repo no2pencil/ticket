@@ -13,8 +13,5 @@ class db {
 	function status() {
 		return print_r($this,true);
 	}
-
-	function reffs() {
-	}
 }
 ?>

@@ -13,6 +13,23 @@ class customers extends framework {
 		}
 		return false;
 	}
+
+	/*
+	 * reff()
+	 * Returns references & their id
+	*/
+	public function reff() {
+		$sql = "SELECT reff from reff"; 
+		if($stmt = parent::get("db")->mysqli()->prepare($sql)){
+			$stmt->execute();
+			$stmt->bind_result($reff);
+			while($stmt->fetch()) {
+				$result[]=$reff;
+			}
+			return $result;
+		}
+		return false;
+	}
 	
 	/*
 	 * search(string $query)

@@ -4,11 +4,11 @@ $content = '<h2>Customers</h2>';
 // Chosen form
 $content .= '
 	<form action="customers.php" class="form-search">
-        <select data-placeholder="Customers..." class="chzn-select" style="width:350px;" tabindex="2">
+        <select id="customers" name="customers" data-placeholder="Customers..." class="chzn-select" style="width:350px;" tabindex="2">
 			<option value=""></option>';
-$results = $framework->get('customers')->search("");;
+$results = $framework->get('customers')->search("");
 foreach($results as $row){
-	$content .= '<option value="'.$row['name'].'">'.$row['name'].' '.$row['primaryPhoneSearch'].'</option>'; 
+	$content .= '<option name="'.$row['name'].'" value="'.$row['name'].'">'.$row['name'].' '.$row['primaryPhoneSearch'].'</option>'; 
 }
 $content .= '</select>';
 
@@ -116,7 +116,14 @@ if(isset($_GET['search'])){
 			<ul class="pager">
 				' . $previousBtn . $nextBtn . '
 			</ul>
-		</div>';
+		</div>
+<script> 
+$("name=customers").chosen().change( function()
+  alert("this is an alert"); 
+});
+</script> 
+';
+
 } else if(isset($_GET['new'])){
 	$content .= 'New Customer Form...';
 	
