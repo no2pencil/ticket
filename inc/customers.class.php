@@ -57,18 +57,19 @@ class customers extends framework {
 			if($stmt->num_rows > 0){
 				$stmt->fetch();
 				return array(
-"id" => $id,
-"name" => $name,
-"email" => $email,
-"primaryPhoneDial" => $primaryPhone,
-"secondaryPhoneDial" => $secondaryPhone,
-"primaryPhone" => parent::get('utils')->formatPhone($primaryPhone),
-"secondaryPhone" => parent::get('utils')->formatPhone($secondaryPhone),
-"primaryPhoneSearch" => parent::get('utils')->formatSearchPhone($primaryPhone),
-"address" => $address,
-"referral" => $referral,
-"totalTickets" => $this->getTicketCountForId($id),
-"openTickets" => $this->getTicketCountForId($id, true));
+							"id" => $id,
+							"name" => $name,
+							"email" => $email,
+							"primaryPhone_raw" => $primaryPhone,
+							"secondaryPhone_raw" => $secondaryPhone,
+							"primaryPhone" => parent::get('utils')->formatPhone($primaryPhone),
+							"secondaryPhone" => parent::get('utils')->formatPhone($secondaryPhone),
+							"primaryPhoneSearch" => parent::get('utils')->formatSearchPhone($primaryPhone),
+							"address" => $address,
+							"referral" => $referral,
+							"totalTickets" => $this->getTicketCountForId($id),
+							"openTickets" => $this->getTicketCountForId($id, true)
+							);
 			}
 		} else {
 			echo parent::get("db")->mysqli()->error . "<br>";
