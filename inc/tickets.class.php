@@ -34,12 +34,24 @@ mysql> select * from tickettypes;
 		}
 	}
 	
+/*
+| createDate    | varchar(30)   | NO   |     | NULL    |                |
+| creator       | int(5)        | NO   |     | NULL    |                |
+| type          | int(255)      | NO   |     | NULL    |                |
+| priority      | varchar(255)  | NO   |     | NULL    |                |
+| dueDate       | varchar(10)   | NO   |     | NULL    |                |
+| status        | int(255)      | NO   |     | NULL    |                |
+| customer      | int(255)      | NO   |     | NULL    |                |
+| specialFields | varchar(1000) | NO   |     | NULL    |                |
+| invoice       | varchar(12)   | YES  |     | NULL    |                |
+*/
 	public function getTicketById($id){
 		$sql = "SELECT t.id AS ID, t.createDate AS 'Created on', u.name AS Creator, c.name as Customer, s.status AS Status, s.description AS 'status_description', t.priority AS Priority, t.dueDate AS 'Due date' FROM tickets AS t " .
 					"JOIN statuses AS s ON t.status = s.id " .
 					"JOIN users AS u ON t.creator = u.id " .
 					"JOIN customers AS c ON t.customer = c.id " . 
 						"WHERE t.id=" . (int)$id . " LIMIT 1";
+		$sql = "SELECT createDate, creator, type, priority, dueDate, status, customer, invoice from tickets where id=$id";
 		$result = parent::get('db')->mysqli()->query($sql);
 		$row = $result->fetch_array(MYSQLI_ASSOC);
 		return $row;

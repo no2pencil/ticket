@@ -23,7 +23,9 @@ $content .= '
 if(isset($_GET['view'])){
 	$id = (int)$_GET['view'];
 	$info = $framework->get('tickets')->getTicketById($id);
+	$customer = $framework->get('customers')->getInfoById($info[customer]);
 	if(!empty($info)){
+		if(!empty($customer)) $info[customer]=$customer[name].' '.$customer[primaryPhone];
 		$info['<hr>'] = '<hr>';
 		$info['Actions'] = '<a href="tickets.php?edit=' . $id . '">Edit</a> | <a href="#" id="ticket_delete_link">Delete</a>';
 		$content .= $framework->get('html')->buildTable($info, array("status_description"));
@@ -32,7 +34,7 @@ if(isset($_GET['view'])){
 			<p>Deleted tickets cannot be recovered.</p>
 		</div>';
 	} else {
-		$content .= '<h3>There is no ticket with that id';
+		$content .= '<h3>There is no ticket with id '.$_GET[view];
 	}
 } else if(isset($_GET['delete'])){
 	$id = (int)$_GET['delete'];
