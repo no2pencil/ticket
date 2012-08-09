@@ -1,3 +1,4 @@
+// These are global scripts, ran on every page
 $(document).ready(function() {
 	var $_GET = {};
 	document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
@@ -6,6 +7,5 @@ $(document).ready(function() {
 		}
 		$_GET[decode(arguments[1])] = decode(arguments[2]);
 	});
-	
 	
 });

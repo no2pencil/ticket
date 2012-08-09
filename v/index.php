@@ -8,6 +8,12 @@
   <script type="text/javascript" src="v/js/jquery-1.7.2.min.js"></script>
   <script type="text/javascript" src="v/js/jquery-ui-1.8.21.custom.min.js"></script>
   <script type="text/javascript" src="v/js/scripts.js"></script>
+  <?php
+  // Include model scripts
+  if(file_exists("v/js/model_scripts/" . $page . ".js")){
+      echo '<script type="text/javascript" src="v/js/model_scripts/' . $page . '.js"></script>';
+  }
+  ?>
   <script type="text/javascript" src="v/css/bootstrap/docs/assets/js/bootstrap-dropdown.js"></script>
   <link href="v/css/bootstrap/css/bootstrap.css" rel="stylesheet"> 
   <link href="v/css/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
