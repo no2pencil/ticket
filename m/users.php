@@ -1,10 +1,25 @@
 <?php
 $content = '<h2>Users</h2>';
 // Search form
-$content .= '<form action="users.php" class="form-search"><input type="text" name="search" class="input-medium search-query" placeholder="Name, username, or type"><input type="submit" value="Search" class="btn"></form>';
-// Other elements
-$content .= ' | <a href="users.php?viewall=true" class="btn">View all</a>';
-$content .= ' | <a href="users.php?new=true" class="btn">New user</a>';
+$content .= '
+        <form action="users.php" class="form-search">
+        <select id="users" name="users" data-placeholder="Users..." class="chzn-select" style="width:350px;" tabindex="2">
+                        <option value=""></option>';
+//$results = $framework->get('users')->search("");
+$results = $framework->get('user')->get_bulk(10, $page);
+foreach($results as $row){
+        $content .= '<option name="'.$row['name'].'" value="'.$row['name'].'">'.$row['name'].' '.$row['primaryPhoneSearch'].'</option>';
+}
+$content .= '</select>';
+
+// View all and new users 
+$content .= '
+        <div class="btn-group" style="margin: 9px 0;">
+          <a href="users.php?viewall=true" class="btn">View All</a>
+          <a href="users.php?new=true" class="btn">New User</a>
+          <a id="newuser" href="tickets.php?new=true" class="btn disabled">?</a>
+        </div>';
+
 // Seperates content from this navbar thingy
 $content .= '<div style="margin-bottom: 15px;"></div>';
 

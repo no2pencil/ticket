@@ -71,8 +71,6 @@ class user extends framework {
 	/*
 	 * get_bulk(int $count, int $page)
 	 * Returns an array of users info.
-	 * Will limit the result to $count. 0 for no limit.
-	 * $page for multiple pages
 	*/
 	public function get_bulk($count, $page){
 		$result = array();

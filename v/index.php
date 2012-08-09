@@ -31,6 +31,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><a href="tickets.php?viewall=true">My Tickets</a></li>
+            <li><a href="tickets.php?viewall=true">All Tickets</a></li>
             <li><a href="tickets.php?new=true">New Ticket</a></li>
             <li><a href="#">Search Tickets</a></li>
           </ul>

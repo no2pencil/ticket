@@ -1,5 +1,7 @@
 <?php
-$content = '<h2>Tickets</h2>
+$content = '<h2>Tickets</h2>';
+
+/*
 <form action="tickets.php"><input type="text" name="view" placeholder="Ticket number" style="width: 100px;"><input type="submit" value="Open"></form> | <a href="tickets.php?viewall=true">View all</a> | ';
 $content .= '<form action="tickets.php"><input type="hidden" name="newticket" value="true"><select name="ticketType">';
 $types = $framework->get('tickets')->getTypes();
@@ -7,6 +9,16 @@ foreach($types as $id => $type){
 	$content .= '<option value="' . $id . '">' . $type['name'] . '</option>';
 }
 $content .= '</select><input type="submit" value="New ticket"></form><br><br>';
+*/
+
+$content .= '
+        <div class="btn-group" style="margin: 9px 0;">
+	  <a href="tickets.php" class="btn">My Tickets</a>
+          <a href="tickets.php?viewall=true" class="btn">View All</a>
+          <a id="newticket" href="tickets.php?new=true" class="btn disabled">New Ticket</a>
+	  <a href="tickets.php" class="btn">Search Tickets</a> 
+        </div>
+';
 
 if(isset($_GET['view'])){
 	$id = (int)$_GET['view'];

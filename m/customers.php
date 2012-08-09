@@ -129,7 +129,7 @@ if(isset($_GET['search'])){
 <script type="text/javascript"> 
   $(document).ready(function() {
     $(".chzn-select").chosen().change(function (event) {
-      alert("Test?");
+      alert("Customer Change Detected");
       $("#newticket").attr("disabled", false);
     });
   });
