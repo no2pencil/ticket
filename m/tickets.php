@@ -52,8 +52,16 @@ if(isset($_GET['view'])){
 } else if(isset($_GET['viewall'])){
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 0;
 	$data = $framework->get('tickets')->getBulk(10, $page * 10);
+	$content .= '<table class="table">
+					<thead>
+						<tr><th>ID</th><th>
+					</thead>
+					<tbody>';
 	foreach($data as $key => $ticket){
-		$content .= '<tr><td>';
+		$content .= '<tr><td>' . $ticket['id'] . '</td></tr>';
 	}
+	$content .= '
+					</tbody>
+				</table>';
 }
 ?>
