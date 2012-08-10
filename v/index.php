@@ -39,7 +39,8 @@
             <li><a href="tickets.php?viewall=true">My Tickets</a></li>
             <li><a href="tickets.php?viewall=true">All Tickets</a></li>
             <li><a href="tickets.php?new=true">New Ticket</a></li>
-            <li><a href="#">Search Tickets</a></li>
+			<li><form action="tickets.php" class="form-search" style="padding: 3px 15px; margin: 0;"><input type="text" name="search" placeholder="Quick search" class="search-query input-medium"></form></li>
+            <li><a href="#">Advanced Search</a></li>
           </ul>
         </li>
         <li class="dropdown">
