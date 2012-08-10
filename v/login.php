@@ -13,11 +13,11 @@
 		<p align=center>
 			<img src="http://www.imagine-net-tech.com/images/network.jpg" width="50%">
 		</p>
-		<form class="box login" action="index.php" method="POST" <?php if(isset($_GET['err'])) echo 'style="height: 300px;"'; ?>>
+		<form class="box login" action="index.php" method="POST" <?php if(isset($_GET['msg'])) echo 'style="height: 300px;"'; ?>>
 			<?php
-			if(isset($_GET['err'])){
+			if(isset($_GET['msg'])){
 				echo '<fieldset class="boxBody">
-					<label>Error: ' . $_GET['err'] . '</label>
+					<label>' . $_GET['msg'] . '</label>
 				</fieldset>';
 			}
 			?>

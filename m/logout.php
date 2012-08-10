@@ -7,6 +7,6 @@ if(!isset($_GET['confirmLogout'])){
 	$content .= ' ';
 } else {
 	$_SESSION['logged_in'] = false;
-	header('location: index.php');
+	header('location: login.php?msg=Goodbye');
 }
 ?>

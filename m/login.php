@@ -4,7 +4,7 @@ if(isset($_POST['username'], $_POST['password'])){
 		header('location: index.php');
 		die();
 	} else {
-		header('location: login.php?err=Wrong username or password');
+		header('location: login.php?msg=Error: Wrong username or password');
 		die();
 	}
 }

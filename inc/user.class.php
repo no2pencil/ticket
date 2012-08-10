@@ -42,6 +42,7 @@ class user extends framework {
 			$stmt->store_result();
 			if($stmt->num_rows > 0){
 				$_SESSION['logged_in'] = true;
+				$_SESSION['username'] = $username;
 				return true;
 			}
 		}
