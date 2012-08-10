@@ -11,6 +11,8 @@ class page {
 			
 			$framework = new framework();
 			
+			$content = ''; // Predefined to prevent Undefined Variable notices
+			
 			if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 				require "m/login.php";
 				require "v/login.php";
