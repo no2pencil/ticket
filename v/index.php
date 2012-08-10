@@ -39,7 +39,8 @@
             <li><a href="tickets.php?viewall=true">My Tickets</a></li>
             <li><a href="tickets.php?viewall=true">All Tickets</a></li>
             <li><a href="tickets.php?new=true">New Ticket</a></li>
-			<li><form action="tickets.php" class="form-search" style="padding: 3px 15px; margin: 0;"><input type="text" name="search" placeholder="Quick search" class="search-query span2"></form></li>
+            <li class="divider"></li>
+            <li><form action="tickets.php" class="form-search" style="padding: 3px 15px; margin: 0;"><input type="text" name="search" placeholder="Quick search" class="search-query span2"></form></li>
             <li><a href="#">Advanced Search</a></li>
           </ul>
         </li>
@@ -51,6 +52,7 @@
           <ul class="dropdown-menu">
             <li><a href="customers.php?new=true">New Customer</a></li>
             <li><a href="customers.php?viewall=true">View Customers</a></li>
+            <li class="divider"></li>
             <li><a href="#">Search Customers</a></li>
           </ul>
         </li>
@@ -62,6 +64,7 @@
           <ul class="dropdown-menu">
             <li><a href="users.php?new=true">New User</a></li>
             <li><a href="users.php?viewall=true">All Users</a></li>
+            <li class="divider"></li>
             <li><a href="#">Search Customers</a></li>
           </ul>
         </li>

@@ -17,7 +17,7 @@ $content .= '
         <div class="btn-group" style="margin: 9px 0;">
           <a href="customers.php?viewall=true" class="btn">View All</a>
           <a href="customers.php?new=true" class="btn">New Customer</a>
-          <a id="newticket" href="tickets.php?new=true" class="btn disabled">New Ticket</a>
+          <a id="newticket" href="tickets.php?new=true" data-toggle="button" class="btn">New Ticket</a>
         </div>';
 /*
 $content .= '<a href="customers.php?viewall=true" class="btn">View all</a>';
