@@ -46,6 +46,10 @@ mysql> select * from tickettypes;
 | invoice       | varchar(12)   | YES  |     | NULL    |                |
 */
 
+	/*
+	 * Searches ticket ids by partial name given from ticket name
+	 * Returns id, & that is passed to getTicketById
+	*/
 	public function searchTicketById($id) {
 		$sql = "SELECT id from tickets where invoice like '%$id%'";
 		$result = parent::get('db')->mysqli()->query($sql);
@@ -54,10 +58,15 @@ mysql> select * from tickettypes;
 			if($id) {
 				return $id[id];
 			}
+			return false;
 		}
 		return false;
 	}
 
+	/*
+	 * Pulls ticket information from the database
+	 * based on the ticket id passed
+	*/
 	public function getTicketById($id){
 		$sql = "SELECT t.id AS ID, t.createDate AS 'Created on', u.name AS Creator, c.name as Customer, s.status AS Status, s.description AS 'status_description', t.priority AS Priority, t.dueDate AS 'Due date' FROM tickets AS t " .
 					"JOIN statuses AS s ON t.status = s.id " .

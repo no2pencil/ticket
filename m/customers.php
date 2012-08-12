@@ -1,6 +1,7 @@
 <?php
 $content = '<h2>Customers</h2>';
 
+if($_GET[viewall] || !$_GET) {
 // Chosen form
 $content .= '
 	<form action="customers.php" class="form-search">
@@ -11,6 +12,7 @@ foreach($results as $row){
 	$content .= '<option name="'.$row['name'].'" value="'.$row['name'].'">'.$row['name'].' '.$row['primaryPhoneSearch'].'</option>'; 
 }
 $content .= '</select>';
+}
 
 // View all and new customer
 $content .= '
@@ -27,6 +29,7 @@ $content .= ' | <a href="tickets.php?new=true" class=" <a class="btn btn-primary
 $content .= '<div style="margin-bottom: 15px;"></div></form>';
 
 if(isset($_GET['search'])){
+	$results = $framework->get('customers')->search($_GET[search]);
 	$content .= '<div class="well">';
 	$content .= '<legend>Search</legend>';
         
