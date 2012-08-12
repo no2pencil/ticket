@@ -45,6 +45,19 @@ mysql> select * from tickettypes;
 | specialFields | varchar(1000) | NO   |     | NULL    |                |
 | invoice       | varchar(12)   | YES  |     | NULL    |                |
 */
+
+	public function searchTicketById($id) {
+		$sql = "SELECT id from tickets where invoice like '%$id%'";
+		$result = parent::get('db')->mysqli()->query($sql);
+		if($result) {
+			$id= $result->fetch_array(MYSQLI_ASSOC);
+			if($id) {
+				return $id[id];
+			}
+		}
+		return false;
+	}
+
 	public function getTicketById($id){
 		$sql = "SELECT t.id AS ID, t.createDate AS 'Created on', u.name AS Creator, c.name as Customer, s.status AS Status, s.description AS 'status_description', t.priority AS Priority, t.dueDate AS 'Due date' FROM tickets AS t " .
 					"JOIN statuses AS s ON t.status = s.id " .
