@@ -15,15 +15,6 @@ class tickets extends framework {
 	}
 
 	public function createType() {
-/*
-mysql> select * from tickettypes;
-+----+-----------+-------------+------------------------------------------------------+
-| id | name      | description | specialFields                                        |
-+----+-----------+-------------+------------------------------------------------------+
-|  1 | Drop off  |             |                                                      |
-|  2 | ebay item |             | text ^^^ item number ^^^  ;;; text ^^^ seller ^^^ me |
-+----+-----------+-------------+------------------------------------------------------+
-*/
 		$sql = "INSERT INTO tickettypes(name, description, specialFields) VALUES (?, ?, ?)";
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)) {
 			$stmt->bind_param('sss', $Typename, $Typedescription, $Typespecial);
@@ -83,9 +74,9 @@ mysql> select * from tickettypes;
 		$types = $this->getTypes(); // laziness ftw
 		return $types[$id];
 	}
-	
+
 	public function getTypes(){
-		$sql = "SELECT id, name, description, specialFields FROM tickettypes";
+		$sql = "SELECT id, name FROM tickettypes";
 		//$result = parent::get('db')->mysqli()->query($sql);
 		$result = parent::get('db')->mysqli()->query($sql);
 		$fresult = array();
@@ -95,7 +86,22 @@ mysql> select * from tickettypes;
 		}
 		return $fresult;
 	}
+
+        public function getStatusById($id) {
+                $statuses = $this->getStatuses();
+                return $statuses[$id];
+        }
 	
+	public function getStatuses() {
+		$sql = "SELECT id, status FROM statuses";
+                $result = parent::get('db')->mysqli()->query($sql);
+                $fresult = array();
+                while($row = $result->fetch_array()){
+                        $fresult[$row['id']] = array("status" => $row['status']); 
+                }
+                return $fresult;
+	}
+
 	public function getBulk($limit, $offset){
 		$sql = "SELECT * FROM tickets AS t JOIN customers AS c ON t.customer = c.id LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
 		$result = parent::get('db')->mysqli()->query($sql);

@@ -26,10 +26,35 @@ if(isset($_GET['search'])) {
 	if($searchResults) {
 		$info = $framework->get('tickets')->getTicketById($searchResults);	
 		$customer = $framework->get('customers')->getInfoById($info[customer]);
+		$type = $framework->get('tickets')->getTypeById($info[type]);
+		$status = $framework->get('tickets')->getStatusById($info[status]);
 	}
 	else die("No results found :(");
         if(!empty($info)){
                 if(!empty($customer)) $info[customer]=$customer[name].' '.$customer[primaryPhone];
+		if(!empty($type)) $info[type]=$type[name];
+		if(!empty($status)) {
+			switch($info[status]) {
+				case 19:
+				case 23:
+				case 62:
+					$info[status]='<a href="#" class="btn btn-mini">'.$status[status].'</a>'; 
+					break;
+				case 20:
+				case 55:
+					$info[status]='<a href="#" class="btn-mini btn-info">'.$status[status].'</a>';
+					break;
+				case 55:
+					$info[status]='<a href="#" class="btn-mini btn-success">'.$status[status].'</a>';
+					break;
+				case 70:
+					$info[status]='<a href="#" class="btn-mini btn-primary">'.$status[status].'</a>';
+					break;
+				default :
+					//$info[status]="Status!";
+					break;
+			}
+		}
                 $info['<hr>'] = '<hr>';
                 $info['Actions'] = '<a href="tickets.php?edit=' . $id . '">Edit</a> | <a href="#" id="ticket_delete_link">Delete</a>';
                 $content .= $framework->get('html')->buildTable($info, array("status_description"));
