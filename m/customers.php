@@ -28,6 +28,25 @@ $content .= ' | <a href="tickets.php?new=true" class=" <a class="btn btn-primary
 */
 $content .= '<div style="margin-bottom: 15px;"></div></form>';
 
+if(isset($_GET['view'])) {
+	$results = $framework->get('customers')->getInfoById($_GET[view]);
+	$content .= '<div class="well">';
+	$content .= '<legend>Customer</legend>';
+	
+	if(empty($results)) $content .= '<h3>No results</h3>';
+	else {
+                $index=0;
+                while($index<$results[totalTickets]) {
+                        // Get Ticket Number
+			$ticket[$index]="Ticket Number";
+                        $results[$index]=$ticket[$index];
+                        $index++;
+                }
+
+		$content .= $framework->get('html')->buildTable($results, array(""));
+	}
+}
+
 if(isset($_GET['search'])){
 	$results = $framework->get('customers')->search($_GET[search]);
 	$content .= '<div class="well">';
@@ -39,7 +58,10 @@ if(isset($_GET['search'])){
 		$search_results = '';
 
 		foreach($results as $row){
-			$search_results .= '<tr><td>' . $row['name'] . '</td><td>';
+			$search_results .= '<tr><td>';
+			$search_results .= '<a href="customers.php?view='.$row[id].'">';
+			$search_results .= $row['name'];
+			$search_results .= '</a></td><td>';
 			$search_results .= $row['email'] . '</td><td>';
 			if($row['primaryPhone']) {
 				$search_results .= $row['primaryPhone'];
