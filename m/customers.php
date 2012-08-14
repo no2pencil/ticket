@@ -30,16 +30,18 @@ $content .= '<div style="margin-bottom: 15px;"></div></form>';
 
 if(isset($_GET['view'])) {
 	$results = $framework->get('customers')->getInfoById($_GET[view]);
+	$tickets = $framework->get('customers')->getTicketIdsForId($_GET[view]);
+
 	$content .= '<div class="well">';
 	$content .= '<legend>Customer</legend>';
-	
+
 	if(empty($results)) $content .= '<h3>No results</h3>';
 	else {
                 $index=0;
-                while($index<$results[totalTickets]) {
+                while($index<=$results[totalTickets]) {
                         // Get Ticket Number
-			$ticket[$index]="Ticket Number";
-                        $results[$index]=$ticket[$index];
+			//$tickets[$index]="Ticket Number";
+                        $results[$index]=$tickets[$index-1];
                         $index++;
                 }
 

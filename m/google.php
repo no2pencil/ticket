@@ -34,10 +34,11 @@ foreach($result as $row) {
 			$coffee++;
 			break;
 		case 2:
-			$user++;
-			break;
+			//$user++;
+			//break;
 		case 3:
-			$phone++;
+			//$phone++;
+			$user++;
 			break;
 		case 4:
 			$radio++;
@@ -84,7 +85,7 @@ while($i<15) {
 }
 $i=0;
 foreach($result as $row) {
-	printf("\n          ['%s',	%s],\n",$row,$seo[$i]);
+	printf("          [\"%s\",	%s],\n",$row,$seo[$i]);
 	$i++;
 }
 
@@ -115,6 +116,6 @@ foreach($result as $row) {
   </head>
 <?php
   $content = '<h2>Google Charts</h2>';
-  $content.='<div id="chart_div" style="width: 900px; height: 500px;"></div>';
-  //echo $chart_content;
+  $content.= '<div id="chart_div" style="width: 900px; height: 500px;"></div>';
+  echo $chart_content;
 ?>

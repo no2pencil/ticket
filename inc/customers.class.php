@@ -93,6 +93,23 @@ class customers extends framework {
 		}
 		return false;
 	}
+
+	public function getTicketIdsForId($id, $onlyopen=false) {
+		$sql = "SELECT invoice from tickets where customer=?";
+		if($onlyopen) $sql .= " AND status > 0";
+		if($stmt = parent::get('db')->mysqli()->prepare($sql)) {
+			$stmt->bind_param('i', $id);
+			$stmt->execute();
+                        $stmt->bind_result($invoice);
+			$result=array();
+			while ($stmt->fetch()) {
+                                $result[] = $invoice;
+			}
+                        $stmt->close();
+                        return $result;
+		}
+		return false;
+	}
 	
 	public function getTicketCountForId($id, $onlyopen=false){
 		$sql = "SELECT * FROM tickets WHERE customer=?";
