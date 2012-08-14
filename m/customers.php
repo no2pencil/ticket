@@ -38,10 +38,12 @@ if(isset($_GET['view'])) {
 	if(empty($results)) $content .= '<h3>No results</h3>';
 	else {
                 $index=0;
-                while($index<=$results[totalTickets]) {
+                while($index<$results[totalTickets]) {
                         // Get Ticket Number
 			//$tickets[$index]="Ticket Number";
-                        $results[$index]=$tickets[$index-1];
+                        $results[$index+1]='<a href="/tickets.php?search=';
+			$results[$index+1].=substr($tickets[$index],-4,4);
+			$results[$index+1].='">'.$tickets[$index].'</a>';
                         $index++;
                 }
 
@@ -165,6 +167,11 @@ if(isset($_GET['search'])){
 
 } else if(isset($_GET['new'])){
 	$content .= 'New Customer Form...';
-	
+ 	$content .= '<table>';
+	$content .= '<thead>';
+	$content .= '<th>Name: </th>';
+	$content .= '<td><input type="text" name="uname"></td>';
+	$content .= '</thead><tbody>';
+	$content .= '</tbody></table>';
 }
 ?>
