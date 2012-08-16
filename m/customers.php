@@ -203,10 +203,10 @@ if(isset($_GET['search'])){
 	$content .= '</select>';
 	$content .= '</td>';
 	$content .= '</tr><tr>';
-	$content .= '<th>Action</th><td><a id="create_button" href="#" class="btn btn-success"><i class="icon-white icon-off"></i>&nbsp;Create</a></td>';
+	$content .= '<th>Action</th><td><a name="create_button" id="create_button" href="#" class="btn btn-success"><i class="icon-white icon-off"></i>&nbsp;Create</a></td>';
 	$content .= '</tr></tbody></table></form>';
 	$content .= '<script>';
-	$content .= '$("a").click(function(e) {
+	$content .= '$(\'#create_button\').click(function(e) {
 	e.preventDefault();
 	$("#create_user").submit();
 	});';
