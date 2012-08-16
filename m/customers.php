@@ -1,4 +1,11 @@
 <?php
+if($_POST[action]=="create_user") {
+  echo "<pre>";
+  print_r($_POST);
+  echo "</pre>";
+}
+else echo $_POST['action'];
+
 $content = '<h2>Customers</h2>';
 
 if($_GET[viewall] || !$_GET) {
@@ -167,11 +174,42 @@ if(isset($_GET['search'])){
 
 } else if(isset($_GET['new'])){
 	$content .= 'New Customer Form...';
- 	$content .= '<table>';
-	$content .= '<thead>';
-	$content .= '<th>Name: </th>';
-	$content .= '<td><input type="text" name="uname"></td>';
-	$content .= '</thead><tbody>';
-	$content .= '</tbody></table>';
+ 	$content .= '<form id="create_user" method="POST"><table>';
+	$content .= '<thead><tr>';
+	$content .= '<th class="left">Name:&nbsp;</th>';
+	$content .= '<td><input type="text" id="uname" name="uname"></td>';
+	$content .= '</tr></thead><tbody><tr>';
+        $content .= '<th>Primary Phone:</th>';
+        $content .= '<td><input type="text" id="prime_phone" name="prime_phone"></td>';
+	$content .= '</tr><tr>';
+        $content .= '<th>Secondary Phone:</th>';
+        $content .= '<td><input type="text" id="secondary_phone" name="secondary_phone"></td>';
+	$content .= '</tr><tr>';
+	$content .= '<th>Email:&nbsp;</th>';
+	$content .= '<td><input type="text" id="email" name="email"></td>';
+	$content .= '</tr><tr>';
+	$content .= '<th>Zip Code:&nbsp;</th>';
+	$content .= '<td><input type="text" id="email" name="zip"></td>';
+	$content .= '</tr><tr>';
+	$content .= '<th>Reference:&nbsp;</th>';
+	$content .= '<td>';
+	$content .= '<input type="hidden" id="action" name="action" value="create_user">';
+        $content .= '<select id="customers" name="customers" data-placeholder="Customers..." class="chzn-select" style="width:350px;">';
+	$content .= '<option value=""></option>';
+	$results = $framework->get('customers')->reff();
+	foreach($results as $row){
+        	$content .= '<option name="'.$row.'" value="'.$row.'">'.$row.'</option>';
+	} 
+	$content .= '</select>';
+	$content .= '</td>';
+	$content .= '</tr><tr>';
+	$content .= '<th>Action</th><td><a id="create_button" href="#" class="btn btn-success"><i class="icon-white icon-off"></i>&nbsp;Create</a></td>';
+	$content .= '</tr></tbody></table></form>';
+	$content .= '<script>';
+	$content .= '$("a").click(function(e) {
+	e.preventDefault();
+	$("#create_user").submit();
+	});';
+	$content .= '</script>';
 }
 ?>

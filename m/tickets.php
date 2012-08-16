@@ -42,13 +42,13 @@ if(isset($_GET['search'])) {
 					break;
 				case 20:
 				case 55:
-					$info[status]='<a href="#" class="btn-mini btn-info">'.$status[status].'</a>';
+					$info[status]='<a href="#" class="btn btn-mini btn-info">'.$status[status].'</a>';
 					break;
 				case 55:
-					$info[status]='<a href="#" class="btn-mini btn-success">'.$status[status].'</a>';
+					$info[status]='<a href="#" class="btn btn-mini btn-success">'.$status[status].'</a>';
 					break;
 				case 70:
-					$info[status]='<a href="#" class="btn-mini btn-primary">'.$status[status].'</a>';
+					$info[status]='<a href="#" class="btn btn-mini btn-primary">'.$status[status].'</a>';
 					break;
 				default :
 					//$info[status]="Status!";
