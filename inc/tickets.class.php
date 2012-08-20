@@ -102,6 +102,37 @@ class tickets extends framework {
                 return $fresult;
 	}
 
+	public function getAllOpen() {
+		//$sql = "SELECT * from tickets as t JOIN customers AS c ON t.customer = c.id where";
+		$sql = "SELECT id, status, customer, invoice from tickets where ";
+		$sql .= " status != 11";
+		$sql .= " and status != 20";
+		$sql .= " and status != 23";
+		$sql .= " and status != 26";
+		$sql .= " and status != 29";
+		$sql .= " and status != 39";
+		$sql .= " and status != 41";
+		$sql .= " and status != 46";
+		$sql .= " and status != 47";
+		$sql .= " and status != 54";
+		$sql .= " and status != 55";
+		$sql .= " and status != 61";
+		$sql .= " and status != 62";
+		$sql .= " and status != 63";
+		$sql .= " order by id DESC";
+		$result = parent::get('db')->mysqli()->query($sql);
+		$fresult= array();
+		while($row = $result->fetch_array()) {
+			$fresult[$row['id']] = array(
+				"id" => $row['id'],
+				"status" => $row['status'],
+				"customer" => $row['customer'],
+				"invoice" => $row['invoice']
+			);
+		}
+		return $fresult;
+	}
+
 	public function getBulk($limit, $offset){
 		$sql = "SELECT * FROM tickets AS t JOIN customers AS c ON t.customer = c.id LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
 		$result = parent::get('db')->mysqli()->query($sql);

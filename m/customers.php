@@ -1,12 +1,20 @@
 <?php
 if($_POST[action]=="create_user") {
+// $name, $email, $primaryPhone, $secondaryPhone, $address, $referral
+  $results = $framework->get('customers')->add($_POST);
+  if(!$results) {
+  $warn .= '<div class="alert">
+  <button class="close" data-dismiss="warning">×</button>
+    <strong>Warning!</strong> Customer '.$_POST[uname].' was not succesfully created.
+  </div> ';
+  }
   echo "<pre>";
   print_r($_POST);
   echo "</pre>";
 }
-else echo $_POST['action'];
 
 $content = '<h2>Customers</h2>';
+if($warn) $content.=$warn;
 
 if($_GET[viewall] || !$_GET) {
 // Chosen form
@@ -197,8 +205,10 @@ if(isset($_GET['search'])){
         $content .= '<select id="customers" name="customers" data-placeholder="Customers..." class="chzn-select" style="width:350px;">';
 	$content .= '<option value=""></option>';
 	$results = $framework->get('customers')->reff();
-	foreach($results as $row){
-        	$content .= '<option name="'.$row.'" value="'.$row.'">'.$row.'</option>';
+	$index=0;
+	foreach($results[id] as $row){
+        	$content .= '<option name="'.$results[reff][$index].'" value="'.$results[id][$index].'">'.$results[reff][$index].'</option>';
+		$index++;
 	} 
 	$content .= '</select>';
 	$content .= '</td>';

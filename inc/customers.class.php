@@ -1,9 +1,17 @@
 <?php
 class customers extends framework {
-	public function add($name, $email, $primaryPhone, $secondaryPhone, $address, $referral){
-		$sql = "INSERT INTO customers(name, email, primaryPhone, secondaryPhone, address, referral, createDate) VALUES(?, ?, ?, ?, ?, ?, ?)";
+	//public function add($name, $email, $primaryPhone, $secondaryPhone, $address, $referral){
+	public function add($post_array) {
+		date_default_timezone_set("EST");
+		$sql = 'INSERT INTO customers(name, primaryPhone, secondaryPhone, email, address, referral, createDate) VALUES(';
+		foreach($post_array as $post) {
+			if($post!="create_user") $sql .= '\''.$post.'\',';
+		}
+		$sql .= '\''.date("Y-m-d").'\')';
+		//$sql = "INSERT INTO customers(name, email, primaryPhone, secondaryPhone, address, referral, createDate) VALUES(?, ?, ?, ?, ?, ?, ?)";
+		echo $sql;
 		if($stmt = parent::get("db")->mysqli()->prepare($sql)){
-			$stmt->bind_param('ssiisss', $name, $email, $primaryPhone, $secondaryPhone, $address, $referral, $createDate);
+			//$stmt->bind_param('sssssss', $post_array[0], $post_array[3], $post_array[1], $post_array[2], $post_array[4], $post_array, date("Y-m-d"));
 			$createDate = parent::get('utils')->timestamp();
 			$stmt->execute();
 			$stmt->store_result();
@@ -19,12 +27,18 @@ class customers extends framework {
 	 * Returns references & their id
 	*/
 	public function reff() {
-		$sql = "SELECT reff from reff"; 
+		$sql = "SELECT id, reff from reff"; 
 		if($stmt = parent::get("db")->mysqli()->prepare($sql)){
 			$stmt->execute();
-			$stmt->bind_result($reff);
+			$stmt->bind_result($id, $reff);
+			$result = array();
+			$result[id] = array();
+			$result[reff] = array();
+			$index=0;
 			while($stmt->fetch()) {
-				$result[]=$reff;
+				$result[id][$index] = $id;
+				$result[reff][$index] = $reff;
+				$index++;
 			}
 			return $result;
 		}

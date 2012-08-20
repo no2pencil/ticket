@@ -9,6 +9,7 @@ class utils extends framework {
 	 * Returns a timestamp (string)
 	*/
 	public function timestamp(){
+		date_default_timezone_set(EST);
 		return date("Y-m-d H:i:s e");
 	}
 	
