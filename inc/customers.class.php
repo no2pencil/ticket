@@ -28,21 +28,15 @@ class customers extends framework {
 	*/
 	public function reff() {
 		$sql = "SELECT id, reff from reff"; 
-		if($stmt = parent::get("db")->mysqli()->prepare($sql)){
-			$stmt->execute();
-			$stmt->bind_result($id, $reff);
-			$result = array();
-			$result[id] = array();
-			$result[reff] = array();
-			$index=0;
-			while($stmt->fetch()) {
-				$result[id][$index] = $id;
-				$result[reff][$index] = $reff;
-				$index++;
-			}
-			return $result;
-		}
-		return false;
+                $result = parent::get('db')->mysqli()->query($sql);
+                $fresult = array();
+                while($row = $result->fetch_array()){
+			$fresult[$row[id]]=array(
+				"id" => $row[id],
+				"reff" => $row[reff]
+			);
+                }
+                return $fresult;
 	}
 	
 	/*

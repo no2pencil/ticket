@@ -85,7 +85,7 @@ while($i<15) {
 }
 $i=0;
 foreach($result as $row) {
-	printf("          [\"%s\",	%s],\n",$row,$seo[$i]);
+	printf("          [\"%s\",	%s],\n",$row[reff],$seo[$i]);
 	$i++;
 }
 
