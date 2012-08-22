@@ -58,6 +58,23 @@ class tickets extends framework {
 		}
 		return false;
 	}
+	
+	/*
+	 * search(string $value, string $columns=array('id', 'customer'))
+	 * Returns all rows in table "tickets" matching the criteria. Empty array on no results. False on error.
+	 * $columns are the columns to search in. Search is done using LIKE
+	 * unfin.
+	*/
+	public function search($value, $columns=array('id', 'customer')){
+		$cols = implode(', ', $columns); // Thank god for prepared statements
+		$sql = "SELECT id, createDate, creator, type, priority, dueDate, status, customer, specialFields FROM tickets WHERE";
+		foreach($cols as $col){
+			$sql .= ' ' . $col . ' LIKE %' . $value . '%'; // aka any $columns that contain $value
+		}
+		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
+			$stmt->bind_param(
+		}
+	}
 
 	/*
 	 * Pulls ticket information from the database

@@ -1,11 +1,9 @@
 <?php
-
 $data = $framework->get('tickets')->getAllOpen();
 $customer = array();
-if(!$data) {
+if(!$data){
 	$content .= "No currently open tickets...";
-}
-else {
+} else {
 	$content .= '<table class="table">
 		<thead>
 		<tr><th>Invoice</th><th>Customer</td><th>Status</th></tr>

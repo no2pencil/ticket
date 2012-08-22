@@ -83,24 +83,13 @@ if(isset($_GET['view'])){
 	} else {
 		$content .= '<h3>There is no ticket with id '.$_GET[view];
 	}
-}
-/*
- else if(isset($_GET['delete'])){
-	$id = (int)$_GET['delete'];
-	if(isset($_GET['dodelete'])){
-		$result = $framework->get('tickets')->delete($id);
-		if($result){
-			$content .= '<h3>The ticket has been deleted</h3>';
-		} else {
-			$content .= '<h3>There was an error deleting the ticket</h3>';
-		}
-	} else {
-		$content .= '<h3>Are you sure you want to delete ticket ' . $id . '?</h3>Deleted tickets cannot be recovered. The ticket will be gone forever.<br>'; // I lied here, it'll be gone 5evr.
-		$content .= '<a href="tickets.php?delete=' . $id . '&dodelete=yes">Yes</a> | <a href="tickets.php?view=' . $id . '">No</a>';
-	}
-*/
-
-if(isset($_GET['viewall'])){
+} else if(isset($_GET['advancedSearch'])){
+	/* display search form */
+	
+} else if(isset($_GET['search'])){
+	/* search logic */
+	
+} else if(isset($_GET['viewall'])){
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 0;
 	$data = $framework->get('tickets')->getBulk(10, $page * 10);
 	$content .= '<table class="table">
