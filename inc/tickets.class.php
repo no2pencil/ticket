@@ -14,6 +14,11 @@ class tickets extends framework {
 		return false;
 	}
 
+	/* 
+	 * createType();
+	 * Creates a ticket type
+	 * TODO: Finish function
+	*/
 	public function createType() {
 		$sql = "INSERT INTO tickettypes(name, description, specialFields) VALUES (?, ?, ?)";
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)) {
@@ -121,15 +126,20 @@ class tickets extends framework {
 		$sql .= " and status != 63";
 		$sql .= " order by id DESC";
 		$result = parent::get('db')->mysqli()->query($sql);
-		$fresult= array();
-		while($row = $result->fetch_array()) {
-			$fresult[$row['id']] = array(
-				"id" => $row['id'],
-				"status" => $row['status'],
-				"customer" => $row['customer'],
-				"invoice" => $row['invoice']
-			);
+		if($result !== false){
+			$fresult= array();
+			while($row = $result->fetch_array()) {
+				$fresult[$row['id']] = array(
+					"id" => $row['id'],
+					"status" => $row['status'],
+					"customer" => $row['customer'],
+					"invoice" => $row['invoice']
+				);
+			}
+		} else {
+			return false;
 		}
+		
 		return $fresult;
 	}
 
