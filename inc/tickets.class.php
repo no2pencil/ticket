@@ -71,9 +71,12 @@ class tickets extends framework {
 		foreach($cols as $col){
 			$sql .= ' ' . $col . ' LIKE %' . $value . '%'; // aka any $columns that contain $value
 		}
+/*
+		// WTF is this shit?  Shit doesn't even compile man ;)
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
 			$stmt->bind_param(
 		}
+*/
 	}
 
 	/*
