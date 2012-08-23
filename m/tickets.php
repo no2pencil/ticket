@@ -56,12 +56,9 @@ if(isset($_GET['search'])) {
 			}
 		}
                 $info['<hr>'] = '<hr>';
-                $info['Actions'] = '<a href="tickets.php?edit=' . $id . '">Edit</a> | <a href="#" id="ticket_delete_link">Delete</a>';
+                $info['Actions'] = '<a href="tickets.php?edit=' . $id . '">Edit</a> | <a href="#" id="ticket_comment">Comment</a>';
                 $content .= $framework->get('html')->buildTable($info, array("status_description"));
-                // Ticket delete dialog:
-                $content .= '<div id="ticket_delete" title="Are you sure you want to delete this ticket?">
-                        <p>Deleted tickets cannot be recovered.</p>
-                </div>';
+                $content .= '</div>';
         } else {
                 $content .= '<h3>There is no ticket with id '.$_GET[view];
         }
