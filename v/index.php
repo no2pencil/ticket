@@ -14,7 +14,7 @@
       echo '<script type="text/javascript" src="v/js/model_scripts/' . $page . '.js"></script>';
   }
   ?>
-  <script type="text/javascript" src="v/css/bootstrap/docs/assets/js/bootstrap-dropdown.js"></script>
+  <script type="text/javascript" src="v/css/bootstrap/js/bootstrap.js"></script>
   <link href="v/css/bootstrap/css/bootstrap.css" rel="stylesheet"> 
   <link href="v/css/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
   <link href="v/css/bootstrap/js/google-code-prettify/prettify.css" rel="stylesheet"> 
@@ -96,7 +96,6 @@
 				?>
 			</div>
 		</div>
-
 <script src="v/css/chosen/chosen/chosen.jquery.js" type="text/javascript"></script> 
 <script type="text/javascript"> 
   $(".chzn-select").chosen();
