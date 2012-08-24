@@ -106,10 +106,25 @@ if(isset($_GET['view'])){
 	
 } else if(isset($_POST['search'])){
 	/* search logic */
+	$content .= '<legend>Search results</legend>';
 	$cols = (isset($_POST['searchcols'])) ? $_POST['searchcols'] : array('id', 'customer'); // TODO: Create settings & put in default search params
-	$result = $framework->get('tickets')->search($_POST['search'], $cols);
-	var_dump($result);
-	$content .= print_r($result, true);
+	$results = $framework->get('tickets')->search($_POST['search'], $cols);
+	if(empty($results)){
+		$content .= '<div class="alert alert-error"><strong>No results found</strong> <a href="tickets.php?advancedsearch=true">Try again</a></div>';
+	} else {
+		$content .= '
+			<table class="table">
+				<thead>
+					<tr><th>ID</th><th>Customer</th><th>Priority</th><th>Due date</th><th>Status</th></tr>
+				</thead>
+				<tbody>';
+		foreach($results as $result){
+			$content .= '<tr><td>' . $result['id'] . '</td><td>' . $result['customer'] . '</td><td>' . $result['priority'] . '</td><td>' . $result['dueDate'] . '</td><td>' . $result['status'] . '</td></tr>';
+		}
+		$content .= '
+				</tbody>
+			</table>';
+	}
 } else if(isset($_GET['viewall'])){
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 0;
 	$data = $framework->get('tickets')->getBulk(10, $page * 10);

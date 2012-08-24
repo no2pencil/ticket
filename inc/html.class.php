@@ -14,7 +14,7 @@ class html extends framework {
 	 * if $whitelist is set to true, $hide becomes a whitelist and only keys that are in $hide are shown
 	*/
 	public function buildTable($data, $hide=array(), $whitelist=false){
-		$result = '<table>';
+		$result = '<table class="table">';
 		foreach($data as $key => $value){
 			if(($whitelist && in_array($key, $hide)) || (!$whitelist && !in_array($key, $hide))){
 				if(is_array($value)){
