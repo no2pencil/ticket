@@ -55,7 +55,12 @@ if(isset($_GET['search'])) {
 					break;
 			}
 		}
-                $info['<hr>'] = '<hr>';
+		$comments = array();
+		$comments = $framework->get('tickets')->getComments($id);
+		//$info['Comments'] = '<hr>';
+		foreach($comments as $comment) {
+                	$info['<hr>'] .= '<hr>Updated'.$comment[1].'<br>'.$comment[0];
+		}
                 $info['Actions'] = '<a href="tickets.php?edit=' . $id . '">Edit</a> | <a href="#" id="ticket_comment">Comment</a>';
                 $content .= $framework->get('html')->buildTable($info, array("status_description"));
                 $content .= '</div>';

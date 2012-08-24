@@ -163,6 +163,16 @@ class tickets extends framework {
 		return $fresult;
 	}
 
+	public function getComments($id) {
+		$sql = "SELECT comment, dateadded FROM comments where invoice like '%$id'";
+		$result = parent::get('db')->mysqli()->query($sql);
+		$comments = array();
+		while($row = $result->fetch_array()) {
+			$comments[] = $row;
+		}
+		return $comments;
+	}
+
 	public function getBulk($limit, $offset){
 		$sql = "SELECT * FROM tickets AS t JOIN customers AS c ON t.customer = c.id LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
 		$result = parent::get('db')->mysqli()->query($sql);
