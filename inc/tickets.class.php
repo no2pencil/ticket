@@ -1,5 +1,11 @@
 <?php
 class tickets extends framework {
+	
+	/*
+	 * add(string $customer, int $type, string $priority, string $dueDate, int $status, string $specialFields)
+	 * Adds a new ticket to the system with the provided information.
+	 * Returns insert ID on success, false on failure
+	*/
 	public function add($customer, $type, $priority, $dueDate, $status, $specialFields){
 		$sql = "INSERT INTO tickets(customer, type, priority, dueDate, status, specialFields, createDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
@@ -26,6 +32,7 @@ class tickets extends framework {
 			$stmt->execute();
 			$stmt->store_result();
 			if($stmt->affected_rows > 0) {
+				
 			}
 		}
 	}
@@ -43,8 +50,10 @@ class tickets extends framework {
 */
 
 	/*
+	 * searchTicketById(int $id)
 	 * Searches ticket ids by partial name given from ticket name
-	 * Returns id, & that is passed to getTicketById
+	 * Returns id, & that is passed to getTicketById 
+	 * Returns false on failure
 	*/
 	public function searchTicketById($id) {
 		$sql = "SELECT id from tickets where invoice like '%$id%'";
@@ -62,21 +71,36 @@ class tickets extends framework {
 	/*
 	 * search(string $value, string $columns=array('id', 'customer'))
 	 * Returns all rows in table "tickets" matching the criteria. Empty array on no results. False on error.
-	 * $columns are the columns to search in. Search is done using LIKE
-	 * unfin.
+	 * $columns are the columns to search in. Search is done using LIKE.
 	*/
 	public function search($value, $columns=array('id', 'customer')){
-		$cols = implode(', ', $columns); // Thank god for prepared statements
+		$bind = array();
+		$result = array();
 		$sql = "SELECT id, createDate, creator, type, priority, dueDate, status, customer, specialFields FROM tickets WHERE";
-		foreach($cols as $col){
-			$sql .= ' ' . $col . ' LIKE %' . $value . '%'; // aka any $columns that contain $value
+		foreach($columns as $key => $col){
+			if($key == (count($columns)-1)){
+				$sql .= ' ' . $col . ' LIKE ?';
+			} else {
+				$sql .= ' ' . $col . ' LIKE ? OR';
+			}
+			$bind[0] = (empty($bind[0])) ? 's' : $bind[0] . 's';
+			$bind[] = "%" . $value . "%";
 		}
-/*
-		// WTF is this shit?  Shit doesn't even compile man ;)
+		
+		foreach($bind as $key => $value){
+			$bimp[$key] = &$bind[$key]; // Makes them references for bind_param
+		}
+		
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
-			$stmt->bind_param(
+			call_user_func_array(array($stmt, "bind_param"), $bind); // See what I did there? Dynamic bind_param.
+			$stmt->execute();
+			$stmt->bind_result($id, $createDate, $creator, $type, $priority, $dueDate, $status, $customer, $specialFields);
+			while($stmt->fetch()){
+				$result[] = array('id' => $id, 'createDate' => $createDate, 'creator' => $creator, 'type' => $type, 'priority' => $priority, 'dueDate' => $dueDate, 'status' => $status, 'customer' => $customer, 'specialFields' => $specialFields);
+			}
+			return $result;
 		}
-*/
+		return parent::get('db')->mysqli()->error;
 	}
 
 	/*

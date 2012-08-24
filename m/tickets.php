@@ -85,12 +85,31 @@ if(isset($_GET['view'])){
 	} else {
 		$content .= '<h3>There is no ticket with id '.$_GET[view];
 	}
-} else if(isset($_GET['advancedSearch'])){
+} else if(isset($_GET['advancedsearch'])){
 	/* display search form */
 	
-} else if(isset($_GET['search'])){
-	/* search logic */
+	$content .= '
+		<form action="tickets.php" method="post">
+			<legend>Advanced Search</legend>
+			<input type="text" name="search" placeholder="Search value">
+			<label>Select columns to search:</label>';
+	$cols = $framework->get('db')->getCols('tickets');
+	foreach($cols as $col){
+		$content .= '
+			<label class="checkbox">
+				<input type="checkbox" name="searchcols[]" value="' . $col . '"> ' . $col . '
+			</label>';
+	}
+	$content .= '
+			<input type="submit" class="btn" value="Search">
+		</form>';
 	
+} else if(isset($_POST['search'])){
+	/* search logic */
+	$cols = (isset($_POST['searchcols'])) ? $_POST['searchcols'] : array('id', 'customer'); // TODO: Create settings & put in default search params
+	$result = $framework->get('tickets')->search($_POST['search'], $cols);
+	var_dump($result);
+	$content .= print_r($result, true);
 } else if(isset($_GET['viewall'])){
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 0;
 	$data = $framework->get('tickets')->getBulk(10, $page * 10);
