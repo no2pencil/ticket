@@ -16,8 +16,6 @@
   ?>
   <script type="text/javascript" src="v/css/bootstrap/js/bootstrap.js"></script>
   <link href="v/css/bootstrap/css/bootstrap.css" rel="stylesheet"> 
-  <link href="v/css/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-  <link href="v/css/bootstrap/js/google-code-prettify/prettify.css" rel="stylesheet"> 
   <link href="v/css/chosen/chosen/chosen.css" rel="stylesheet"> 
 </head>
 <body>
