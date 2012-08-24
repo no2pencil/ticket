@@ -110,7 +110,7 @@ if(isset($_GET['view'])){
 	$cols = (isset($_POST['searchcols'])) ? $_POST['searchcols'] : array('id', 'customer'); // TODO: Create settings & put in default search params
 	$results = $framework->get('tickets')->search($_POST['search'], $cols);
 	if(empty($results)){
-		$content .= '<div class="alert alert-error"><strong>No results found</strong> <a href="tickets.php?advancedsearch=true">Try again</a></div>';
+		$content .= '<div class="alert alert-error"><strong>No results found</strong> <a href="tickets.php?advancedsearch=true">Redefine search</a></div>';
 	} else {
 		$content .= '
 			<table class="table">

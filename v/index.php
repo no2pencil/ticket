@@ -40,7 +40,7 @@
             <li><a href="tickets.php?viewall=true">All Tickets</a></li>
             <li><a href="tickets.php?new=true">New Ticket</a></li>
             <li class="divider"></li>
-            <li><form action="tickets.php" class="form-search" style="padding: 3px 15px; margin: 0;"><input type="text" name="search" placeholder="Quick search" class="search-query span2"></form></li>
+            <li><form action="tickets.php" method="post" class="form-search" style="padding: 3px 15px; margin: 0;"><input type="text" name="search" placeholder="Quick search" class="search-query span2"></form></li>
             <li><a href="tickets.php?advancedsearch=true">Advanced Search</a></li>
           </ul>
         </li>
