@@ -5,11 +5,11 @@
 */
 class utils extends framework {
 	/*
-	 * timestamp(int $time=time(), boolean $userfriendly=false);
+	 * timestamp(boolean $userfriendly=false, int $time=time());
 	 * Returns a timestamp. If $time is defined, format will be based of that.
 	 * If $userfriendly is true, timestamp will return in "Y-m-d H:i:s e" format
 	*/
-	public function timestamp($time=time(), $userfriendly=false){
+	public function timestamp($userfriendly=false, $time=time()){
 		date_default_timezone_set(EST);
 		if($userfriendly){
 			return date("Y-m-d H:i:s e", $time);
