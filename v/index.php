@@ -17,6 +17,93 @@
   <script type="text/javascript" src="v/css/bootstrap/js/bootstrap.js"></script>
   <link href="v/css/bootstrap/css/bootstrap.css" rel="stylesheet"> 
   <link href="v/css/chosen/chosen/chosen.css" rel="stylesheet"> 
+
+<!-- Google Charts API -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['', 'Current Ticket Progress'],
+<?php
+$status = array(
+	"new" => 0,
+	"open" => 0,
+	"progress" => 0,
+	"pendp" => 0,
+	"admin" => 0,
+	"tech" => 0,
+	"postp" => 0,
+	"parts" => 0
+);
+$data = $framework->get('tickets')->getAllOpen();
+foreach($data as $row) {
+        //echo "<!-- Status :".$row[status]." Value:".$row[status]."<br> -->";
+	switch($row[status]) {
+		case 17:
+		case 51: 
+		case 56:
+			$status['new']++;
+			break;
+		case 18: // Open
+			$status['open']++;
+			break;
+		case 19:
+			$status['progress']++;
+			break;
+		case 68:
+			$status['tech']++;
+			break;
+		case 70:
+			$status['parts']++;
+			break;
+	}
+}
+$i=0;
+foreach($status as $row) {
+	//echo $row[status].":".$data[status]."<br>";
+	switch($i) {
+		case 0:
+			$status_word = "New";
+			break;
+		case 1:
+			$status_word = "Open";
+			break;
+		case 2:
+			$status_word = "In Progress";
+			break;
+		case 3:
+			$status_word = "Pending Payment";
+			break;
+		case 4:
+			$status_word = "Call-back from Admin";
+			break;
+		case 5:
+			$status_word = "Call-back from Tech";
+			break;
+		case 6:
+			$status_word = "Post Payment";
+			break;
+		case 7:
+			$status_word = "Waiting for Parts";
+			break;
+	}
+        printf("          [\"%s\",      %s],\n",$status_word,$row);
+        $i++;
+}
+?>
+       ]);
+
+        var options = {
+          title: 'Current Ticket Progress'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+<!-- END Google Charts -->
 </head>
 <body>
 

@@ -66,3 +66,9 @@ if(!$data){
                                 </table>';
 }
 ?>
+<?php
+  $content.= '<h5>Current State of Things</h5>';
+  $content.= '<div id="chart_div" style="width: 900px; height: 500px;"></div>';
+  $content.=$chart_content;
+?>
+
