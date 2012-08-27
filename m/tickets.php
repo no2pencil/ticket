@@ -157,18 +157,18 @@ if(isset($_GET['viewall'])){
 					</thead>
 					<tbody>';
 	foreach($data as $key => $ticket){
-	        $searchResults = $framework->get('tickets')->searchTicketById($ticket[id]);
+	        $searchResults = $framework->get('tickets')->searchTicketById($ticket['id']);
         	if($searchResults) {
                 	$info = $framework->get('tickets')->getTicketById($searchResults);
-                	$customer = $framework->get('customers')->getInfoById($info[customer]);
-                	$type = $framework->get('tickets')->getTypeById($info[type]);
-                	$status = $framework->get('tickets')->getStatusById($info[status]);
+                	$customer = $framework->get('customers')->getInfoById($info['customer']);
+                	$type = $framework->get('tickets')->getTypeById($info['type']);
+                	$status = $framework->get('tickets')->getStatusById($info['status']);
         	}
-	        $content .= '<tr><td>' . $info[invoice];
-        	$content .= '</td><td><a href="customers.php?view='. $customer[id] .'">' . $customer[name] .'</a>';
-        	$content .= '</td><td>' . $info[priority];
-        	$content .= '</td><td>' . $info[dueDate];
-        	$content .= '</td><td>' . $status[status];
+	        $content .= '<tr><td>' . $info['invoice'];
+        	$content .= '</td><td><a href="customers.php?view='. $customer['id'] .'">' . $customer['name'] .'</a>';
+        	$content .= '</td><td>' . $info['priority'];
+        	$content .= '</td><td>' . $info['dueDate'];
+        	$content .= '</td><td>' . $status['status'];
         	$content .= '</td></tr>';
 	}
         if(empty($viewall_results)){
