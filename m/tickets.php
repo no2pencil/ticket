@@ -164,14 +164,15 @@ if(isset($_GET['viewall'])){
                 	$type = $framework->get('tickets')->getTypeById($info['type']);
                 	$status = $framework->get('tickets')->getStatusById($info['status']);
         	}
-	        $content .= '<tr><td>' . $info['invoice'];
+	        $content .= '<tr><td>' . $ticket['invoice'];
         	$content .= '</td><td><a href="customers.php?view='. $customer['id'] .'">' . $customer['name'] .'</a>';
         	$content .= '</td><td>' . $info['priority'];
         	$content .= '</td><td>' . $info['dueDate'];
         	$content .= '</td><td>' . $status['status'];
         	$content .= '</td></tr>';
 	}
-        if(empty($viewall_results)){
+        
+		if(empty($viewall_results)){
                 $viewall_results .= '
                         <tr><td colspan="3"><div class=\'alert alert-error\'>
                                 <strong>No more customers found</strong>
@@ -183,7 +184,7 @@ if(isset($_GET['viewall'])){
                 $nextBtn = '<li>
                 <a href="customers.php?viewall=true&page=' . ($page+1) . '">Next</a>
                 </li>';
-	}
+		}
 
 	$content .= '
 					</tbody>

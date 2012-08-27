@@ -37,17 +37,18 @@ class tickets extends framework {
 		}
 	}
 	
-/*
-| createDate    | varchar(30)   | NO   |     | NULL    |                |
-| creator       | int(5)        | NO   |     | NULL    |                |
-| type          | int(255)      | NO   |     | NULL    |                |
-| priority      | varchar(255)  | NO   |     | NULL    |                |
-| dueDate       | varchar(10)   | NO   |     | NULL    |                |
-| status        | int(255)      | NO   |     | NULL    |                |
-| customer      | int(255)      | NO   |     | NULL    |                |
-| specialFields | varchar(1000) | NO   |     | NULL    |                |
-| invoice       | varchar(12)   | YES  |     | NULL    |                |
-*/
+	/*
+	| id            | int(255)      | NO   | PRI | NULL    | AUTO_INCREMENT |
+	| createDate    | varchar(30)   | NO   |     | NULL    |                |
+	| creator       | int(5)        | NO   |     | NULL    |                |
+	| type          | int(255)      | NO   |     | NULL    |                |
+	| priority      | varchar(255)  | NO   |     | NULL    |                |
+	| dueDate       | varchar(10)   | NO   |     | NULL    |                |
+	| status        | int(255)      | NO   |     | NULL    |                |
+	| customer      | int(255)      | NO   |     | NULL    |                |
+	| specialFields | varchar(1000) | NO   |     | NULL    |                |
+	| invoice       | varchar(12)   | YES  |     | NULL    |                |
+	*/
 
 	/*
 	 * searchTicketById(int $id)
@@ -198,10 +199,25 @@ class tickets extends framework {
 	}
 
 	public function getBulk($limit, $offset){
-		$sql = "SELECT * FROM tickets AS t JOIN customers AS c ON t.customer = c.id LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+		/*
+		 * TODO: Finish and use this instead
+		 * ticket.id AS id,
+		   ticket.createDate AS createDate,
+		   ticket.creator AS creator,
+		   ticket.type AS type,
+		   ticket.priority AS priority,
+		   ticket.dueDate AS dueDate,
+		   ticket.status AS status,
+		   ticket.customer AS customer,
+		   ticket.specialFields AS specialFields,
+		   ticket.invoice AS invoice,
+		   customer.name AS 'customer.name'
+		*/
+	
+		$sql = "SELECT * FROM tickets AS ticket JOIN customers AS customer ON ticket.customer = customer.id LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
 		$result = parent::get('db')->mysqli()->query($sql);
 		$tickets = array();
-		while($row = $result->fetch_array()){
+		while($row = $result->fetch_array(MYSQLI_ASSOC)){
 			$tickets[] = $row;
 		}
 		return $tickets;
