@@ -10,7 +10,7 @@
 <?php
 $results = $framework->get('customers')->reff();
 if(!$results) {
-  die(":(");
+  die("sad :(");
 }
 $unknow=0;
 $coffee=0;
@@ -67,7 +67,9 @@ foreach($result as $row) {
 	}
 }
 $i=0;
-$result = array_unique($results);
+unset($result);
+// Not sure what I was trying todo here...
+//$result = array_unique($results);
 $seo=array();
 while($i<15) {
 	if($i==1) $seo[0]=$coffee;
@@ -84,7 +86,7 @@ while($i<15) {
 	$i++;
 }
 $i=0;
-foreach($result as $row) {
+foreach($results as $row) {
 	printf("          [\"%s\",	%s],\n",$row[reff],$seo[$i]);
 	$i++;
 }

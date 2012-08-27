@@ -104,7 +104,9 @@ if(isset($_GET['view'])){
 			<input type="submit" class="btn" value="Search">
 		</form>';
 	
-} else if(isset($_POST['search'])){
+} 
+
+if(isset($_POST['search'])){
 	/* search logic */
 	$content .= '<legend>Search results</legend>';
 	$cols = (isset($_POST['searchcols'])) ? $_POST['searchcols'] : array('id', 'customer'); // TODO: Create settings & put in default search params
@@ -119,23 +121,69 @@ if(isset($_GET['view'])){
 				</thead>
 				<tbody>';
 		foreach($results as $result){
-			$content .= '<tr><td>' . $result['id'] . '</td><td>' . $result['customer'] . '</td><td>' . $result['priority'] . '</td><td>' . $result['dueDate'] . '</td><td>' . $result['status'] . '</td></tr>';
+			$customer=array();
+			$searchResults = $framework->get('tickets')->searchTicketById($result[id]);
+			if($searchResults) {
+				$info = $framework->get('tickets')->getTicketById($searchResults);
+				$customer = $framework->get('customers')->getInfoById($info[customer]);
+				$type = $framework->get('tickets')->getTypeById($info[type]);
+				$status = $framework->get('tickets')->getStatusById($info[status]);
+			}
+			$content .= '<tr><td>' . $info[invoice];
+			$content .= '</td><td>' . $customer[name];
+			$content .= '</td><td>' . $info[priority];
+			$content .= '</td><td>' . $info[dueDate];
+			$content .= '</td><td>' . $status;
+			$content .= '</td></tr>';
 		}
 		$content .= '
 				</tbody>
 			</table>';
 	}
-} else if(isset($_GET['viewall'])){
+} 
+if(isset($_GET['viewall'])){
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 0;
 	$data = $framework->get('tickets')->getBulk(10, $page * 10);
 	$content .= '<table class="table">
 					<thead>
-						<tr><th>ID</th><th>
+						<tr>
+						<th>Invoice</th>
+						<th>Customer</th>
+						<th>Priority</th>
+						<th>Date</th>	
+						<th>Status</th>
+						</tr>
 					</thead>
 					<tbody>';
 	foreach($data as $key => $ticket){
-		$content .= '<tr><td>' . $ticket['id'] . '</td></tr>';
+	        $searchResults = $framework->get('tickets')->searchTicketById($ticket[id]);
+        	if($searchResults) {
+                	$info = $framework->get('tickets')->getTicketById($searchResults);
+                	$customer = $framework->get('customers')->getInfoById($info[customer]);
+                	$type = $framework->get('tickets')->getTypeById($info[type]);
+                	$status = $framework->get('tickets')->getStatusById($info[status]);
+        	}
+	        $content .= '<tr><td>' . $info[invoice];
+        	$content .= '</td><td>' . $customer[name];
+        	$content .= '</td><td>' . $info[priority];
+        	$content .= '</td><td>' . $info[dueDate];
+        	$content .= '</td><td>' . $status[status];
+        	$content .= '</td></tr>';
 	}
+        if(empty($viewall_results)){
+                $viewall_results .= '
+                        <tr><td colspan="3"><div class=\'alert alert-error\'>
+                                <strong>No more customers found</strong>
+                        </div></td></tr>';
+                $nextBtn = '<li class="disabled">
+                                                <a href="#">Next</a>
+                                        </li>';
+        } else {
+                $nextBtn = '<li>
+                <a href="customers.php?viewall=true&page=' . ($page+1) . '">Next</a>
+                </li>';
+	}
+
 	$content .= '
 					</tbody>
 				</table>';
