@@ -7,11 +7,12 @@
   <link type="text/css" href="v/css/jquery-ui/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
   <script type="text/javascript" src="v/js/jquery-1.7.2.min.js"></script>
   <script type="text/javascript" src="v/js/jquery-ui-1.8.21.custom.min.js"></script>
+  <script src="v/css/chosen/chosen/chosen.jquery.js" type="text/javascript"></script> 
   <script type="text/javascript" src="v/js/scripts.js"></script>
   <?php
   // Include model scripts
   if(file_exists("v/js/model_scripts/" . $page . ".js")){
-      echo '<script type="text/javascript" src="v/js/model_scripts/' . $pag . '.js"></script>';
+      echo '<script type="text/javascript" src="v/js/model_scripts/' . $page . '.js"></script>';
   }
   ?>
   <script type="text/javascript" src="v/css/bootstrap/js/bootstrap.js"></script>
@@ -181,15 +182,8 @@ foreach($status as $row) {
 				?>
 			</div>
 		</div>
-<script src="v/css/chosen/chosen/chosen.jquery.js" type="text/javascript"></script> 
 <script type="text/javascript"> 
-  $(document).ready(function() {
-    $('#').click(function() {
-        return false;
-    });
-    $(".chzn-select").chosen();
-    $(".chzn-select-deselect").chosen({allow_single_deselect:true});
-  });
+
 </script> 
 
 	</body>

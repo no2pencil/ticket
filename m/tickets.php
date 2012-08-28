@@ -20,55 +20,6 @@ $content .= '
         </div>
 ';
 
-if(isset($_GET['search'])) {
-	$id = (int)$_GET['search'];
-	$searchResults = $framework->get('tickets')->searchTicketById($id);
-	if($searchResults) {
-		$info = $framework->get('tickets')->getTicketById($searchResults);	
-		$customer = $framework->get('customers')->getInfoById($info[customer]);
-		$type = $framework->get('tickets')->getTypeById($info[type]);
-		$status = $framework->get('tickets')->getStatusById($info[status]);
-	}
-	else die("No results found :(");
-        if(!empty($info)){
-                if(!empty($customer)) $info[customer]='<a href="customers.php?view='.$customer[id].'">'.$customer[name].'</a> '.$customer[primaryPhone];
-		if(!empty($type)) $info[type]=$type[name];
-		if(!empty($status)) {
-			switch($info[status]) {
-				case 19:
-				case 23:
-				case 62:
-					$info[status]='<a href="#" class="btn btn-mini">'.$status[status].'</a>'; 
-					break;
-				case 20:
-				case 55:
-					$info[status]='<a href="#" class="btn btn-mini btn-info">'.$status[status].'</a>';
-					break;
-				case 55:
-					$info[status]='<a href="#" class="btn btn-mini btn-success">'.$status[status].'</a>';
-					break;
-				case 70:
-					$info[status]='<a href="#" class="btn btn-mini btn-primary">'.$status[status].'</a>';
-					break;
-				default :
-					//$info[status]="Status!";
-					break;
-			}
-		}
-		$comments = array();
-		$comments = $framework->get('tickets')->getComments($id);
-		//$info['Comments'] = '<hr>';
-		foreach($comments as $comment) {
-                	$info['<hr>'] .= '<hr>Updated'.$comment[1].'<br>'.$comment[0];
-		}
-                $info['Actions'] = '<a href="tickets.php?edit=' . $id . '">Edit</a> | <a href="#" id="ticket_comment">Comment</a>';
-                $content .= $framework->get('html')->buildTable($info, array("status_description"));
-                $content .= '</div>';
-        } else {
-                $content .= '<h3>There is no ticket with id '.$_GET[view];
-        }
-}
-
 if(isset($_GET['view'])){
 	$id = (int)$_GET['view'];
 	$info = $framework->get('tickets')->getTicketById($id);
@@ -125,7 +76,7 @@ if(isset($_POST['search'])){
 						'</td><td>' . $row['customer.name'] . 
 						'</td><td>' . $row['ticket.priority'] .
 						'</td><td>' . $row['ticket.dueDate'] . 
-						'</td><td>' . $row['status.status'] . ' (<a href="#" rel="tooltip" title="first tooltip">?</a>)' .
+						'</td><td>' . $row['status.status'] . ' (<a href="#" rel="tooltip" title="first tooltip">hover over me</a>)' .
 						'</td>';
 		}
 		$content .= '

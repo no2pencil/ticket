@@ -8,4 +8,11 @@ $(document).ready(function() {
 		$_GET[decode(arguments[1])] = decode(arguments[2]);
 	});
 	
+	
+	$('#').click(function() {
+		return false;
+	});
+	
+	$(".chzn-select").chosen();
+	$(".chzn-select-deselect").chosen({allow_single_deselect:true});
 });
