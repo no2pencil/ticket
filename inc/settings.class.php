@@ -21,6 +21,7 @@ class settings extends framework {
 				return $value;
 			}
 		}
+		return false;
 	}
 	
 	/*
@@ -51,8 +52,34 @@ class settings extends framework {
 				}
 			}
 		}
-		
 		return false;
+	}
+	
+	/*
+	 * arrayGet(array $names)
+	 * Same as get, only done in an array (multiple settings can be retrieved)
+	 * Returns array
+	*/
+	public function arrayGet($names){
+		$result = array();
+		foreach($names as $name){
+			$result[] = $this->get($name);
+		}
+		return $result;
+	}
+	
+	/*
+	 * arraySet(array $values)
+	 * Same as set, only done in an array (multiple settings can be set at once)
+	 * Setup array like: array("NAME" => "VALUE", "NAME" => "VALUE, etc etc)
+	 * returns true on success, false on failure
+	*/
+	public function arraySet($values){
+		foreach($values as $name => $value){
+			if($this->set($name, $value) == false){
+				return false;
+			}
+		}
 	}
 }
 ?>
