@@ -4016,7 +4016,7 @@ input[type="submit"].btn.btn-mini {
 .navbar {
   *position: relative;
   *z-index: 2;
-  margin-bottom: 20px;
+  margin-bottom: 0px; /* Changed from 20px */
   overflow: visible;
   color: #555555;
 }
