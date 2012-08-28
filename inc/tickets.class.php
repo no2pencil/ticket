@@ -71,13 +71,13 @@ class tickets extends framework {
 	
 	/*
 	 * search(string $value, string $columns=array('id', 'customer'))
-	 * Returns all rows in table "tickets" matching the criteria. Empty array on no results. False on error.
+	 * Returns IDs for rows that match search query. Returns false on error.
 	 * $columns are the columns to search in. Search is done using LIKE.
 	*/
 	public function search($value, $columns=array('id', 'customer')){
 		$bind = array();
 		$result = array();
-		$sql = "SELECT id, createDate, creator, type, priority, dueDate, status, customer, specialFields FROM tickets WHERE";
+		$sql = "SELECT id FROM tickets WHERE";
 		foreach($columns as $key => $col){
 			if($key == (count($columns)-1)){
 				$sql .= ' ' . $col . ' LIKE ?';
@@ -95,18 +95,23 @@ class tickets extends framework {
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
 			call_user_func_array(array($stmt, "bind_param"), $bind); // See what I did there? Dynamic bind_param.
 			$stmt->execute();
-			$stmt->bind_result($id, $createDate, $creator, $type, $priority, $dueDate, $status, $customer, $specialFields);
+			$stmt->bind_result($id);
 			while($stmt->fetch()){
-				$result[] = array('id' => $id, 'createDate' => $createDate, 'creator' => $creator, 'type' => $type, 'priority' => $priority, 'dueDate' => $dueDate, 'status' => $status, 'customer' => $customer, 'specialFields' => $specialFields);
+				$result[] = array('id' => $id);
 			}
-			return $result;
+			
+			$rows = array();
+			foreach($result as $row){
+				$rows[] = $this->getTicketById($row['id']);
+			}
+			return $rows;
 		}
-		return parent::get('db')->mysqli()->error;
+		return false;
 	}
 
 	/*
-	 * Pulls ticket information from the database
-	 * based on the ticket id passed
+	 * getTicketById(int $id)
+	 * Returns the ticket information based on $id. Also joins statuses, users, and customers into the query.
 	*/
 	public function getTicketById($id){
 		$sql = "SELECT t.id AS ID, t.createDate AS 'Created on', u.name AS Creator, c.name as Customer, s.status AS Status, s.description AS 'status_description', t.priority AS Priority, t.dueDate AS 'Due date' FROM tickets AS t " .
@@ -114,10 +119,9 @@ class tickets extends framework {
 					"JOIN users AS u ON t.creator = u.id " .
 					"JOIN customers AS c ON t.customer = c.id " . 
 						"WHERE t.id=" . (int)$id . " LIMIT 1";
-		$sql = "SELECT createDate, creator, type, priority, dueDate, status, customer, invoice from tickets where id=$id";
 		$result = parent::get('db')->mysqli()->query($sql);
-		$row = $result->fetch_array(MYSQLI_ASSOC);
-		return $row;
+		$result = parent::get('db')->fetchArray($result);
+		return $result;
 	}
 	
 	public function getTypeById($id){
