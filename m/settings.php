@@ -1,7 +1,8 @@
 <?php
 $content = '<h2>Site Settings</h2>';
 $content .= '<div style="margin-bottom: 15px;"></div>';
-// TODO: Include JS files and such that makes this work.
+
+
 $content .= '
 	<div class="tabbable">
 		<ul class="nav nav-tabs">
@@ -21,7 +22,4 @@ $content .= '
 		</div>
 	</div>
 	';
-if(isset($_POST['appearance'])){
-	
-}
 ?>
