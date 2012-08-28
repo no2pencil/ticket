@@ -120,22 +120,13 @@ if(isset($_POST['search'])){
 					<tr><th>ID</th><th>Customer</th><th>Priority</th><th>Due date</th><th>Status</th></tr>
 				</thead>
 				<tbody>';
-		foreach($results as $result){
-			$customer=array();
-			$searchResults = $framework->get('tickets')->searchTicketById($result[id]);
-			if($searchResults) {
-				$info = $framework->get('tickets')->getTicketById($searchResults);
-				$customer = $framework->get('customers')->getInfoById($info[customer]);
-				$type = $framework->get('tickets')->getTypeById($info[type]);
-				$status = $framework->get('tickets')->getStatusById($info[status]);
-			}
-			$content .= '<!-- '. print_r($result) .' -->';
-			$content .= '<tr><td><a href="tickets.php?view='.$info .'">'. $info[invoice].'</a>';
-			$content .= '</td><td><a href="customers.php?view='.$customer[id].'">' . $customer[name].'</a>';
-			$content .= '</td><td>' . $info[priority];
-			$content .= '</td><td>' . $info[dueDate];
-			$content .= '</td><td>' . $status;
-			$content .= '</td></tr>';
+		foreach($results as $row){
+			$content .= '<tr><td>' . $row['ticket.id'] . 
+						'</td><td>' . $row['customer.name'] . 
+						'</td><td>' . $row['ticket.priority'] .
+						'</td><td>' . $row['ticket.dueDate'] . 
+						'</td><td>' . $row['status.status'] . ' (<a href="#" rel="tooltip" title="first tooltip">?</a>)' .
+						'</td>';
 		}
 		$content .= '
 				</tbody>
