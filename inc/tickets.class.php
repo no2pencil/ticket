@@ -199,27 +199,9 @@ class tickets extends framework {
 	}
 
 	public function getBulk($limit, $offset){
-		/*
-		 * TODO: Finish and use this instead
-		 * ticket.id AS id,
-		   ticket.createDate AS createDate,
-		   ticket.creator AS creator,
-		   ticket.type AS type,
-		   ticket.priority AS priority,
-		   ticket.dueDate AS dueDate,
-		   ticket.status AS status,
-		   ticket.customer AS customer,
-		   ticket.specialFields AS specialFields,
-		   ticket.invoice AS invoice,
-		   customer.name AS 'customer.name'
-		*/
-	
 		$sql = "SELECT * FROM tickets AS ticket JOIN customers AS customer ON ticket.customer = customer.id LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
 		$result = parent::get('db')->mysqli()->query($sql);
-		$tickets = array();
-		while($row = $result->fetch_array(MYSQLI_ASSOC)){
-			$tickets[] = $row;
-		}
+		$tickets = parent::get('db')->fetchArray($result);
 		return $tickets;
 	}
 	
