@@ -76,7 +76,7 @@ if(isset($_POST['search'])){
 						'</td><td>' . $row['customer.name'] . 
 						'</td><td>' . $row['ticket.priority'] .
 						'</td><td>' . $row['ticket.dueDate'] . 
-						'</td><td>' . $row['status.status'] . ' (<a href="#" rel="tooltip" title="first tooltip">hover over me</a>)' .
+						'</td><td>' . $row['status.status'] . ' (<a href="#" rel="tooltip" title="' . $row['status.description'] . '">?</a>)' .
 						'</td>';
 		}
 		$content .= '

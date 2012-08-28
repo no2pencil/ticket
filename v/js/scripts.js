@@ -15,4 +15,6 @@ $(document).ready(function() {
 	
 	$(".chzn-select").chosen();
 	$(".chzn-select-deselect").chosen({allow_single_deselect:true});
+	
+	$("[rel=tooltip]").tooltip(); // Activate all tooltips
 });

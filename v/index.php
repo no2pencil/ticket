@@ -182,9 +182,5 @@ foreach($status as $row) {
 				?>
 			</div>
 		</div>
-<script type="text/javascript"> 
-
-</script> 
-
 	</body>
 </html>
