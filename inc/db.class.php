@@ -41,11 +41,13 @@ class db {
 	public function fetchArray($result){
 		$done = array();
 		$fieldcount = $result->field_count;
+		$i = 0;
 		while($row = $result->fetch_row()){
 			for($n = 0; $n < $fieldcount; $n++){
 				$meta = $result->fetch_field_direct($n);
-				$done[$meta->table . '.' .  $meta->name] = $row[$n];
+				$done[$i][$meta->table . '.' .  $meta->name] = $row[$n];
 			}
+			$i++;
 		}
 		return $done;
 	}

@@ -156,35 +156,26 @@ if(isset($_GET['viewall'])){
 						</tr>
 					</thead>
 					<tbody>';
-	foreach($data as $key => $ticket){
-	        $searchResults = $framework->get('tickets')->searchTicketById($ticket['id']);
-        	if($searchResults) {
-                	$info = $framework->get('tickets')->getTicketById($searchResults);
-                	$customer = $framework->get('customers')->getInfoById($info['customer']);
-                	$type = $framework->get('tickets')->getTypeById($info['type']);
-                	$status = $framework->get('tickets')->getStatusById($info['status']);
-        	}
-	        $content .= '<tr><td>' . $ticket['invoice'];
-        	$content .= '</td><td><a href="customers.php?view='. $customer['id'] .'">' . $customer['name'] .'</a>';
-        	$content .= '</td><td>' . $info['priority'];
-        	$content .= '</td><td>' . $info['dueDate'];
-        	$content .= '</td><td>' . $status['status'];
-        	$content .= '</td></tr>';
+					
+	$viewall_results = '';
+	foreach($data as $ticket){
+		$viewall_results .= '<tr><td>' . $ticket['ticket.invoice'] . '</td><td>' . $ticket['customer.name'] . '</td><td>' . $ticket['ticket.priority'] . '</td><td>' . $ticket['ticket.dueDate'] . '</td><td>' . $ticket['ticket.status'] . '</td></tr>';
+	}	
+	
+	if(empty($viewall_results)){
+        $viewall_results .= '
+                <tr><td colspan="3"><div class=\'alert alert-error\'>
+                        <strong>No more customers found</strong>
+                </div></td></tr>';
+        $nextBtn = '<li class="disabled">
+                                        <a href="#">Next</a>
+                                </li>';
+    } else {
+		$content .= $viewall_results;
+        $nextBtn = '<li>
+        <a href="customers.php?viewall=true&page=' . ($page+1) . '">Next</a>
+        </li>';
 	}
-        
-		if(empty($viewall_results)){
-                $viewall_results .= '
-                        <tr><td colspan="3"><div class=\'alert alert-error\'>
-                                <strong>No more customers found</strong>
-                        </div></td></tr>';
-                $nextBtn = '<li class="disabled">
-                                                <a href="#">Next</a>
-                                        </li>';
-        } else {
-                $nextBtn = '<li>
-                <a href="customers.php?viewall=true&page=' . ($page+1) . '">Next</a>
-                </li>';
-		}
 
 	$content .= '
 					</tbody>

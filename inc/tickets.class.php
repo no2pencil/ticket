@@ -201,8 +201,7 @@ class tickets extends framework {
 	public function getBulk($limit, $offset){
 		$sql = "SELECT * FROM tickets AS ticket JOIN customers AS customer ON ticket.customer = customer.id LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
 		$result = parent::get('db')->mysqli()->query($sql);
-		$tickets = parent::get('db')->fetchArray($result);
-		return $tickets;
+		return parent::get('db')->fetchArray($result);
 	}
 	
 	public function generateSpecialFields($special){
