@@ -36,20 +36,19 @@ class db {
 	/*
 	 * fetchArray(mysqli_result $result)
 	 * Fetches an associative array of $result. Array keys are prepended with their respective table names in the format of: (table).(column)
-	 * Returns array
 	*/
 	public function fetchArray($result){
-		$done = array();
+		$rows = array();
 		$fieldcount = $result->field_count;
 		$i = 0;
 		while($row = $result->fetch_row()){
 			for($n = 0; $n < $fieldcount; $n++){
 				$meta = $result->fetch_field_direct($n);
-				$done[$i][$meta->table . '.' .  $meta->name] = $row[$n];
+				$rows[$i][$meta->table . '.' .  $meta->name] = $row[$n];
 			}
 			$i++;
 		}
-		return $done;
+		return $rows[0];
 	}
 }
 ?>
