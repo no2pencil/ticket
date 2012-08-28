@@ -101,7 +101,12 @@ if(isset($_GET['viewall'])){
 					
 	$viewall_results = '';
 	foreach($data as $ticket){
-		$viewall_results .= '<tr><td>' . $ticket['ticket.invoice'] . '</td><td>' . $ticket['customer.name'] . '</td><td>' . $ticket['ticket.priority'] . '</td><td>' . $ticket['ticket.dueDate'] . '</td><td>' . $ticket['ticket.status'] . '</td></tr>';
+		$viewall_results .= '<tr><td>' . $ticket['ticket.invoice'] . 
+							'</td><td>' . $ticket['customer.name'] . 
+							'</td><td>' . $ticket['ticket.priority'] . 
+							'</td><td>' . $ticket['ticket.dueDate'] . 
+							'</td><td>' . $ticket['ticket.status'] . 
+							'</td></tr>';
 	}	
 	
 	if(empty($viewall_results)){

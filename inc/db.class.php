@@ -48,7 +48,7 @@ class db {
 			}
 			$i++;
 		}
-		return $rows[0];
+		return $rows;
 	}
 }
 ?>

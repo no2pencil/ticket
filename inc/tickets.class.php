@@ -102,7 +102,8 @@ class tickets extends framework {
 			
 			$rows = array();
 			foreach($result as $row){
-				$rows[] = $this->getTicketById($row['id']);
+				$row = $this->getTicketById($row['id']);
+				$rows[] = $row[0];
 			}
 			return $rows;
 		}
@@ -204,6 +205,13 @@ class tickets extends framework {
 
 	public function getBulk($limit, $offset){
 		$sql = "SELECT * FROM tickets AS ticket JOIN customers AS customer ON ticket.customer = customer.id LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+		
+		$sql = "SELECT * FROM tickets AS ticket " .
+					"LEFT JOIN statuses AS status ON ticket.status = status.id " .
+					"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
+					"LEFT JOIN users AS user ON ticket.creator = user.id " .
+						"LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+		
 		$result = parent::get('db')->mysqli()->query($sql);
 		return parent::get('db')->fetchArray($result);
 	}
