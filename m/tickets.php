@@ -20,6 +20,55 @@ $content .= '
         </div>
 ';
 
+if(isset($_GET['search'])) {
+	$id = (int)$_GET['search'];
+	$searchResults = $framework->get('tickets')->searchTicketById($id);
+	if($searchResults) {
+		$info = $framework->get('tickets')->getTicketById($searchResults);	
+		$customer = $framework->get('customers')->getInfoById($info[customer]);
+		$type = $framework->get('tickets')->getTypeById($info[type]);
+		$status = $framework->get('tickets')->getStatusById($info[status]);
+	}
+	else die("No results found :(");
+        if(!empty($info)){
+                if(!empty($customer)) $info[customer]='<a href="customers.php?view='.$customer[id].'">'.$customer[name].'</a> '.$customer[primaryPhone];
+		if(!empty($type)) $info[type]=$type[name];
+		if(!empty($status)) {
+			switch($info[status]) {
+				case 19:
+				case 23:
+				case 62:
+					$info[status]='<a href="#" class="btn btn-mini">'.$status[status].'</a>'; 
+					break;
+				case 20:
+				case 55:
+					$info[status]='<a href="#" class="btn btn-mini btn-info">'.$status[status].'</a>';
+					break;
+				case 55:
+					$info[status]='<a href="#" class="btn btn-mini btn-success">'.$status[status].'</a>';
+					break;
+				case 70:
+					$info[status]='<a href="#" class="btn btn-mini btn-primary">'.$status[status].'</a>';
+					break;
+				default :
+					//$info[status]="Status!";
+					break;
+			}
+		}
+		$comments = array();
+		$comments = $framework->get('tickets')->getComments($id);
+		//$info['Comments'] = '<hr>';
+		foreach($comments as $comment) {
+                	$info['<hr>'] .= '<hr>Updated'.$comment[1].'<br>'.$comment[0];
+		}
+                $info['Actions'] = '<a href="tickets.php?edit=' . $id . '">Edit</a> | <a href="#" id="ticket_comment">Comment</a>';
+                $content .= $framework->get('html')->buildTable($info, array("status_description"));
+                $content .= '</div>';
+        } else {
+                $content .= '<h3>There is no ticket with id '.$_GET[view];
+        }
+}
+
 if(isset($_GET['view'])){
 	$id = (int)$_GET['view'];
 	$info = $framework->get('tickets')->getTicketById($id);
@@ -71,13 +120,22 @@ if(isset($_POST['search'])){
 					<tr><th>ID</th><th>Customer</th><th>Priority</th><th>Due date</th><th>Status</th></tr>
 				</thead>
 				<tbody>';
-		foreach($results as $row){
-			$content .= '<tr><td>' . $row['ticket.id'] . 
-						'</td><td><a href="customers.php?view=' . $row['customer.id'] . '">' . $row['customer.name'] . '</a>' .
-						'</td><td>' . $row['ticket.priority'] .
-						'</td><td>' . $row['ticket.dueDate'] . 
-						'</td><td>' . $row['status.status'] . ' (<a href="#" rel="tooltip" title="' . $row['status.description'] . '">?</a>)' .
-						'</td>';
+		foreach($results as $result){
+			$customer=array();
+			$searchResults = $framework->get('tickets')->searchTicketById($result[id]);
+			if($searchResults) {
+				$info = $framework->get('tickets')->getTicketById($searchResults);
+				$customer = $framework->get('customers')->getInfoById($info[customer]);
+				$type = $framework->get('tickets')->getTypeById($info[type]);
+				$status = $framework->get('tickets')->getStatusById($info[status]);
+			}
+			$content .= '<!-- '. print_r($result) .' -->';
+			$content .= '<tr><td><a href="tickets.php?view='.$info .'">'. $info[invoice].'</a>';
+			$content .= '</td><td><a href="customers.php?view='.$customer[id].'">' . $customer[name].'</a>';
+			$content .= '</td><td>' . $info[priority];
+			$content .= '</td><td>' . $info[dueDate];
+			$content .= '</td><td>' . $status;
+			$content .= '</td></tr>';
 		}
 		$content .= '
 				</tbody>
@@ -98,30 +156,33 @@ if(isset($_GET['viewall'])){
 						</tr>
 					</thead>
 					<tbody>';
-					
-	$viewall_results = '';
-	foreach($data as $ticket){
-		$viewall_results .= '<tr><td>' . $ticket['ticket.invoice'] . 
-							'</td><td>' . $ticket['customer.name'] . 
-							'</td><td>' . $ticket['ticket.priority'] . 
-							'</td><td>' . $ticket['ticket.dueDate'] . 
-							'</td><td>' . $ticket['ticket.status'] . 
-							'</td></tr>';
-	}	
-	
-	if(empty($viewall_results)){
-        $viewall_results .= '
-                <tr><td colspan="3"><div class=\'alert alert-error\'>
-                        <strong>No more customers found</strong>
-                </div></td></tr>';
-        $nextBtn = '<li class="disabled">
-                                        <a href="#">Next</a>
-                                </li>';
-    } else {
-		$content .= $viewall_results;
-        $nextBtn = '<li>
-        <a href="customers.php?viewall=true&page=' . ($page+1) . '">Next</a>
-        </li>';
+	foreach($data as $key => $ticket){
+	        $searchResults = $framework->get('tickets')->searchTicketById($ticket[id]);
+        	if($searchResults) {
+                	$info = $framework->get('tickets')->getTicketById($searchResults);
+                	$customer = $framework->get('customers')->getInfoById($info[customer]);
+                	$type = $framework->get('tickets')->getTypeById($info[type]);
+                	$status = $framework->get('tickets')->getStatusById($info[status]);
+        	}
+	        $content .= '<tr><td>' . $info[invoice];
+        	$content .= '</td><td><a href="customers.php?view='. $customer[id] .'">' . $customer[name] .'</a>';
+        	$content .= '</td><td>' . $info[priority];
+        	$content .= '</td><td>' . $info[dueDate];
+        	$content .= '</td><td>' . $status[status];
+        	$content .= '</td></tr>';
+	}
+        if(empty($viewall_results)){
+                $viewall_results .= '
+                        <tr><td colspan="3"><div class=\'alert alert-error\'>
+                                <strong>No more customers found</strong>
+                        </div></td></tr>';
+                $nextBtn = '<li class="disabled">
+                                                <a href="#">Next</a>
+                                        </li>';
+        } else {
+                $nextBtn = '<li>
+                <a href="customers.php?viewall=true&page=' . ($page+1) . '">Next</a>
+                </li>';
 	}
 
 	$content .= '

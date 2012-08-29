@@ -1,5 +1,11 @@
 <?php
 class tickets extends framework {
+	
+	/*
+	 * add(string $customer, int $type, string $priority, string $dueDate, int $status, string $specialFields)
+	 * Adds a new ticket to the system with the provided information.
+	 * Returns insert ID on success, false on failure
+	*/
 	public function add($customer, $type, $priority, $dueDate, $status, $specialFields){
 		$sql = "INSERT INTO tickets(customer, type, priority, dueDate, status, specialFields, createDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
@@ -26,25 +32,29 @@ class tickets extends framework {
 			$stmt->execute();
 			$stmt->store_result();
 			if($stmt->affected_rows > 0) {
+				
 			}
 		}
 	}
 	
-/*
-| createDate    | varchar(30)   | NO   |     | NULL    |                |
-| creator       | int(5)        | NO   |     | NULL    |                |
-| type          | int(255)      | NO   |     | NULL    |                |
-| priority      | varchar(255)  | NO   |     | NULL    |                |
-| dueDate       | varchar(10)   | NO   |     | NULL    |                |
-| status        | int(255)      | NO   |     | NULL    |                |
-| customer      | int(255)      | NO   |     | NULL    |                |
-| specialFields | varchar(1000) | NO   |     | NULL    |                |
-| invoice       | varchar(12)   | YES  |     | NULL    |                |
-*/
+	/*
+	| id            | int(255)      | NO   | PRI | NULL    | AUTO_INCREMENT |
+	| createDate    | varchar(30)   | NO   |     | NULL    |                |
+	| creator       | int(5)        | NO   |     | NULL    |                |
+	| type          | int(255)      | NO   |     | NULL    |                |
+	| priority      | varchar(255)  | NO   |     | NULL    |                |
+	| dueDate       | varchar(10)   | NO   |     | NULL    |                |
+	| status        | int(255)      | NO   |     | NULL    |                |
+	| customer      | int(255)      | NO   |     | NULL    |                |
+	| specialFields | varchar(1000) | NO   |     | NULL    |                |
+	| invoice       | varchar(12)   | YES  |     | NULL    |                |
+	*/
 
 	/*
+	 * searchTicketById(int $id)
 	 * Searches ticket ids by partial name given from ticket name
-	 * Returns id, & that is passed to getTicketById
+	 * Returns id, & that is passed to getTicketById 
+	 * Returns false on failure
 	*/
 	public function searchTicketById($id) {
 		$sql = "SELECT id from tickets where invoice like '%$id%'";
@@ -61,38 +71,58 @@ class tickets extends framework {
 	
 	/*
 	 * search(string $value, string $columns=array('id', 'customer'))
-	 * Returns all rows in table "tickets" matching the criteria. Empty array on no results. False on error.
-	 * $columns are the columns to search in. Search is done using LIKE
-	 * unfin.
+	 * Returns IDs for rows that match search query. Returns false on error.
+	 * $columns are the columns to search in. Search is done using LIKE.
 	*/
 	public function search($value, $columns=array('id', 'customer')){
-		$cols = implode(', ', $columns); // Thank god for prepared statements
-		$sql = "SELECT id, createDate, creator, type, priority, dueDate, status, customer, specialFields FROM tickets WHERE";
-		foreach($cols as $col){
-			$sql .= ' ' . $col . ' LIKE %' . $value . '%'; // aka any $columns that contain $value
+		$bind = array();
+		$result = array();
+		$sql = "SELECT id FROM tickets WHERE";
+		foreach($columns as $key => $col){
+			if($key == (count($columns)-1)){
+				$sql .= ' ' . $col . ' LIKE ?';
+			} else {
+				$sql .= ' ' . $col . ' LIKE ? OR';
+			}
+			$bind[0] = (empty($bind[0])) ? 's' : $bind[0] . 's';
+			$bind[] = "%" . $value . "%";
 		}
-/*
-		// WTF is this shit?  Shit doesn't even compile man ;)
+		
+		foreach($bind as $key => $value){
+			$bimp[$key] = &$bind[$key]; // Makes them references for bind_param
+		}
+		
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
-			$stmt->bind_param(
+			call_user_func_array(array($stmt, "bind_param"), $bind); // See what I did there? Dynamic bind_param.
+			$stmt->execute();
+			$stmt->bind_result($id);
+			while($stmt->fetch()){
+				$result[] = array('id' => $id);
+			}
+			
+			$rows = array();
+			foreach($result as $row){
+				$row = $this->getTicketById($row['id']);
+				$rows[] = $row[0];
+			}
+			return $rows;
 		}
-*/
+		return false;
 	}
 
 	/*
-	 * Pulls ticket information from the database
-	 * based on the ticket id passed
+	 * getTicketById(int $id)
+	 * Returns the ticket information based on $id. Also joins statuses, users, and customers into the query.
 	*/
 	public function getTicketById($id){
-		$sql = "SELECT t.id AS ID, t.createDate AS 'Created on', u.name AS Creator, c.name as Customer, s.status AS Status, s.description AS 'status_description', t.priority AS Priority, t.dueDate AS 'Due date' FROM tickets AS t " .
-					"JOIN statuses AS s ON t.status = s.id " .
-					"JOIN users AS u ON t.creator = u.id " .
-					"JOIN customers AS c ON t.customer = c.id " . 
-						"WHERE t.id=" . (int)$id . " LIMIT 1";
-		$sql = "SELECT createDate, creator, type, priority, dueDate, status, customer, invoice from tickets where id=$id";
+		$sql = "SELECT * FROM tickets AS ticket " .
+					"LEFT JOIN statuses AS status ON ticket.status = status.id " .
+					"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
+					"LEFT JOIN users AS user ON ticket.creator = user.id " .
+						"WHERE ticket.id=" . (int)$id . " LIMIT 1";
 		$result = parent::get('db')->mysqli()->query($sql);
-		$row = $result->fetch_array(MYSQLI_ASSOC);
-		return $row;
+		$result = parent::get('db')->fetchArray($result);
+		return $result;
 	}
 	
 	public function getTypeById($id){
@@ -174,13 +204,16 @@ class tickets extends framework {
 	}
 
 	public function getBulk($limit, $offset){
-		$sql = "SELECT * FROM tickets AS t JOIN customers AS c ON t.customer = c.id LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+		$sql = "SELECT * FROM tickets AS ticket JOIN customers AS customer ON ticket.customer = customer.id LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+		
+		$sql = "SELECT * FROM tickets AS ticket " .
+					"LEFT JOIN statuses AS status ON ticket.status = status.id " .
+					"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
+					"LEFT JOIN users AS user ON ticket.creator = user.id " .
+						"LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+		
 		$result = parent::get('db')->mysqli()->query($sql);
-		$tickets = array();
-		while($row = $result->fetch_array()){
-			$tickets[] = $row;
-		}
-		return $tickets;
+		return parent::get('db')->fetchArray($result);
 	}
 	
 	public function generateSpecialFields($special){
