@@ -83,7 +83,11 @@ if(isset($_GET['search'])){
 			$search_results .= '</a></td><td>';
 			$search_results .= $row['email'] . '</td><td>';
 			if($row['primaryPhone']) {
+				// TODO Validate ring central via the settings page
+				$ring_central_callout = $framework->get('ring_central')->make_url($row['primaryPhone_raw']);
+				if($ring_central_callout) $search_results .= '<a href=\"'.$ring_central_callout.'\">';
 				$search_results .= $row['primaryPhone'];
+				if($ring_central_callout) $search_results .= '</a>';
 			}
 			else {
 				$search_results .= '$nbsp;';
@@ -125,16 +129,13 @@ if(isset($_GET['search'])){
 	$viewall_results = ' ';
 	foreach($results as $row) {
 		$viewall_results .= '<tr><td>' . $row['name'] . '</td><td>';
-		$viewall_results .= $row['email'] . '</td>';
+		$viewall_results .= $row['email'] . '</td><td>';
 		
 		$ring_central_callout = $framework->get('ring_central')->make_url($row['primaryPhone_raw']);
-		if(!empty($ring_central_callout)){
-			$viewall_results .= '<td><a href="' . $ring_central_callout . '" target="_blank">' . $row['primaryPhone'] . '</a></td>';
-		} else {
-			$viewall_results .= '<td>' . $row['primaryPhone'] . '</td>';
-		}
-		
-		$viewall_results .= '</tr>';
+		if($ring_central_callout) $viewall_results .= '<a href="'.$ring_central_callout.'" target="_blank">';
+		$viewall_results .= $row['primaryPhone'];
+		if($ring_central_callout) $viewall_results .= '</a></td>';
+		$viewall_results .= '</td></tr>';
 	}
 	
 	if(empty($viewall_results)){
@@ -180,7 +181,9 @@ if(isset($_GET['search'])){
 </script> 
 ';
 
-} else if(isset($_GET['new'])){
+} 
+
+if(isset($_GET['new'])){
 	$content .= 'New Customer Form...';
  	$content .= '<form id="create_user" method="POST"><table>';
 	$content .= '<thead><tr>';
@@ -206,8 +209,8 @@ if(isset($_GET['search'])){
 	$content .= '<option value=""></option>';
 	$results = $framework->get('customers')->reff();
 	$index=0;
-	foreach($results[id] as $row){
-        	$content .= '<option name="'.$results[reff][$index].'" value="'.$results[id][$index].'">'.$results[reff][$index].'</option>';
+	foreach($results as $row){
+        	$content .= '<option name="'.$row[reff].'" value="'.$row[id].'">'.$row[reff].'</option>';
 		$index++;
 	} 
 	$content .= '</select>';
