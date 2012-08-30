@@ -1,5 +1,11 @@
 <?php
 class tickets extends framework {
+
+	/*
+	 * add(string $customer, int $type, string $priority, string $dueDate, int $status, string $specialFields)
+	 * Adds a new ticket to the system with the provided information.
+	 * Returns insert ID on success, false on failure
+	*/
 	public function add($customer, $type, $priority, $dueDate, $status, $specialFields){
 		$sql = "INSERT INTO tickets(customer, type, priority, dueDate, status, specialFields, createDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
@@ -16,8 +22,8 @@ class tickets extends framework {
 
 	/* 
 	 * createType();
-	 * Creates a ticket type
-	 * TODO: Finish function
+	 * Creates a ticket type.
+	 * Returns true on success, false on failure
 	*/
 	public function createType() {
 		$sql = "INSERT INTO tickettypes(name, description, specialFields) VALUES (?, ?, ?)";
@@ -26,25 +32,30 @@ class tickets extends framework {
 			$stmt->execute();
 			$stmt->store_result();
 			if($stmt->affected_rows > 0) {
+				return true;
 			}
 		}
+		return false;
 	}
 	
-/*
-| createDate    | varchar(30)   | NO   |     | NULL    |                |
-| creator       | int(5)        | NO   |     | NULL    |                |
-| type          | int(255)      | NO   |     | NULL    |                |
-| priority      | varchar(255)  | NO   |     | NULL    |                |
-| dueDate       | varchar(10)   | NO   |     | NULL    |                |
-| status        | int(255)      | NO   |     | NULL    |                |
-| customer      | int(255)      | NO   |     | NULL    |                |
-| specialFields | varchar(1000) | NO   |     | NULL    |                |
-| invoice       | varchar(12)   | YES  |     | NULL    |                |
-*/
+	/*
+	| id            | int(255)      | NO   | PRI | NULL    | AUTO_INCREMENT |
+	| createDate    | varchar(30)   | NO   |     | NULL    |                |
+	| creator       | int(5)        | NO   |     | NULL    |                |
+	| type          | int(255)      | NO   |     | NULL    |                |
+	| priority      | varchar(255)  | NO   |     | NULL    |                |
+	| dueDate       | varchar(10)   | NO   |     | NULL    |                |
+	| status        | int(255)      | NO   |     | NULL    |                |
+	| customer      | int(255)      | NO   |     | NULL    |                |
+	| specialFields | varchar(1000) | NO   |     | NULL    |                |
+	| invoice       | varchar(12)   | YES  |     | NULL    |                |
+	*/
 
 	/*
+	 * searchTicketById(int $id)
 	 * Searches ticket ids by partial name given from ticket name
-	 * Returns id, & that is passed to getTicketById
+	 * Returns id, & that is passed to getTicketById 
+	 * Returns false on failure
 	*/
 	public function searchTicketById($id) {
 		$sql = "SELECT id from tickets where invoice like '%$id%'";
@@ -61,17 +72,43 @@ class tickets extends framework {
 	
 	/*
 	 * search(string $value, string $columns=array('id', 'customer'))
-	 * Returns all rows in table "tickets" matching the criteria. Empty array on no results. False on error.
-	 * $columns are the columns to search in. Search is done using LIKE
-	 * unfin.
+	 * Returns IDs for rows that match search query. Returns false on error.
+	 * $columns are the columns to search in. Search is done using LIKE.
 	*/
 	public function search($value, $columns=array('id', 'customer')){
-		$cols = implode(', ', $columns); // Thank god for prepared statements
-		$sql = "SELECT id, createDate, creator, type, priority, dueDate, status, customer, specialFields FROM tickets WHERE";
-		foreach($columns as $col){
-			// any $columns that contain $value
-			$sql .= ' ' . $col . ' LIKE \'%' . $value . '%\''; 
+		$bind = array();
+		$result = array();
+		$sql = "SELECT id FROM tickets WHERE";
+		foreach($columns as $key => $col){
+			if($key == (count($columns)-1)){
+				$sql .= ' ' . $col . ' LIKE ?';
+			} else {
+				$sql .= ' ' . $col . ' LIKE ? OR';
+			}
+			$bind[0] = (empty($bind[0])) ? 's' : $bind[0] . 's';
+			$bind[] = "%" . $value . "%";
 		}
+		
+		foreach($bind as $key => $value){
+			$bimp[$key] = &$bind[$key]; // Makes them references for bind_param
+		}
+		
+		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
+			call_user_func_array(array($stmt, "bind_param"), $bind); // See what I did there? Dynamic bind_param.
+			$stmt->execute();
+			$stmt->bind_result($id);
+			while($stmt->fetch()){
+				$result[] = array('id' => $id);
+			}
+			
+			$rows = array();
+			foreach($result as $row){
+				$row = $this->getTicketById($row['id']);
+				$rows[] = $row[0];
+			}
+			return $rows;
+		}
+		return false;
 	}
 
 	/*
@@ -90,14 +127,21 @@ class tickets extends framework {
 		return $row;
 	}
 	
+	/*
+	 * getTypeByID(int $id)
+	 * Returns the type with the $id
+	*/
 	public function getTypeById($id){
 		$types = $this->getTypes(); // laziness ftw
 		return $types[$id];
 	}
-
+	
+	/*
+	 * getTypes()
+	 * Returns all ticket types
+	*/
 	public function getTypes(){
 		$sql = "SELECT id, name FROM tickettypes";
-		//$result = parent::get('db')->mysqli()->query($sql);
 		$result = parent::get('db')->mysqli()->query($sql);
 		$fresult = array();
 		while($row = $result->fetch_array()){
@@ -107,19 +151,27 @@ class tickets extends framework {
 		return $fresult;
 	}
 
-        public function getStatusById($id) {
-                $statuses = $this->getStatuses();
-                return $statuses[$id];
-        }
+	/*
+	 * getStatusById(int $id)
+	 * Returns the status with the given ID
+	*/
+    public function getStatusById($id) {
+            $statuses = $this->getStatuses(); // TODO: Benchmark test this vs querying the db
+            return $statuses[$id];
+    }
 	
+	/*
+	 * getStatuses()
+	 * Returns all of the statuses
+	*/
 	public function getStatuses() {
 		$sql = "SELECT id, status FROM statuses";
-                $result = parent::get('db')->mysqli()->query($sql);
-                $fresult = array();
-                while($row = $result->fetch_array()){
-                        $fresult[$row['id']] = array("status" => $row['status']); 
-                }
-                return $fresult;
+        $result = parent::get('db')->mysqli()->query($sql);
+        $fresult = array();
+        while($row = $result->fetch_array()){
+                $fresult[$row['id']] = array("status" => $row['status']); 
+        }
+        return $fresult;
 	}
 
 	public function getAllOpen() {
