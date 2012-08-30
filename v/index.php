@@ -152,7 +152,7 @@ foreach($status as $row) {
             <li><a href="users.php?new=true">New User</a></li>
             <li><a href="users.php?viewall=true">All Users</a></li>
             <li class="divider"></li>
-            <li><a href="#">Search Customers</a></li>
+            <li><a href="#">Search Users</a></li>
           </ul>
         </li>
       </ul>

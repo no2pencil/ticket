@@ -90,7 +90,7 @@ if(isset($_GET['new'])){
 					
 					<div class="form-actions">
 						<button type="submit" class="btn btn-primary">Add new user</button>
-						<a href="users.php" class="btn">Cancel</a>
+						<a href="users.php" class="btn btn-danger">Cancel</a>
 					</div>
 				</fieldset>
 			</form>

@@ -1,4 +1,14 @@
 <?php
+if($_POST['comment']) {
+  date_default_timezone_set("EST");
+  $return = $framework->get('comments')->setComment($_POST['invoice'], $comment, date("Y-m-d"));
+  if(!$return) {
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+  }
+}
+
 $content = '<h2>Tickets</h2>';
 
 /*
@@ -57,11 +67,50 @@ if(isset($_GET['search'])) {
 		}
 		$comments = array();
 		$comments = $framework->get('tickets')->getComments($id);
-		//$info['Comments'] = '<hr>';
 		foreach($comments as $comment) {
                 	$info['<hr>'] .= '<hr>Updated'.$comment[1].'<br>'.$comment[0];
 		}
-                $info['Actions'] = '<a href="tickets.php?edit=' . $id . '">Edit</a> | <a href="#" id="ticket_comment">Comment</a>';
+		$info['Actions'] = '
+        <form method="POST" action="tickets.php" class="well form-search">
+        <fieldset>  
+          <div class="control-group">  
+            <label class="control-label" for="textarea">Comment:</label>  
+          <div class="controls">  
+            <textarea class="input-xlarge" id="comment" name="comment" rows="6"></textarea>  
+          </div></div> 
+          <div class="form-actions">  
+            <input type="hidden" name="invoice" value="'.$id.'">
+            <button type="submit" class="btn btn-primary">Save</button>  
+            <button class="btn btn-danger">Cancel</button>  
+          </div>  
+        </fieldset></form> ';
+
+		$content .= '
+          <h4>Actions</h4>
+          <div class="bs-docs-example">
+            <ul class="nav nav-pills">
+              <li class="active"><a href="#">Edit</a></li>
+              <li><a href="#">Print</a></li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Status<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">New</a></li>
+                  <li><a href="#">Open</a></li>
+                  <li><a href="#">In Progres</a></li>
+                  <li><a href="#">Pending Payment</a></li>
+                  <li><a href="#">Post Payment</a></li>
+                  <li><a href="#">Call Customer Tech</a></li>
+                  <li><a href="#">Call Customer Admin</a></li>
+                  <li><a href="#">Waiting For Parts</a></li>
+                  <li><a href="#">Post Payment</a></li>
+
+                  <li class="divider"></li>
+                  <li><a href="#">Cancled</a></li>
+                  <li><a href="#">Closed</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>';
                 $content .= $framework->get('html')->buildTable($info, array("status_description"));
                 $content .= '</div>';
         } else {
@@ -85,7 +134,9 @@ if(isset($_GET['view'])){
 	} else {
 		$content .= '<h3>There is no ticket with id '.$_GET[view];
 	}
-} else if(isset($_GET['advancedsearch'])){
+} 
+
+if(isset($_GET['advancedsearch'])){
 	/* display search form */
 	
 	$content .= '

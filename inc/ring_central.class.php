@@ -22,7 +22,7 @@ class ring_central extends framework {
 		if(empty($rng_num) || empty($rng_pss) || empty($rng_frm)){
 			return false;
 		}
-		return array('rng_num' => $rng_num, 'rng_pss' => $rng_pass, 'rng_frm' => $rng_frm);
+		return array('rng_num' => $rng_num, 'rng_pss' => $rng_pss, 'rng_frm' => $rng_frm);
 	}
 	
 	/*
@@ -37,8 +37,11 @@ class ring_central extends framework {
 			return false;
 		}
 		$result = 'https://service.ringcentral.com/ringout.asp?cmd=call&username=';
-		$result .= $creds['rng_num'] . '&password=' . $creds['rng_pass'] . '&to=';
-		$result .= $to;
+		$result .= $creds['rng_num'];
+		$result .= '&password=' . $creds['rng_pss'];
+		$result .= '&to='.$to;
+		$result .= '&from=3308187475';
+		$result .= '&clid='.$creds['rng_frm'];
 		
 		return $result;
 	}

@@ -85,7 +85,7 @@ if(isset($_GET['search'])){
 			if($row['primaryPhone']) {
 				// TODO Validate ring central via the settings page
 				$ring_central_callout = $framework->get('ring_central')->make_url($row['primaryPhone_raw']);
-				if($ring_central_callout) $search_results .= '<a href=\"'.$ring_central_callout.'\">';
+				if($ring_central_callout) $search_results .= '<a href="'.$ring_central_callout.'" target="_blank">';
 				$search_results .= $row['primaryPhone'];
 				if($ring_central_callout) $search_results .= '</a>';
 			}
