@@ -112,8 +112,8 @@ class tickets extends framework {
 	}
 
 	/*
-	 * Pulls ticket information from the database
-	 * based on the ticket id passed
+	 * getTicketById(int $id)
+	 * Returns the ticket information based on $id. Also joins statuses, users, and customers into the query.
 	*/
 	public function getTicketById($id){
 		$sql = "SELECT t.id AS ID, t.createDate AS 'Created on', u.name AS Creator, c.name as Customer, s.status AS Status, s.description AS 'status_description', t.priority AS Priority, t.dueDate AS 'Due date' FROM tickets AS t " .
@@ -123,8 +123,8 @@ class tickets extends framework {
 						"WHERE t.id=" . (int)$id . " LIMIT 1";
 		$sql = "SELECT createDate, creator, type, priority, dueDate, status, customer, invoice from tickets where id=$id";
 		$result = parent::get('db')->mysqli()->query($sql);
-		$row = $result->fetch_array(MYSQLI_ASSOC);
-		return $row;
+		$result = parent::get('db')->fetchArray($result);
+		return $result;
 	}
 	
 	/*
@@ -220,14 +220,19 @@ class tickets extends framework {
 		return $comments;
 	}
 
+	/*
+	 * getBulk(int $limit, int $offset)
+	 * Returns an array full of tickets
+	*/
 	public function getBulk($limit, $offset){
-		$sql = "SELECT * FROM tickets AS t JOIN customers AS c ON t.customer = c.id LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+		$sql = "SELECT * FROM tickets AS ticket " .
+					"LEFT JOIN statuses AS status ON ticket.status = status.id " .
+					"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
+					"LEFT JOIN users AS user ON ticket.creator = user.id " .
+						"LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+		
 		$result = parent::get('db')->mysqli()->query($sql);
-		$tickets = array();
-		while($row = $result->fetch_array()){
-			$tickets[] = $row;
-		}
-		return $tickets;
+		return parent::get('db')->fetchArray($result);
 	}
 	
 	public function generateSpecialFields($special){
