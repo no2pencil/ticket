@@ -195,9 +195,24 @@ if(isset($_POST['search'])){
 } 
 if(isset($_GET['viewall'])){
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 0;
-	$data = $framework->get('tickets')->getBulk(10, $page * 10);
+	$data = $framework->get('tickets')->getBulk(25, $page * 25);
 	$content .= '<h3>Viewing all tickets</h3>';
-	$content .= $framework->get('tickets')->generateListDisplay($data);
-	
+	if(empty($data)){
+		$content .= '
+				<div class="alert alert-error">
+					<strong>There are no more tickets</strong> | <a href="javascript:history.go(-1)">Go back</a>
+				</div>';
+	} else {
+		$content .= $framework->get('tickets')->generateListDisplay($data);
+		$content .= '
+				<ul class="pager">
+					<li class="previous">
+						<a href="tickets.php?viewall=true&page=' . (($page==0) ? 0 : $page-1) . '">&larr; Previous</a>
+					</li>
+					<li class="next">
+						<a href="tickets.php?viewall=true&page=' . ($page+1) . '">Next &rarr;</a>
+					</li>
+				</ul>';
+	}
 }
 ?>

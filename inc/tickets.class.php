@@ -276,6 +276,7 @@ class tickets extends framework {
 			$result .= '</div></td>';
 			$result .= '</tr>';
 		}
+		$result .= '</tbody></table>';
 		return $result;
 	}
 	
