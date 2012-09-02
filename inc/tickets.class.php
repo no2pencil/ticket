@@ -235,6 +235,49 @@ class tickets extends framework {
 		return parent::get('db')->fetchArray($result);
 	}
 	
+	/*
+	* generateListDisplay(array $tickets)
+	* Generates a table with all of the tickets in $tickets.
+	*/
+	public function generateListDisplay($tickets){
+		$result = '
+			<table class="table">
+				<thead>
+					<tr><th>Invoice</th><th>Customer</th><th>Call</th><th>Status</th></tr>
+				</thead>
+				<tbody>';
+		foreach($tickets as $key => $ticket){
+			$result .= '<tr>';
+			$result .= '<td>' . $ticket['ticket.invoice'] . '</td>';
+			$result .= '<td><a href="customers.php?view=' . $ticket['customer.id'] . '" class="btn">' . $ticket['customer.name'] . '</a></td>';
+			$result .= '<td>';
+			if(!empty($ticket['customer.primaryPhone'])){
+				$ringurl = parent::get('ring_central')->make_url($ticket['customer.primaryPhone']);
+				if($ringurl){
+					$result .= '
+						<a href="' . $ringurl . '" target="_blank"><span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>';
+				} else {
+					$result .= $framework->get('utils')->formatPhone($ticket['customer.primaryPhone']); // User does not have ring central setup
+				}
+			} else {
+				$result .= 'No phone on file';
+			}
+			$result .= '</td>';
+			$result .= '<td><div class="btn-group">';
+			$result .= '<button class="btn btn-info dropdown-toggle">Waiting for parts';
+			$result .= '<button class="btn dropdown-toggle" data-toggle="dropdown">';
+			$result .= '
+				<ul class="dropdown-menu">
+					<li><a href="#">View</a></li>
+					<li><a href="#">Edit</a></li>
+					<li class="divider"></li>
+					<li><a href="#">Close</a></li>
+				</ul>';
+			$result .= '</div></td>';
+			$result .= '</tr>';
+		}
+	}
+	
 	public function generateSpecialFields($special){
 		if(!empty($special)){
 			$result = array();
