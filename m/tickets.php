@@ -1,5 +1,5 @@
 <?php
-if($_POST['comment']) {
+if(isset($_POST['comment'])) {
   date_default_timezone_set("EST");
   $return = $framework->get('comments')->setComment($_POST['invoice'], $comment, date("Y-m-d"));
   if(!$return) {
@@ -196,48 +196,8 @@ if(isset($_POST['search'])){
 if(isset($_GET['viewall'])){
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 0;
 	$data = $framework->get('tickets')->getBulk(10, $page * 10);
-	$content .= '<table class="table">
-					<thead>
-						<tr>
-						<th>Invoice</th>
-						<th>Customer</th>
-						<th>Priority</th>
-						<th>Date</th>	
-						<th>Status</th>
-						</tr>
-					</thead>
-					<tbody>';
-	foreach($data as $key => $ticket){
-	        $searchResults = $framework->get('tickets')->searchTicketById($ticket[id]);
-        	if($searchResults) {
-                	$info = $framework->get('tickets')->getTicketById($searchResults);
-                	$customer = $framework->get('customers')->getInfoById($info[customer]);
-                	$type = $framework->get('tickets')->getTypeById($info[type]);
-                	$status = $framework->get('tickets')->getStatusById($info[status]);
-        	}
-	        $content .= '<tr><td>' . $info[invoice];
-        	$content .= '</td><td><a href="customers.php?view='. $customer[id] .'">' . $customer[name] .'</a>';
-        	$content .= '</td><td>' . $info[priority];
-        	$content .= '</td><td>' . $info[dueDate];
-        	$content .= '</td><td>' . $status[status];
-        	$content .= '</td></tr>';
-	}
-        if(empty($viewall_results)){
-                $viewall_results .= '
-                        <tr><td colspan="3"><div class=\'alert alert-error\'>
-                                <strong>No more customers found</strong>
-                        </div></td></tr>';
-                $nextBtn = '<li class="disabled">
-                                                <a href="#">Next</a>
-                                        </li>';
-        } else {
-                $nextBtn = '<li>
-                <a href="customers.php?viewall=true&page=' . ($page+1) . '">Next</a>
-                </li>';
-	}
-
-	$content .= '
-					</tbody>
-				</table>';
+	$content .= '<h3>Viewing all tickets</h3>';
+	$content .= $framework->get('tickets')->generateListDisplay($data);
+	
 }
 ?>

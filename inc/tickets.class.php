@@ -276,6 +276,7 @@ class tickets extends framework {
 			$result .= '</div></td>';
 			$result .= '</tr>';
 		}
+		return $result;
 	}
 	
 	public function generateSpecialFields($special){
