@@ -34,15 +34,18 @@ class user extends framework {
 	 * Checks to see if creds are right, if so change $_SESSION['logged_in'] to true
 	*/
 	public function login($username, $password){
-		$sql = "SELECT * FROM users WHERE username=? AND password=?";
+		$sql = "SELECT id FROM users WHERE username=? AND password=?";
 		if($stmt = parent::get("db")->mysqli()->prepare($sql)){
 			$password = hash("sha512", "8iur9wurei" . $password . "jd3w8j8sl");
 			$stmt->bind_param('ss', $username, $password);
 			$stmt->execute();
+			$stmt->bind_result($id);
 			$stmt->store_result();
 			if($stmt->num_rows > 0){
+				$stmt->fetch();
 				$_SESSION['logged_in'] = true;
-				$_SESSION['username'] = $username;
+				$_SESSION['user_name'] = $username;
+				$_SESSION['user_id'] = $id;
 				return true;
 			}
 		}
