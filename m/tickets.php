@@ -1,7 +1,7 @@
 <?php
 if(isset($_POST['comment'])) {
   date_default_timezone_set("EST");
-  $return = $framework->get('comments')->setComment($_POST['invoice'], $comment, date("Y-m-d"));
+  $return = $framework->get('comments')->setComment($_POST['invoice'], $_POST['comment'], date("Y-m-d"), 7);
   if(!$return) {
     echo "<pre>";
     print_r($_POST);
@@ -35,9 +35,9 @@ if(isset($_GET['search'])) {
 	$searchResults = $framework->get('tickets')->searchTicketById($id);
 	if($searchResults) {
 		$info = $framework->get('tickets')->getTicketById($searchResults);	
-		$customer = $framework->get('customers')->getInfoById($info[customer]);
-		$type = $framework->get('tickets')->getTypeById($info[type]);
-		$status = $framework->get('tickets')->getStatusById($info[status]);
+		$customer = $framework->get('customers')->getInfoById($info[0]['tickets.customer']);
+		$type = $framework->get('tickets')->getTypeById($info[0]['tickets.type']);
+		$status = $framework->get('tickets')->getStatusById($info[0]['tickets.status']);
 	}
 	else die("No results found :(");
         if(!empty($info)){
@@ -65,10 +65,13 @@ if(isset($_GET['search'])) {
 					break;
 			}
 		}
+		// Currently not returning all items in the array... #2pencil
 		$comments = array();
-		$comments = $framework->get('tickets')->getComments($id);
-		foreach($comments as $comment) {
-                	$info['<hr>'] .= '<hr>Updated'.$comment[1].'<br>'.$comment[0];
+		$comments = $framework->get('comments')->getAllByTicket($id);
+		if($comments) {
+			foreach($comments as $comment) {
+                		$info['<hr>'] .= '<hr>Updated'.$comment[dateadded].'<br>'.$comment[comment];
+			}
 		}
 		$info['Actions'] = '
         <form method="POST" action="tickets.php" class="well form-search">
@@ -80,6 +83,7 @@ if(isset($_GET['search'])) {
           </div></div> 
           <div class="form-actions">  
             <input type="hidden" name="invoice" value="'.$id.'">
+            <input type="hidden" name="user_id" value="'.$id.'">
             <button type="submit" class="btn btn-primary">Save</button>  
             <button class="btn btn-danger">Cancel</button>  
           </div>  

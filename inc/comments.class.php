@@ -12,29 +12,51 @@ class comments extends framework {
 	
 	}
 	
+
 	/*
 	 * getAllByTicket(int $invoice)
 	 * Retrieves all comments by invoice ID
 	*/
-	public function getAllByTicket($invoice){
-		$sql = "SELECT * FROM comments AS comment WHERE invoice='"; // unfin
-	}
+        public function getAllByTicket($invoice) {
+                $sql = "SELECT comment, dateadded FROM comments where invoice like '%$invoice'";
+                $result = parent::get('db')->mysqli()->query($sql);
+                if($result) {
+			$comments = array();
+			$comments[] = $result->fetch_array(MYSQLI_ASSOC);
+			foreach($comments as $comment) {
+				echo "<pre>";
+				print_r($comment);
+				echo "</pre>";
+			}
+			return $comments;
+                }
+		return false;
+        }
 
 
 	/*
-	 * setComment(str $invoice, str $comment, str $date)
+	 * setComment(str $invoice, str $comment, str $date, int user_id)
 	 * Sets the comment for the ticket
 	*/
-	public function setComment($invoice, $comment, $date) {
-		$sql = "INSERT INTO comment(invoice, comment) VALUES(?,?,?)";
-                if($stmt = parent::get('db')->mysqli()->prepare($sql)){
-                        //$timestamp = parent::get('utils')->timestamp();
-                        $stmt->bind_param('sss', $invoice, $comment, $date);
+	public function setComment($invoice, $comment, $date, $user_id) {
+		$sql = "INSERT INTO comments (
+			invoice,
+			comment,
+			dateadded,
+			user_id)
+		VALUES(
+			'".$invoice."',
+			'".$comment."',
+			'".$date."',
+			$user_id)";
+		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
+                        $stmt->bind_param('sssi', $invoice, $comment, $date, $user_id);
                         $stmt->execute();
                         $stmt->store_result();
                         if($stmt->affected_rows > 0){
                                 return parent::get('db')->mysqli()->insert_id;
                         }
+			return false;
                 }
                 return false;
 	}
