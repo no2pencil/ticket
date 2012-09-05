@@ -123,26 +123,17 @@ if(isset($_GET['search'])) {
 }
 
 if(isset($_GET['view'])){
-	$id = (int)$_GET['view'];
-	$info = $framework->get('tickets')->getTicketById($id);
-	$customer = $framework->get('customers')->getInfoById($info[customer]);
+	$content .= 'Viewing ticket ' . (int)$_GET['view'];
+	$info = $framework->get('tickets')->getTicketById($_GET['view']);
 	if(!empty($info)){
-		if(!empty($customer)) $info[customer]=$customer[name].' '.$customer[primaryPhone];
-		$info['<hr>'] = '<hr>';
-		$info['Actions'] = '<a href="tickets.php?edit=' . $id . '">Edit</a> | <a href="#" id="ticket_delete_link">Delete</a>';
-		$content .= $framework->get('html')->buildTable($info, array("status_description"));
-		// Ticket delete dialog:
-		$content .= '<div id="ticket_delete" title="Are you sure you want to delete this ticket?">
-			<p>Deleted tickets cannot be recovered.</p>
-		</div>';
+		
 	} else {
-		$content .= '<h3>There is no ticket with id '.$_GET[view];
+		$content .= 'No ticket found with that invoice';
 	}
 } 
 
 if(isset($_GET['advancedsearch'])){
 	/* display search form */
-	
 	$content .= '
 		<form action="tickets.php" method="post">
 			<legend>Advanced Search</legend>
@@ -197,6 +188,7 @@ if(isset($_POST['search'])){
 			</table>';
 	}
 } 
+
 if(isset($_GET['viewall'])){
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 0;
 	$data = $framework->get('tickets')->getBulk(25, $page * 25);
