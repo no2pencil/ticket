@@ -123,12 +123,21 @@ if(isset($_GET['search'])) {
 }
 
 if(isset($_GET['view'])){
-	$content .= 'Viewing ticket ' . (int)$_GET['view'];
 	$info = $framework->get('tickets')->getTicketById($_GET['view']);
 	if(!empty($info)){
-		
+		$content .= '
+				<h3>Viewing ticket ' . $info['ticket.invoice'] . '</h3>
+				<table class="table">
+					<tbody>
+						<tr><th>Status</th><td>' . $info['status.status'] . '</td></tr>
+						<tr><th>Created on</th><td>' . $info['ticket.createDate'] . '</td></tr>
+						<tr><th>Due date</th><td>' . $info['ticket.dueDate'] . '</td></tr>
+						<tr><th>Customer</th><td>' . $info['customer.name'] . '</td></tr>
+						<tr><th>Created by</th><td>' . $info['creator.name'] . '</td></tr>
+					</tbody>
+				</table>'; 
 	} else {
-		$content .= 'No ticket found with that invoice';
+		$content .= 'Error: Ticket not found.';
 	}
 } 
 
