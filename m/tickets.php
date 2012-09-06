@@ -146,7 +146,8 @@ if(isset($_GET['advancedsearch'])){
 	$content .= '
 		<form action="tickets.php" method="post">
 			<legend>Advanced Search</legend>
-			<input type="text" name="search" placeholder="Search value">
+			<input type="text" name="search" placeholder="Search value"><br>
+			<input type="text" name="exclude" placeholder="Exclude from results">
 			<label>Select columns to search:</label>';
 	$cols = $framework->get('db')->getCols('tickets');
 	foreach($cols as $col){
@@ -164,37 +165,13 @@ if(isset($_GET['advancedsearch'])){
 if(isset($_POST['search'])){
 	/* search logic */
 	$content .= '<legend>Search results</legend>';
-	$cols = (isset($_POST['searchcols'])) ? $_POST['searchcols'] : array('id', 'customer'); // TODO: Create settings & put in default search params
-	$results = $framework->get('tickets')->search($_POST['search'], $cols);
+	$searchCols = (isset($_POST['searchcols'])) ? $_POST['searchcols'] : array('id', 'customer', 'invoice');
+	$exclude = (isset($_POST['exclude'])) ? $_POST['exclude'] : '';
+	$results = $framework->get('tickets')->search($_POST['search'], $exclude, $searchCols);
 	if(empty($results)){
 		$content .= '<div class="alert alert-error"><strong>No results found</strong> <a href="tickets.php?advancedsearch=true">Redefine search</a></div>';
 	} else {
-		$content .= '
-			<table class="table">
-				<thead>
-					<tr><th>ID</th><th>Customer</th><th>Priority</th><th>Due date</th><th>Status</th></tr>
-				</thead>
-				<tbody>';
-		foreach($results as $result){
-			$customer=array();
-			$searchResults = $framework->get('tickets')->searchTicketById($result[id]);
-			if($searchResults) {
-				$info = $framework->get('tickets')->getTicketById($searchResults);
-				$customer = $framework->get('customers')->getInfoById($info[customer]);
-				$type = $framework->get('tickets')->getTypeById($info[type]);
-				$status = $framework->get('tickets')->getStatusById($info[status]);
-			}
-			$content .= '<!-- '. print_r($result) .' -->';
-			$content .= '<tr><td><a href="tickets.php?view='.$info .'">'. $info[invoice].'</a>';
-			$content .= '</td><td><a href="customers.php?view='.$customer[id].'">' . $customer[name].'</a>';
-			$content .= '</td><td>' . $info[priority];
-			$content .= '</td><td>' . $info[dueDate];
-			$content .= '</td><td>' . $status;
-			$content .= '</td></tr>';
-		}
-		$content .= '
-				</tbody>
-			</table>';
+		$content .= $framework->get('tickets')->generateListDisplay($results);
 	}
 } 
 

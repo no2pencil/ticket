@@ -71,30 +71,34 @@ class tickets extends framework {
 	}
 	
 	/*
-	 * search(string $value, string $columns=array('id', 'customer'))
+	 * search(string $value, string $exclude, string $columns=array('id', 'customer'))
 	 * Returns IDs for rows that match search query. Returns false on error.
 	 * $columns are the columns to search in. Search is done using LIKE.
+	 * $exclude excludes results using NOT LIKE
 	*/
-	public function search($value, $columns=array('id', 'customer')){
+	public function search($value, $exclude, $columns=array('id', 'customer')){
 		$bind = array();
 		$result = array();
 		$sql = "SELECT id FROM tickets WHERE";
 		foreach($columns as $key => $col){
 			if($key == (count($columns)-1)){
-				$sql .= ' ' . $col . ' LIKE ?';
+				$sql .= ' ' . $col . ' LIKE ? AND ' . $col . ' NOT LIKE ?';
 			} else {
-				$sql .= ' ' . $col . ' LIKE ? OR';
+				$sql .= ' ' . $col . ' LIKE ? AND ' . $col . ' NOT LIKE ? OR';
 			}
-			$bind[0] = (empty($bind[0])) ? 's' : $bind[0] . 's';
+			$bind[0] = (empty($bind[0])) ? 'ss' : $bind[0] . 'ss';
+			$bind[] = "%" . $value . "%";
 			$bind[] = "%" . $value . "%";
 		}
 		
+		var_dump($sql);
+		
 		foreach($bind as $key => $value){
-			$bimp[$key] = &$bind[$key]; // Makes them references for bind_param
+			$bind[$key] = &$bind[$key]; // Makes them references for bind_param
 		}
 		
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
-			call_user_func_array(array($stmt, "bind_param"), $bind); // See what I did there? Dynamic bind_param.
+			call_user_func_array(array($stmt, "bind_param"), $bind); // See what I did there? Dynamic bind_param. Nifty
 			$stmt->execute();
 			$stmt->bind_result($id);
 			while($stmt->fetch()){
@@ -104,7 +108,7 @@ class tickets extends framework {
 			$rows = array();
 			foreach($result as $row){
 				$row = $this->getTicketById($row['id']);
-				$rows[] = $row[0];
+				$rows[] = $row;
 			}
 			return $rows;
 		}
