@@ -48,7 +48,11 @@ class db {
 			}
 			$i++;
 		}
-		return $rows;
+		if(count($rows) > 0){
+			return $rows; // Multiple rows
+		} else {
+			return $rows[0]; // One row, just return that
+		}
 	}
 }
 ?>
