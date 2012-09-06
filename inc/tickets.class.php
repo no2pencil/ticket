@@ -116,15 +116,14 @@ class tickets extends framework {
 	 * Returns the ticket information based on $id. Also joins statuses, users, and customers into the query.
 	*/
 	public function getTicketById($id){
-		$sql = "SELECT t.id AS ID, t.createDate AS 'Created on', u.name AS Creator, c.name as Customer, s.status AS Status, s.description AS 'status_description', t.priority AS Priority, t.dueDate AS 'Due date' FROM tickets AS t " .
-					"JOIN statuses AS s ON t.status = s.id " .
-					"JOIN users AS u ON t.creator = u.id " .
-					"JOIN customers AS c ON t.customer = c.id " . 
-						"WHERE t.id=" . (int)$id . " LIMIT 1";
-		$sql = "SELECT createDate, creator, type, priority, dueDate, status, customer, invoice from tickets where id=$id";
+		$sql = "SELECT * FROM tickets AS ticket " .
+					"LEFT JOIN statuses AS status ON ticket.status = status.id " .
+					"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
+					"LEFT JOIN users AS creator ON ticket.creator = creator.id " .
+						"WHERE ticket.id=" . (int)$id . " LIMIT 1";
 		$result = parent::get('db')->mysqli()->query($sql);
 		$result = parent::get('db')->fetchArray($result);
-		return $result;
+		return $result; 
 	}
 	
 	/*
