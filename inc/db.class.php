@@ -36,6 +36,7 @@ class db {
 	/*
 	 * fetchArray(mysqli_result $result)
 	 * Fetches an associative array of $result. Array keys are prepended with their respective table names in the format of: (table).(column)
+	 * Returns array. Will be empty on no result.
 	*/
 	public function fetchArray($result){
 		$rows = array();
@@ -48,10 +49,13 @@ class db {
 			}
 			$i++;
 		}
-		if(count($rows) > 0){
+		
+		if(count($rows) > 1){
 			return $rows; // Multiple rows
+		} else if(count($rows) == 1){
+			return $rows[0]; // One row
 		} else {
-			return $rows[0]; // One row, just return that
+			return array(); // Zero rows
 		}
 	}
 }
