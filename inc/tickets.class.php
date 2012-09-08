@@ -88,10 +88,8 @@ class tickets extends framework {
 			}
 			$bind[0] = (empty($bind[0])) ? 'ss' : $bind[0] . 'ss';
 			$bind[] = "%" . $value . "%";
-			$bind[] = "%" . $value . "%";
+			$bind[] = "%" . $exclude . "%";
 		}
-		
-		var_dump($sql);
 		
 		foreach($bind as $key => $value){
 			$bind[$key] = &$bind[$key]; // Makes them references for bind_param
@@ -127,7 +125,19 @@ class tickets extends framework {
 						"WHERE ticket.id=" . (int)$id . " LIMIT 1";
 		$result = parent::get('db')->mysqli()->query($sql);
 		$result = parent::get('db')->fetchArray($result);
-		return $result; 
+		// This part is for turning NULL into empty strings.
+		foreach($result as $key => $value){
+			if(gettype($value == 'array')){
+				foreach($value as $key2 => $value2){
+					if(gettype($value2) == 'NULL'){
+						$result[$key][$key2] = '';
+					}
+				}
+			} else if(gettype($value) == 'NULL'){
+				$result[$key] = '';
+			}
+		}
+		return $result[0]; 
 	}
 	
 	/*

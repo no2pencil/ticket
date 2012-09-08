@@ -168,6 +168,7 @@ if(isset($_POST['search'])){
 	$searchCols = (isset($_POST['searchcols'])) ? $_POST['searchcols'] : array('id', 'customer', 'invoice');
 	$exclude = (isset($_POST['exclude'])) ? $_POST['exclude'] : '';
 	$results = $framework->get('tickets')->search($_POST['search'], $exclude, $searchCols);
+	var_dump($results);
 	if(empty($results)){
 		$content .= '<div class="alert alert-error"><strong>No results found</strong> <a href="tickets.php?advancedsearch=true">Redefine search</a></div>';
 	} else {
