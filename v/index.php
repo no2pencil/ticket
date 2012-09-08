@@ -121,8 +121,15 @@ foreach($status as $row) {
             <i class="icon-white icon-tags"></i> Tickets
             <b class="caret"></b>
           </a>
+		  
           <ul class="dropdown-menu">
-            <li><a href="tickets.php?viewall=true">My Tickets</a></li>
+            <li>
+				<form action="tickets.php" method="post" name="searchform" style="margin: 0;">
+					<input type="hidden" name="search" value="<?php echo $_SESSION['user_name']; ?>">
+					<input type="hidden" name="searchcols[]" value="creator">
+				</form>
+				<a href="#" onclick="searchform.submit();">My Tickets</a>
+			</li>
             <li><a href="tickets.php?viewall=true">All Tickets</a></li>
             <li><a href="tickets.php?new=true">New Ticket</a></li>
             <li class="divider"></li>
