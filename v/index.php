@@ -143,11 +143,11 @@ foreach($status as $row) {
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
+            <li><a href="customers.php?viewall=true">All customers</a></li>
             <li><a href="customers.php?new=true">New Customer</a></li>
-            <li><a href="customers.php?viewall=true">View Customers</a></li>
             <li class="divider"></li>
-            <li><form action="customers.php" class="form-search" style="padding: 3px 15px; margin: 0;"><input type="text" name="search" placeholder="Quick search" class="search-query span2"></form></li>
-            <li><a href="#">Search Customers</a></li>
+            <li><form action="customers.php" method="post" class="form-search" style="padding: 3px 15px; margin: 0;"><input type="text" name="search" placeholder="Quick search" class="search-query span2"></form></li>
+            <li><a href="customers.php?advancedsearch=true">Advanced Search</a></li>
           </ul>
         </li>
         <li class="dropdown">

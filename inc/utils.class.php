@@ -10,7 +10,7 @@ class utils extends framework {
 	 * If $userfriendly is true, timestamp will return in "Y-m-d H:i:s e" format
 	*/
 	public function timestamp($userfriendly=false, $time=-1){
-		date_default_timezone_set(EST);
+		date_default_timezone_set('EST');
 		if($time == -1){
 			$time = time();
 		}
