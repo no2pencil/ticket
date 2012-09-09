@@ -175,10 +175,13 @@ class customers extends framework {
 		$result = array();
 		$page = 0;
 		while($stillmore){
-			$result[] = $this->get_bulk(1000, $page);
+			$tmp = $this->getBulk(1, $page);
+			if(empty($tmp)){
+				return $result;
+			}
+			$result[] = $tmp;
 			$page++;
 		}
-		return getAll;
 	}
 }
 ?>

@@ -239,10 +239,11 @@ class tickets extends framework {
 	}
 
 	/*
-	 * getBulk(int $limit, int $offset)
+	 * getBulk(int $limit, int $page)
 	 * Returns an array full of tickets
 	*/
-	public function getBulk($limit, $offset){
+	public function getBulk($limit, $page){
+		$offset = $page * $limit;
 		$sql = "SELECT * FROM tickets AS ticket " .
 					"LEFT JOIN statuses AS status ON ticket.status = status.id " .
 					"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
@@ -298,27 +299,23 @@ class tickets extends framework {
 		return $result;
 	}
 	
-	public function generateSpecialFields($special){
-		if(!empty($special)){
-			$result = array();
-			$fields = explode(' ;;; ', $special);
-			foreach($fields as $id => $field){
-				$stuff = explode(' ^^^ ', $field);
-				$type = $stuff[0];
-				$name = $stuff[1];
-				$default = $stuff[2];
-				$result[$id]['name'] = $name;
-				$result[$id]['default'] = $default;
-				$result[$id]['type'] = $type;
-				if($type == "textarea"){
-					$result[$id]['html'] = '<textarea name="special_' . $type . '_' . $name . '">' . $default . '</textarea>';
-				} else {
-					$result[$id]['html'] = '<input type="' . $type . '" name="special_' . $type . '_' . $name . '" value="' . $default . '">';
-				}
+	/*
+	 * getAll()
+	 * Returns all tickets
+	*/
+	public function getAll(){
+		$stillmore = true;
+		$result = array();
+		$page = 0;
+		while($stillmore){
+			$tmp = $this->getBulk(1, $page);
+			if(empty($tmp)){
+				return $result;
 			}
-			return $result;
+			$result[] = $tmp;
+			$page++;
 		}
-		return false;
 	}
+	
 }
 ?>

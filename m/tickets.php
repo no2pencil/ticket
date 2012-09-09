@@ -178,7 +178,7 @@ if(isset($_POST['search'])){
 
 if(isset($_GET['viewall'])){
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 0;
-	$data = $framework->get('tickets')->getBulk(25, $page * 25);
+	$data = $framework->get('tickets')->getBulk(25, $page);
 	$content .= '<h3>Viewing all tickets</h3>';
 	if(empty($data)){
 		$content .= '
