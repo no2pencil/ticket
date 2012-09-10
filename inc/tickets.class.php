@@ -267,7 +267,7 @@ class tickets extends framework {
 				<tbody>';
 		foreach($tickets as $key => $ticket){
 			$result .= '<tr>';
-			$result .= '<td>' . $ticket['ticket.invoice'] . '</td>';
+			$result .= '<td><a href="tickets.php?view=' . $ticket['ticket.id'] . '">' .  $ticket['ticket.invoice'] . '</a></td>';
 			$result .= '<td><a href="customers.php?view=' . $ticket['customer.id'] . '" class="btn">' . $ticket['customer.name'] . '</a></td>';
 			$result .= '<td>';
 			if(!empty($ticket['customer.primaryPhone'])){
@@ -283,15 +283,15 @@ class tickets extends framework {
 			}
 			$result .= '</td>';
 			$result .= '<td><div class="btn-group">';
-			$result .= '<button class="btn btn-info dropdown-toggle">Waiting for parts';
+			$result .= '<button class="btn dropdown-toggle">' . $ticket['status.status'];
 			$result .= '<button class="btn dropdown-toggle" data-toggle="dropdown">';
 			$result .= '
-				<ul class="dropdown-menu">
-					<li><a href="#">View</a></li>
-					<li><a href="#">Edit</a></li>
-					<li class="divider"></li>
-					<li><a href="#">Close</a></li>
-				</ul>';
+                                    <ul class="dropdown-menu">
+                                            <li><a href="#">View</a></li>
+                                            <li><a href="#">Edit</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#">Close</a></li>
+                                    </ul>';
 			$result .= '</div></td>';
 			$result .= '</tr>';
 		}
