@@ -21,13 +21,7 @@ class comments extends framework {
                 $sql = "SELECT comment, dateadded FROM comments where invoice like '%$invoice'";
                 $result = parent::get('db')->mysqli()->query($sql);
                 if($result) {
-			$comments = array();
-			$comments[] = $result->fetch_array(MYSQLI_ASSOC);
-			foreach($comments as $comment) {
-				echo "<pre>";
-				print_r($comment);
-				echo "</pre>";
-			}
+			$comments = $result->fetch_array(MYSQLI_ASSOC);
 			return $comments;
                 }
 		return false;
