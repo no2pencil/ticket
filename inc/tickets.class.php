@@ -285,8 +285,7 @@ class tickets extends framework {
 			$result .= '<td><div class="btn-group">';
 			$result .= '<button class="btn dropdown-toggle">' . $ticket['status.status'];
 			$result .= '<button class="btn dropdown-toggle" data-toggle="dropdown">';
-			$result .= '
-                                    <ul class="dropdown-menu">
+			$result .= '<ul class="dropdown-menu">
                                             <li><a href="#">View</a></li>
                                             <li><a href="#">Edit</a></li>
                                             <li class="divider"></li>
