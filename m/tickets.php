@@ -2,11 +2,6 @@
 if(isset($_POST['comment'])) {
   date_default_timezone_set("EST");
   $return = $framework->get('comments')->setComment($_POST['invoice'], $_POST['comment'], date("Y-m-d"), 7);
-  if(!$return) {
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-  }
 }
 
 $content = '<h2>Tickets</h2>';
