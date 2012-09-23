@@ -119,20 +119,25 @@ class tickets extends framework {
 	*/
 	public function getTicketById($id){
 		$sql = "SELECT * FROM tickets AS ticket " .
-					"LEFT JOIN statuses AS status ON ticket.status = status.id " .
-					"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
-					"LEFT JOIN users AS creator ON ticket.creator = creator.id " .
-						"WHERE ticket.id=" . (int)$id . " LIMIT 1";
+		"LEFT JOIN statuses AS status ON ticket.status = status.id " .
+		"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
+		"LEFT JOIN users AS creator ON ticket.creator = creator.id " .
+		"WHERE ticket.id=" . (int)$id . " LIMIT 1";
 		$result = parent::get('db')->mysqli()->query($sql);
 		$result = parent::get('db')->fetchArray($result);
 		// This part is for turning NULL into empty strings.
 		foreach($result as $key => $value){
 			if(gettype($value == 'array')){
+				echo "<pre>";
+				print_r($value);
+				echo "</pre>";
+/*
 				foreach($value as $key2 => $value2){
 					if(gettype($value2) == 'NULL'){
 						$result[$key][$key2] = '';
 					}
 				}
+*/
 			} else if(gettype($value) == 'NULL'){
 				$result[$key] = '';
 			}
@@ -239,16 +244,35 @@ class tickets extends framework {
 	}
 
 	/*
+	 * getBulkOpen(int $limit, int $page)
+	 * Same as getBulk, except just open
+	 */
+	public function getBulkOpen($limit, $page) {
+		$offset = $page * $limit;
+		$sql = "SELECT * FROM tickets as ticket ".
+			"LEFT JOIN statuses AS status ON ticket.status = status.id " .
+			"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
+			"LEFT JOIN users AS user ON ticket.creator = user.id " .
+			"where status.status != 'Closed' and status.status != 'Cancelled' " .
+			"and status.status != 'eBay item sold' and status.status != 'Canceled' " .
+			"ORDER BY ticket.id DESC ".
+			"LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+
+		$result = parent::get('db')->mysqli()->query($sql);
+		return parent::get('db')->fetchArray($result);
+	}
+
+	/*
 	 * getBulk(int $limit, int $page)
 	 * Returns an array full of tickets
 	*/
 	public function getBulk($limit, $page){
 		$offset = $page * $limit;
 		$sql = "SELECT * FROM tickets AS ticket " .
-					"LEFT JOIN statuses AS status ON ticket.status = status.id " .
-					"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
-					"LEFT JOIN users AS user ON ticket.creator = user.id " .
-						"LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+			"LEFT JOIN statuses AS status ON ticket.status = status.id " .
+			"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
+			"LEFT JOIN users AS user ON ticket.creator = user.id " .
+			"LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
 		
 		$result = parent::get('db')->mysqli()->query($sql);
 		return parent::get('db')->fetchArray($result);
