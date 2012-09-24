@@ -126,23 +126,20 @@ class tickets extends framework {
 		$result = parent::get('db')->mysqli()->query($sql);
 		$result = parent::get('db')->fetchArray($result);
 		// This part is for turning NULL into empty strings.
+/*
 		foreach($result as $key => $value){
 			if(gettype($value == 'array')){
-				echo "<pre>";
-				print_r($value);
-				echo "</pre>";
-/*
 				foreach($value as $key2 => $value2){
 					if(gettype($value2) == 'NULL'){
 						$result[$key][$key2] = '';
 					}
 				}
-*/
 			} else if(gettype($value) == 'NULL'){
 				$result[$key] = '';
 			}
 		}
-		return $result[0]; 
+*/
+		return $result; 
 	}
 	
 	/*

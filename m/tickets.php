@@ -122,20 +122,25 @@ if(isset($_GET['search'])) {
 
 if(isset($_GET['view'])){
 	$info = $framework->get('tickets')->getTicketById($_GET['view']);
-	if(!empty($info)){
+	if($info) {
 		$content .= '
 				<h3>Viewing ticket ' . $info['ticket.invoice'] . '</h3>
 				<table class="table">
 					<tbody>
 						<tr><th>Status</th><td>' . $info['status.status'] . '</td></tr>
 						<tr><th>Created on</th><td>' . $info['ticket.createDate'] . '</td></tr>
-						<tr><th>Due date</th><td>' . $info['ticket.dueDate'] . '</td></tr>
-						<tr><th>Customer</th><td>' . $info['customer.name'] . '</td></tr>
+						<tr><th>Last Updated</th><td>&nbsp;</td></tr>
+						<tr><th>Customer</th><td>' . $info['customer.name'] . '&nbsp; <a href="' . $ringurl . '" target="_blank"><span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></td></tr>
 						<tr><th>Created by</th><td>' . $info['creator.name'] . '</td></tr>
-					</tbody>
+						<tr><th>Comments</th><td></td></tr>';
+	$comments = $framework->get('tickets')->getComments($info['tiket.invoice']);
+	foreach($comments as $comment) {
+		$content .= '<tr><th>'.$comment['dateadded'].'</th><td>'.$comment['comment'].'</td></tr>';
+	}
+					$content .= '</tbody>
 				</table>'; 
 	} else {
-		$content .= 'Error: Ticket not found.';
+		$content .= 'Error: Ticket not found...';
 	}
 } 
 
