@@ -1,7 +1,7 @@
 <?php
+date_default_timezone_set("EST");
 if(isset($_POST['comment'])) {
-  date_default_timezone_set("EST");
-  $return = $framework->get('comments')->setComment($_POST['invoice'], $_POST['comment'], date("Y-m-d"), 7);
+  $return = $framework->get('comments')->setComment($_POST['invoice_id'], $_POST['comment'], date("Y-m-d"), $_POST['user_id']);
 }
 
 $content = '<h2>Tickets</h2>';
@@ -133,15 +133,35 @@ if(isset($_GET['view'])){
 						<tr><th>Customer</th><td>' . $info['customer.name'] . '&nbsp; <a href="' . $ringurl . '" target="_blank"><span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></td></tr>
 						<tr><th>Created by</th><td>' . $info['creator.name'] . '</td></tr>
 						<tr><th>Comments</th><td></td></tr>';
-	$comments = $framework->get('tickets')->getComments($info['tiket.invoice']);
+	$comments = $framework->get('tickets')->getComments($info['ticket.id']);
 	foreach($comments as $comment) {
 		$content .= '<tr><th>'.$comment['dateadded'].'</th><td>'.$comment['comment'].'</td></tr>';
-	}
-					$content .= '</tbody>
+	} 
+					$content .= '
+					</tbody>
+				<tbody>
+<tr><td>
+        <form method="POST" action="tickets.php" class="well form-search">
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label" for="textarea">Comment:</label>
+          <div class="controls">
+            <textarea class="input-xlarge" id="comment" name="comment" rows="6"></textarea>
+          </div></div>
+          <div class="form-actions">
+            <input type="hidden" name="invoice_id" value="'.$_GET['view'].'">
+	    <input type="hidden" name="user_id" value="7">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button class="btn btn-danger">Cancel</button>
+          </div>
+        </fieldset></form> 
+</tr></td>
+					</tbody>
 				</table>'; 
 	} else {
 		$content .= 'Error: Ticket not found...';
 	}
+
 } 
 
 if(isset($_GET['advancedsearch'])){

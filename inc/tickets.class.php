@@ -226,12 +226,12 @@ class tickets extends framework {
 	}
 	
 	/*
-	 * getComments(int $id)
-	 * Returns all comments for the ticket with the specified invoice
+	 * getComments(int $invoie_id)
+	 * Returns all comments for the ticket  with the specified invoice id
 	 * Uses LIKE for invoice number, see $sql below for more info.
 	*/
-	public function getComments($id) {
-		$sql = "SELECT comment, dateadded FROM comments where invoice like '%$id'";
+	public function getComments($invoice_id) {
+		$sql = "SELECT comment, dateadded FROM comments where invoice_id = '$invoice_id'";
 		$result = parent::get('db')->mysqli()->query($sql);
 		$comments = array();
 		while($row = $result->fetch_array()) {
