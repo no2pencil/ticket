@@ -72,6 +72,26 @@ class user extends framework {
 		return false;
 	}
 	
+        /*
+         * get_user_info(string $username)
+         * Returns the user's info belonging to the username
+         * Returns false if username not found
+        */
+        public function get_user_info_by_id($user_id){
+                $sql = "SELECT id, name, password, type FROM users WHERE id=?";
+                if($stmt = parent::get("db")->mysqli()->prepare($sql)){
+                        $stmt->bind_param('s', $user_id);
+                        $stmt->execute();
+                        $stmt->store_result();
+                        if($stmt->num_rows > 0){
+                                $stmt->bind_result($name);
+                                $stmt->fetch();
+                                return array("name" => $name);
+                        }
+                }
+                return false;
+        }
+
 	/*
 	 * get_bulk(int $count, int $page)
 	 * Returns an array of users info.

@@ -1,7 +1,7 @@
 <?php
 date_default_timezone_set("EST");
-if(isset($_POST['comment'])) {
-  $return = $framework->get('comments')->setComment($_POST['invoice_id'], $_POST['comment'], date("Y-m-d"), $_POST['user_id']);
+if(!empty($_POST['comment'])) {
+  $return = $framework->get('comments')->setComment($_POST['invoice_id'], $_POST['comment'], date("Y-m-d"), $_SESSION['user_id']);
 }
 
 $content = '<h2>Tickets</h2>';
@@ -81,7 +81,6 @@ if(isset($_GET['search'])) {
           </div></div> 
           <div class="form-actions">  
             <input type="hidden" name="invoice" value="'.$id.'">
-            <input type="hidden" name="user_id" value="'.$id.'">
             <button type="submit" class="btn btn-primary">Save</button>  
             <button class="btn btn-danger">Cancel</button>  
           </div>  
@@ -135,13 +134,14 @@ if(isset($_GET['view'])){
 						<tr><th>Comments</th><td></td></tr>';
 	$comments = $framework->get('tickets')->getComments($info['ticket.id']);
 	foreach($comments as $comment) {
-		$content .= '<tr><th>'.$comment['dateadded'].'</th><td>'.$comment['comment'].'</td></tr>';
+		$usersname = $framework->get('user')->get_user_info_by_id($comment['user_id']);
+		$content .= '<tr><th>'.$comment['dateadded'].'</th><td>'.$comment['comment'].'</td><td>'.$usersname['name'].'</td></tr>';
 	} 
 					$content .= '
 					</tbody>
 				<tbody>
 <tr><td>
-        <form method="POST" action="tickets.php" class="well form-search">
+        <form method="POST" action="tickets.php?view='.$_GET['view'].'"  class="well form-search">
         <fieldset>
           <div class="control-group">
             <label class="control-label" for="textarea">Comment:</label>
@@ -150,7 +150,6 @@ if(isset($_GET['view'])){
           </div></div>
           <div class="form-actions">
             <input type="hidden" name="invoice_id" value="'.$_GET['view'].'">
-	    <input type="hidden" name="user_id" value="7">
             <button type="submit" class="btn btn-primary">Save</button>
             <button class="btn btn-danger">Cancel</button>
           </div>
