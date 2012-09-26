@@ -12,19 +12,22 @@ class comments extends framework {
 	
 	}
 	
-
-	/*
-	 * getAllByTicket(int $invoice_id)
-	 * Retrieves all comments by invoice ID
-	*/
+        /*
+         * getComments(int $invoice_id)
+         * Returns all comments for the ticket  with the specified invoice id
+         * Uses LIKE for invoice number, see $sql below for more info.
+        */
         public function getAllByTicket($invoice_id) {
-                $sql = "SELECT comment, dateadded FROM comments where invoice_id like '%$invoice_id'";
+                $sql = "SELECT comment, dateadded, user_id FROM comments where invoice_id = '$invoice_id'";
                 $result = parent::get('db')->mysqli()->query($sql);
-                if($result) {
-			$comments = $result->fetch_array(MYSQLI_ASSOC);
+		if($result) {
+                	$comments = array();  
+                	while($row = $result->fetch_array()) {
+                        	$comments[] = $row;
+			}
 			return $comments;
                 }
-		return false;
+                return false;
         }
 
 

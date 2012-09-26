@@ -132,7 +132,7 @@ if(isset($_GET['view'])){
 						<tr><th>Customer</th><td>' . $info['customer.name'] . '&nbsp; <a href="' . $ringurl . '" target="_blank"><span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></td></tr>
 						<tr><th>Created by</th><td>' . $info['creator.name'] . '</td></tr>
 						<tr><th>Comments</th><td></td></tr>';
-	$comments = $framework->get('tickets')->getComments($info['ticket.id']);
+	$comments = $framework->get('comments')->getAllByTicket($info['ticket.id']);
 	foreach($comments as $comment) {
 		$usersname = $framework->get('user')->get_user_info_by_id($comment['user_id']);
 		$content .= '<tr><th>'.$comment['dateadded'].'</th><td>'.$comment['comment'].'</td><td>'.$usersname['name'].'</td></tr>';

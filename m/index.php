@@ -1,6 +1,7 @@
 <?php
 $content .= '<h2>Home</h2>';
 
+/*
 $tickets = $framework->get('tickets')->getAll();
 $ticketcount = count($tickets);
 $ticketopen = 0;
@@ -11,6 +12,8 @@ foreach($tickets as $ticket){
 		}
 	}
 }
+*/
+
 //$content .= $framework->get('tickets')->generateListDisplay($ticket);
         $page = (isset($_GET['page'])) ? (int)$_GET['page'] : 0;
         $data = $framework->get('tickets')->getBulkOpen(25, $page);

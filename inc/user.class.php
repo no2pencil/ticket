@@ -73,12 +73,12 @@ class user extends framework {
 	}
 	
         /*
-         * get_user_info(string $username)
+         * get_user_info(string $user_id)
          * Returns the user's info belonging to the username
          * Returns false if username not found
         */
         public function get_user_info_by_id($user_id){
-                $sql = "SELECT id, name, password, type FROM users WHERE id=?";
+                $sql = "SELECT name FROM users WHERE id=?";
                 if($stmt = parent::get("db")->mysqli()->prepare($sql)){
                         $stmt->bind_param('s', $user_id);
                         $stmt->execute();
