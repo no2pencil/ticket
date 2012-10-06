@@ -18,7 +18,7 @@ class comments extends framework {
          * Uses LIKE for invoice number, see $sql below for more info.
         */
         public function getAllByTicket($invoice_id) {
-                $sql = "SELECT comment, dateadded, user_id FROM comments where invoice_id = '$invoice_id'";
+                $sql = "SELECT comment, lastupdated, user_id FROM comments where invoice_id = '$invoice_id'";
                 $result = parent::get('db')->mysqli()->query($sql);
 		if($result) {
                 	$comments = array();  

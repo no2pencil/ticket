@@ -1,4 +1,9 @@
 <?php
+if($_POST) {
+  echo "<pre>";
+  print_r($_POST);
+  echo "</pre>";
+}
 $content = '<h2>Customers</h2>';
 $content .= '
         <div class="btn-group" style="margin: 9px 0;">

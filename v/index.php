@@ -19,92 +19,6 @@
   <link href="v/css/bootstrap/css/bootstrap.css" rel="stylesheet"> 
   <link href="v/css/chosen/chosen/chosen.css" rel="stylesheet"> 
 
-<!-- Google Charts API -->
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript">
-      google.load("visualization", "1", {packages:["corechart"]});
-      google.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['', 'Current Ticket Progress'],
-<?php
-$status = array(
-	"new" => 0,
-	"open" => 0,
-	"progress" => 0,
-	"pendp" => 0,
-	"admin" => 0,
-	"tech" => 0,
-	"postp" => 0,
-	"parts" => 0
-);
-$data = $framework->get('tickets')->getAllOpen();
-foreach($data as $row) {
-        //echo "<!-- Status :".$row[status]." Value:".$row[status]."<br> -->";
-	switch($row[status]) {
-		case 17:
-		case 51: 
-		case 56:
-			$status['new']++;
-			break;
-		case 18: // Open
-			$status['open']++;
-			break;
-		case 19:
-			$status['progress']++;
-			break;
-		case 68:
-			$status['tech']++;
-			break;
-		case 70:
-			$status['parts']++;
-			break;
-	}
-}
-$i=0;
-foreach($status as $row) {
-	//echo $row[status].":".$data[status]."<br>";
-	switch($i) {
-		case 0:
-			$status_word = "New";
-			break;
-		case 1:
-			$status_word = "Open";
-			break;
-		case 2:
-			$status_word = "In Progress";
-			break;
-		case 3:
-			$status_word = "Pending Payment";
-			break;
-		case 4:
-			$status_word = "Call-back from Admin";
-			break;
-		case 5:
-			$status_word = "Call-back from Tech";
-			break;
-		case 6:
-			$status_word = "Post Payment";
-			break;
-		case 7:
-			$status_word = "Waiting for Parts";
-			break;
-	}
-        printf("          [\"%s\",      %s],\n",$status_word,$row);
-        $i++;
-}
-?>
-       ]);
-
-        var options = {
-          title: 'Current Ticket Progress'
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
-    </script>
-<!-- END Google Charts -->
 </head>
 <body>
 
@@ -146,7 +60,17 @@ foreach($status as $row) {
             <li><a href="customers.php?viewall=true">All customers</a></li>
             <li><a href="customers.php?new=true">New Customer</a></li>
             <li class="divider"></li>
-            <li><form action="customers.php" method="post" class="form-search" style="padding: 3px 15px; margin: 0;"><input type="text" name="search" placeholder="Quick search" class="search-query span2"></form></li>
+            <li><form id="customers_select_form" action="customers.php" method="post" class="form-search" style="padding: 3px 15px; margin: 0;">
+<select id="customers_select" name="customers_select" data-placeholder="Customer Data" class="chzn-select searh-query span2"> 
+              <option value=""></option> 
+              <?php
+                $data = $framework->get('customers')->getAll();
+                foreach($data as $id => $customer) {
+                  $phone = $framework->get('utils')->formatPhone($customer[0]['customer.primaryPhone']);
+                  printf("<option value=\"%s\">%s %s</option>\n",$customer[0]['customer.id'],$customer[0]['customer.name'],$phone);
+                }
+              ?>
+            </select><input type="submit" id="hiddenbutton" value=""></form></li>
             <li><a href="customers.php?advancedsearch=true">Advanced Search</a></li>
           </ul>
         </li>
@@ -190,6 +114,11 @@ foreach($status as $row) {
 			</div>
 		</div>
 	<script type="text/javascript">
+          $(".chzn-select").chosen();
+          $(".chzn-select-deselect").chosen({allow_single_deselect:true});
+          $("#customers_select_form").change(function() {
+            $('#customers_select_form').submit();
+          });
 	</script>
 	</body>
 </html>

@@ -26,7 +26,7 @@ class utils extends framework {
 	 * Formats a 10-digit phone number into something more user-friendly
 	*/
         public function formatPhone($phone){
-                $result = '(' . substr($phone, 0, 3) . ') ' . substr($phone, 3, 3) . '-' . substr($phone, 6, 4);
+                $result = substr($phone, 0, 3). ' '.substr($phone, 3, 3). ' ' .substr($phone, 6, 4);
                 return $result;
         }
 

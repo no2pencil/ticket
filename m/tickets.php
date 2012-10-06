@@ -2,9 +2,16 @@
 date_default_timezone_set("EST");
 if(!empty($_POST['comment'])) {
   $return = $framework->get('comments')->setComment($_POST['invoice_id'], $_POST['comment'], date("Y-m-d"), $_SESSION['user_id']);
+/*
+  echo "<pre>";
+  print_r($_POST);
+  echo "</pre>";
+*/
 }
 
 $content = '<h2>Tickets</h2>';
+
+die();
 
 /*
 $content .= '<form action="tickets.php"><input type="text" name="view" placeholder="Ticket number" style="width: 100px;"><input type="submit" value="Open"></form> | <a href="tickets.php?viewall=true">View all</a> | ';
@@ -135,7 +142,7 @@ if(isset($_GET['view'])){
 	$comments = $framework->get('comments')->getAllByTicket($info['ticket.id']);
 	foreach($comments as $comment) {
 		$usersname = $framework->get('user')->get_user_info_by_id($comment['user_id']);
-		$content .= '<tr><th>'.$comment['dateadded'].'</th><td>'.$comment['comment'].'</td><td>'.$usersname['name'].'</td></tr>';
+		$content .= '<tr><th>'.$comment['lastupdated'].'</th><td>'.$comment['comment'].'</td><td>'.$usersname['name'].'</td></tr>';
 	} 
 					$content .= '
 					</tbody>

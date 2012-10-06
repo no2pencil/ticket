@@ -23,3 +23,7 @@ body {
 .center {
 	text-align: center;
 }
+#hiddenbutton {
+	color:transparent;
+	display:none;
+}
