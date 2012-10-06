@@ -101,11 +101,36 @@ if(isset($_GET['new'])){
 if($_POST['customers_select']) {
   $data = $framework->get('customers')->getInfoById($_POST['customers_select']);
         $phone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
+	$ticket_data = $framework->get('customers')->getCustomerTickets($data['customer.id']);
         $content .= '
-                        <legend>Customer ID : '.$data['customer.id'].'</legend>
+                        <h4>Customer ID : '.$data['customer.id'].'</h4>
                         <div class="control-group">
-                                <label class="control-label">Name : '.$data['customer.name'].'
+                                <label class="control-label">Name : '.$data['customer.name'].'</label>
                         </div>
+                        <div class="control-group">
+                                <label class="control-label">Email : '.$data['customer.email'].'</label>
+                        </div>
+                        <div class="control-group">
+                                <label class="control-label">Primary phone : '.$data['customer.primaryPhone'].'</label>
+                        </div>
+                        <div class="control-group">
+                                <label class="control-label">Secondary phone : '.$data['customer.secondaryPhone'].'</label>
+                       </div>
+                        <div class="control-group">
+                                <label class="control-label">Address : '.$data['customer.address'].'</label>
+                        </div>
+                        <div class="control-group">
+                                <label class="control-label">Referral : '.$data['customer.referral'].'</label>
+                        </div>
+
+			<h4>Tickets </h4>
+			<div class="control-group">';
+				foreach($ticket_data as $ticket_data_element) {
+					$content .= '<label class="control-label">Ticket : '.$ticket_data_element['ticket.invoice'].'</label>';
+					$content .= '<label class="control-label">Status : '.$ticket_data_element['status.status'].'</label>';
+				}
+				$content .='<label><hr></label>
+			</div>
 	';
 }
 
@@ -154,19 +179,19 @@ if($_GET['edit']=='true') {
                         <div class="control-group">
                                 <label class="control-label">Secondary phone</label>
                                 <div class="controls">
-                                        <input type="text" name="secondaryPhone" value="'.$data['seondaryPhone'].'">
+                                        <input type="text" name="secondaryPhone" value="'.$data['customer.seondaryPhone'].'">
                                 </div>
                        </div>
                         <div class="control-group">
                                 <label class="control-label">Address</label>
                                 <div class="controls">
-                                        <input type="text" name="address" value="'.$data['address'].'">
+                                        <input type="text" name="address" value="'.$data['customer.address'].'">
                                 </div>
                         </div>
                         <div class="control-group">
                                 <label class="control-label">Referral</label>
                                 <div class="controls">
-                                        <input type="text" name="referral" value="'.$data['referral'].'">
+                                        <input type="text" name="referral" value="'.$data['customer.referral'].'">
                                 </div>
                         </div>
                         <div class="form-actions">
