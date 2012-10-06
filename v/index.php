@@ -114,9 +114,11 @@
 			</div>
 		</div>
 	<script type="text/javascript">
-          $(".chzn-select").chosen();
-          $(".chzn-select-deselect").chosen({allow_single_deselect:true});
-          $("#customers_select_form").change(function() {
+          //j$(document).ready(function(e) {
+          //  e.preventDefault();
+          $('.chzn-select').chosen();
+          $('.chzn-select-deselect').chosen({allow_single_deselect:true});
+          $('#customers_select_form').change(function() {
             $('#customers_select_form').submit();
           });
 	</script>

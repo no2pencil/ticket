@@ -1,9 +1,4 @@
 <?php
-if($_POST) {
-  echo "<pre>";
-  print_r($_POST);
-  echo "</pre>";
-}
 $content = '<h2>Customers</h2>';
 $content .= '
         <div class="btn-group" style="margin: 9px 0;">
@@ -95,5 +90,54 @@ if(isset($_GET['new'])){
 				<button type="submit" class="btn btn-primary">Save</button>
 			</div>
 		</form>';
+}
+
+if($_POST['customers_select']) {
+  $data = $framework->get('customers')->getInfoById($_POST['customers_select']);
+        $phone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
+        $content .= '
+                <form action="customers.php" method="post" class="form-horizontal">
+                        <input type="hidden" name="savenew" value="true">
+                        <legend>Customer ID : '.$data['customer.id'].'</legend>
+                        <div class="control-group">
+                                <label class="control-label">Name</label>
+                                <div class="controls">
+                                        <input type="text" name="name" value="'.$data['customer.name'].'">
+                                </div>
+                        </div>
+                        <div class="control-group">
+                                <label class="control-label">Email</label>
+                                <div class="controls">
+                                        <input type="text" name="email" value="'.$data['customer.email'].'">
+                                </div>
+                        </div>
+                        <div class="control-group">
+                                <label class="control-label">Primary phone</label>
+                                <div class="controls">
+                                        <input type="text" name="primaryPhone" value="'.$phone.'">
+                                </div>
+                        </div>
+                        <div class="control-group">
+                                <label class="control-label">Secondary phone</label>
+                                <div class="controls">
+                                        <input type="text" name="secondaryPhone" value="'.$data['seondaryPhone'].'">
+                                </div>
+                       </div>
+                        <div class="control-group">
+                                <label class="control-label">Address</label>
+                                <div class="controls">
+                                        <input type="text" name="address" value="'.$data['address'].'">
+                                </div>
+                        </div>
+                        <div class="control-group">
+                                <label class="control-label">Referral</label>
+                                <div class="controls">
+                                        <input type="text" name="referral" value="'.$data['referral'].'">
+                                </div>
+                        </div>
+                        <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                </form>';
 }
 ?>
