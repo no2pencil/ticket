@@ -1,10 +1,16 @@
 <?php
+if($_GET['customer_id']) $customer_id=$_GET['customer_id'];
+if($_POST['customers_select']) $customer_id=$_POST['customers_select'];
 $content = '<h2>Customers</h2>';
 $content .= '
         <div class="btn-group" style="margin: 9px 0;">
           <a href="customers.php?viewall=true" class="btn">View All</a>
           <a href="customers.php?new=true" class="btn">New Customer</a>
-          <a id="newticket" href="tickets.php?new=true" data-toggle="button" class="btn">New Ticket</a>
+';
+if($customer_id) {
+          $content .= '<a href="customers.php?edit=true&customer_id='.$customer_id.'" class="btn">Edit Customer</a>';
+}
+          $content .= '<a id="newticket" href="tickets.php?new=true" data-toggle="button" class="btn">New Ticket</a>
         </div>';
 $content .= '<div style="margin-bottom: 15px;"></div></form>';
 
@@ -96,8 +102,36 @@ if($_POST['customers_select']) {
   $data = $framework->get('customers')->getInfoById($_POST['customers_select']);
         $phone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
         $content .= '
+                        <legend>Customer ID : '.$data['customer.id'].'</legend>
+                        <div class="control-group">
+                                <label class="control-label">Name : '.$data['customer.name'].'
+                        </div>
+	';
+}
+
+if($_POST['update']=='true') {
+        $result = $framework->get('customers')->update($_POST['customer_id'], $_POST['name'], $_POST['email'], $_POST['primaryPhone'], $_POST['secondaryPhone'], $_POST['address'], $_POST['referral']);
+        if($result){
+                $content .= '
+                        <div class="alert alert-success">
+                                <strong>Customer has been updated</strong> | <a href="customers.php?new=true">Add another</a>
+                        </div>';
+        } else {
+                $content .= '
+                        <div class="alert alert-error">
+                                <strong>Error: </strong>Something went wrong. | <a href="#" onclick="history.go(-2)">Back</a>
+                        </div>';
+        }
+
+}
+
+if($_GET['edit']=='true') {
+  $data = $framework->get('customers')->getInfoById($_GET['customer_id']);
+        $phone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
+        $content .= '
                 <form action="customers.php" method="post" class="form-horizontal">
-                        <input type="hidden" name="savenew" value="true">
+                        <input type="hidden" name="update" value="true">
+			<input type="hidden" name="customer_id" value="'.$data['customer.id'].'">
                         <legend>Customer ID : '.$data['customer.id'].'</legend>
                         <div class="control-group">
                                 <label class="control-label">Name</label>
@@ -136,7 +170,7 @@ if($_POST['customers_select']) {
                                 </div>
                         </div>
                         <div class="form-actions">
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                 </form>';
 }

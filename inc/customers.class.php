@@ -19,6 +19,36 @@ class customers extends framework {
 		}
 		return false;
 	}
+
+	/*
+	 * update(int $customer_id, string $name, string $email, string $primaryPhone, string $secondaryPhone, string $address, string $referral)
+	 * Updates a customer in the database, based on the provided customer id, & form data
+	 * Returns true on success, false on failure
+	*/
+	public function update($customer_id, $name, $email, $primaryPhone, $secondaryPhone, $address, $referral){
+		$params = array();
+		$fragments = array();
+		$sql = "UPDATE customers SET ";
+		$sql .= " name = ".$name;
+		$sql .= " email = ".$email;
+		$sql .= " primaryPhone = ".$primaryPhone;
+		$sql .= " secondaryPhone = ".$secondaryPhone;
+		$sql .= " address = ".$address;
+		$sql .= " referral = ".$referral;
+		$sql .= substr($query, 0, -1);
+		$sql .= "WHERE customer_id='" . (int)$customer_id . "' LIMIT 1";
+		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
+			$stmt->bind_param('ssssssss', $name, $email, $primaryPhone, $secondaryPhone, $address, $referral, $createDate, $creator);
+
+			$stmt->bind_param($params);
+			$stmt->execute();
+			$stmt->store_result();
+			if($stmt->affected_rows == 1) {
+				return true;
+			}
+			return false;
+		}
+	}
 	
 	/*
 	 * search(string $value, string $exclude, string $columns=array('name'))
@@ -128,8 +158,8 @@ class customers extends framework {
 					<span class="caret"></span>
 				  </button>
 				  <ul class="dropdown-menu">
-					<li><a href="#">Edit</a></li>
-					<li><a href="#">Delete</a></li>
+					<li><a href="#">New Ticket</a></li>
+					<li><a href="customers.php?edit=true&customer_id='.$value['customer.id'].'">Edit</a></li>
 				  </ul>
 				</div></td>';
 			$result .= '</tr>';

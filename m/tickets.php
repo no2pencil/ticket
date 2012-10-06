@@ -2,29 +2,9 @@
 date_default_timezone_set("EST");
 if(!empty($_POST['comment'])) {
   $return = $framework->get('comments')->setComment($_POST['invoice_id'], $_POST['comment'], date("Y-m-d"), $_SESSION['user_id']);
-/*
-  echo "<pre>";
-  print_r($_POST);
-  echo "</pre>";
-*/
 }
 
 $content = '<h2>Tickets</h2>';
-
-die();
-
-/*
-$content .= '<form action="tickets.php"><input type="text" name="view" placeholder="Ticket number" style="width: 100px;"><input type="submit" value="Open"></form> | <a href="tickets.php?viewall=true">View all</a> | ';
-*/
-
-/*
-$content .= '<form action="tickets.php"><input type="hidden" name="newticket" value="true"><select name="ticketType">';
-$types = $framework->get('tickets')->getTypes();
-foreach($types as $id => $type){
-	$content .= '<option value="' . $id . '">' . $type['name'] . '</option>';
-}
-$content .= '</select><input type="submit" value="New ticket"></form><br><br>';
-*/
 
 $content .= '
         <div class="btn-group" style="margin: 9px 0;">
@@ -145,8 +125,9 @@ if(isset($_GET['view'])){
 		$content .= '<tr><th>'.$comment['lastupdated'].'</th><td>'.$comment['comment'].'</td><td>'.$usersname['name'].'</td></tr>';
 	} 
 					$content .= '
-					</tbody>
-				<tbody>
+					</tbody></table>
+				<table class="table">
+                                <tbody>
 <tr><td>
         <form method="POST" action="tickets.php?view='.$_GET['view'].'"  class="well form-search">
         <fieldset>
