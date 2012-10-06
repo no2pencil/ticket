@@ -27,15 +27,15 @@ class customers extends framework {
 	*/
 	public function update($customer_id, $name, $email, $primaryPhone, $secondaryPhone, $address, $referral){
 		$sql = "UPDATE customers SET ";
-		$sql .= " name = '".$name."', ";
-		$sql .= "email = '".$email."', ";
-		$sql .= "primaryPhone = '".$primaryPhone."', ";
-		$sql .= "secondaryPhone = '".$secondaryPhone."', ";
-		$sql .= "address = '".$address."', ";
-		$sql .= "referral = '".$referral."' ";
-		$sql .= "WHERE id='" . (int)$customer_id . "' LIMIT 1";
+		$sql .= "name = ?, ";
+		$sql .= "email = ?, ";
+		$sql .= "primaryPhone = ?, ";
+		$sql .= "secondaryPhone = ?, ";
+		$sql .= "address = ?, ";
+		$sql .= "referral = ? ";
+		$sql .= "WHERE id=? LIMIT 1";
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
-			$stmt->bind_param('ssssssi', $name, $email, $primaryPhone, $secondaryPhone, $address, $referral, $customer_id);
+			$stmt->bind_param('sssssss', $name, $email, $primaryPhone, $secondaryPhone, $address, $referral, $customer_id);
 			$stmt->execute();
 			$stmt->store_result();
 			if($stmt->affected_rows == 1) {
