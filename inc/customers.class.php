@@ -26,23 +26,15 @@ class customers extends framework {
 	 * Returns true on success, false on failure
 	*/
 	public function update($customer_id, $name, $email, $primaryPhone, $secondaryPhone, $address, $referral){
-		$sql = "UPDATE customers SET ";
-		$sql .= "name = ?, ";
-		$sql .= "email = ?, ";
-		$sql .= "primaryPhone = ?, ";
-		$sql .= "secondaryPhone = ?, ";
-		$sql .= "address = ?, ";
-		$sql .= "referral = ? ";
+		$sql = "UPDATE customers SET name = ?, email = ?, primaryPhone = ?, secondaryPhone = ?, address = ?, referral = ? ";
 		$sql .= "WHERE id=? LIMIT 1";
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
 			$stmt->bind_param('sssssss', $name, $email, $primaryPhone, $secondaryPhone, $address, $referral, $customer_id);
 			$stmt->execute();
 			$stmt->store_result();
-			if($stmt->affected_rows == 1) {
-				return true;
-			}
-			return false;
+			if($stmt->affected_rows == 1) return true;
 		}
+		return false;
 	}
 	
 	/*
