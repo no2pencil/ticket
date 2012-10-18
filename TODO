@@ -1,14 +1,16 @@
 Home :
+These should be moved to a graph/specific location because Google Charts API requires header modification
 Graphs (Google Charts API) breakdown of current open invoices
 Graphs (Google Charts API) breakdown of customer sources (functional, needs link)
 
 Customers :
-Display most recent customers
+Customer Home Page : Display most recent customers
 Assign ticket to that customer
 
 Tickets :
 Tickets Home Page : Display all currently open invoices (moved to main, need to replicate)
 Create new tickets
+Search functionality is jacked, it needs corrected or possibly re-written
 
 Administration :
 Manage users for the site
@@ -25,7 +27,7 @@ Email administration of tickets ready for invoice
 Users can view all tickets open, & just their own tickets
 Administrators can view reporting
 One click to invoice printing (using pdf/graphic api)
-VOIP Api (One Click Dial) (was working, need to correct)
+VOIP Api (One Click Dial) (was working, corrected, please verify)
 
 Services :
 Windows Scheduled task to automate db backup/maintance/updates
