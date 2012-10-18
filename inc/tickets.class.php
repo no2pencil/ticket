@@ -161,7 +161,7 @@ class tickets extends framework {
 		$fresult = array();
 		while($row = $result->fetch_array()){
 			$fresult[$row['id']] = array("name" => $row['name'], "description" => $row['description']);
-			$fresult[$row['id']]['specialFields'] = $this->generateSpecialFields($row['specialFields']);
+			//$fresult[$row['id']]['specialFields'] = $this->generateSpecialFields($row['specialFields']);
 		}
 		return $fresult;
 	}

@@ -1,6 +1,16 @@
 <?php
-if($_GET['customer_id']) $customer_id=$_GET['customer_id'];
-if($_POST['customers_select']) $customer_id=$_POST['customers_select'];
+/* Gather customer id from post or get array */
+if(isset($_POST['customers_select'])) {
+	$customer_id=$_POST['customers_select'];
+	$_GET['view']=$customer_id;
+}
+if(isset($_GET['customer_id'])) {
+	$customer_id=$_GET['customer_id'];
+}
+if(isset($_GET['view'])) {
+	$customer_id=$_GET['view'];
+	$_POST['customers_select']=$customer_id;
+}
 $content = '<h2>Customers</h2>';
 $content .= '
         <div class="btn-group" style="margin: 9px 0;">
@@ -98,8 +108,9 @@ if(isset($_GET['new'])){
 		</form>';
 }
 
-if($_POST['customers_select']) {
-  $data = $framework->get('customers')->getInfoById($_POST['customers_select']);
+//if($_POST['customers_select']) {
+if(isset($_GET['view'])) {
+	$data = $framework->get('customers')->getInfoById($customer_id);
         $phone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
 	$ticket_data = $framework->get('customers')->getCustomerTickets($data['customer.id']);
         $content .= '
@@ -151,7 +162,7 @@ if($_POST['update']=='true') {
 }
 
 if($_GET['edit']=='true') {
-  $data = $framework->get('customers')->getInfoById($_GET['customer_id']);
+	$data = $framework->get('customers')->getInfoById($customer_id);
         $phone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
         $content .= '
                 <form action="customers.php" method="post" class="form-horizontal">

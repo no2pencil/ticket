@@ -66,9 +66,9 @@
               <?php
                 $data = $framework->get('customers')->getAll();
                 foreach($data as $id => $customer) {
-                  $phone = $framework->get('utils')->formatPhone($customer[0]['customer.primaryPhone']);
-                  printf("<option value=\"%s\">%s %s</option>\n",$customer[0]['customer.id'],$customer[0]['customer.name'],$phone);
-                }
+			$phone = $framework->get('utils')->formatPhone($customer[0]['customer.primaryPhone']);
+			printf("<option value=\"%s\">%s %s</option>\n",$customer[0]['customer.id'],$customer[0]['customer.name'],$phone);
+		}
               ?>
             </select><input type="submit" id="hiddenbutton" value=""></form></li>
             <li><a href="customers.php?advancedsearch=true">Advanced Search</a></li>
@@ -114,8 +114,6 @@
 			</div>
 		</div>
 	<script type="text/javascript">
-          //j$(document).ready(function(e) {
-          //  e.preventDefault();
           $('.chzn-select').chosen();
           $('.chzn-select-deselect').chosen({allow_single_deselect:true});
           $('#customers_select_form').change(function() {
