@@ -113,11 +113,16 @@
 				?>
 			</div>
 		</div>
-	<script type="text/javascript">
-          $('.chzn-select').chosen();
-          $('.chzn-select-deselect').chosen({allow_single_deselect:true});
-          $('#customers_select_form').change(function() {
-            $('#customers_select_form').submit();
+	<script> 
+          var selects = $('.chzn-select');
+          selects.chosen().change(function() {
+            var selected = [];
+            selects.find("option").each(function() {
+              if (this.selected) {
+                selected[this.value] = this;
+              }
+              $('#customers_select_form').submit();
+            });
           });
 	</script>
 	</body>

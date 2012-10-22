@@ -131,10 +131,11 @@ if(isset($_GET['view'])){
 <tr><td>
         <form method="POST" action="tickets.php?view='.$_GET['view'].'"  class="well form-search">
         <fieldset>
+          <!-- Span6 has reported IE7 issues -->
           <div class="control-group">
             <label class="control-label" for="textarea">Comment:</label>
           <div class="controls">
-            <textarea class="input-xlarge" id="comment" name="comment" rows="6"></textarea>
+            <textarea class="span6 input-xlarge" id="comment" name="comment" rows="6"></textarea>
           </div></div>
           <div class="form-actions">
             <input type="hidden" name="invoice_id" value="'.$_GET['view'].'">
