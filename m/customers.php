@@ -20,7 +20,7 @@ $content .= '
 if($customer_id) {
           $content .= '<a href="customers.php?edit=true&customer_id='.$customer_id.'" class="btn">Edit Customer</a>';
 }
-          $content .= '<a id="newticket" href="tickets.php?new=true" data-toggle="button" class="btn">New Ticket</a>
+          $content .= '<a id="newticket" href="tickets.php?new=true&customer_id='.$customer_id.'" data-toggle="button" class="btn">New Ticket</a>
         </div>';
 $content .= '<div style="margin-bottom: 15px;"></div></form>';
 

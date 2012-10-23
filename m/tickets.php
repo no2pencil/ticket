@@ -106,6 +106,48 @@ if(isset($_GET['search'])) {
         }
 }
 
+if(isset($_GET['new'])) {
+	if(isset($_POST['comment'])) {
+		if(!$framework->get('tickets')->add($_POST['customer_id'], '', '', '', '', '', $_POST['comment'])) {
+			die("Unable to create new ticket, for whatever reason :(");
+		}
+		else {
+			die("Yay!");
+		}
+	}
+	else {
+		$CustomerData = $framework->get('customers')->getInfoById($_GET['customer_id']); 
+		$content .= '<h3>Creating ticket for '.$CustomerData['customer.name'];
+/*
+	echo "<pre>";
+	print_r($CustomerData);
+	echo "</pre>";
+*/
+		$content .= '<table class="table">
+		<tbody>
+		<tr><td>
+		<form method="POST" action="tickets.php?new=true" class="well form-search">
+			<fieldset>
+			<!-- Span6 has reported IE7 issues -->
+			<div class="control-group">
+				<label class="control-label" for="textarea">Comment:</label>
+				<div class="controls">
+					<textarea class="span6 input-xlarge" id="comment" name="comment" rows="6"></textarea>
+				</div>
+			</div>
+			<div class="form-actions">
+				<input type="hidden" name="invoice_id" value="'.$_GET['view'].'">
+				<button type="submit" class="btn btn-primary">Save</button>
+				<button class="btn btn-danger">Cancel</button>
+			</div>
+			</fieldset>
+		</form>
+		</tr></td>
+                </tbody>
+                </table>';
+	}
+}
+
 if(isset($_GET['view'])){
 	$info = $framework->get('tickets')->getTicketById($_GET['view']);
 	if($info) {
