@@ -220,12 +220,15 @@ if(isset($_POST['search'])){
 	$content .= '<legend>Search results</legend>';
 	$searchCols = (isset($_POST['searchcols'])) ? $_POST['searchcols'] : array('id', 'customer', 'invoice');
 	$exclude = (isset($_POST['exclude'])) ? $_POST['exclude'] : '';
-	$results = $framework->get('tickets')->search($_POST['search'], $exclude, $searchCols);
-	var_dump($results);
+	//$results = $framework->get('tickets')->search($_POST['search'], $exclude, $searchCols);
+	$id = $framework->get('tickets')->searchTicketById($_POST['search']);
+	$results = $framework->get('tickets')->getTicketById($id);
 	if(empty($results)){
 		$content .= '<div class="alert alert-error"><strong>No results found</strong> <a href="tickets.php?advancedsearch=true">Redefine search</a></div>';
 	} else {
-		$content .= $framework->get('tickets')->generateListDisplay($results);
+		$tickets = array();
+		$tickets[0] = $results;
+		$content .= $framework->get('tickets')->generateListDisplay($tickets);
 	}
 } 
 

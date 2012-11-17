@@ -57,11 +57,11 @@ class tickets extends framework {
 	 * Returns id, & that is passed to getTicketById 
 	 * Returns false on failure
 	*/
-	public function searchTicketById($id) {
-		$sql = "SELECT id from tickets where invoice like '%$id%'";
+	public function searchTicketById($invoice) {
+		$sql = "SELECT id from tickets where invoice like '%$invoice%'";
 		$result = parent::get('db')->mysqli()->query($sql);
 		if($result) {
-			$id= $result->fetch_array(MYSQLI_ASSOC);
+			$id=$result->fetch_array(MYSQLI_ASSOC);
 			if($id) {
 				return $id[id];
 			}
@@ -286,11 +286,9 @@ class tickets extends framework {
 					<tr><th>Invoice</th><th>Customer</th><th>Call</th><th>Status</th></tr>
 				</thead>
 				<tbody>';
-		foreach($tickets as $key => $ticket){
-			$result .= '<tr>';
-			$result .= '<td><a href="tickets.php?view=' . $ticket['ticket.id'] . '">' .  $ticket['ticket.invoice'] . '</a></td>';
-			$result .= '<td><a href="customers.php?view=' . $ticket['customer.id'] . '" class="btn">' . $ticket['customer.name'] . '</a></td>';
-			$result .= '<td>';
+		foreach($tickets as $key => $ticket) {
+			$result .= '<tr><td><a href="tickets.php?view=' . $ticket['ticket.id'] . '">' .  $ticket['ticket.invoice'] . '</a></td>';
+			$result .= '<td><a href="customers.php?view=' . $ticket['customer.id'] . '" class="btn">' . $ticket['customer.name'] . '</a></td><td>';
 			if(!empty($ticket['customer.primaryPhone'])){
 				$ringurl = parent::get('ring_central')->make_url($ticket['customer.primaryPhone']);
 				if($ringurl){
@@ -302,18 +300,16 @@ class tickets extends framework {
 			} else {
 				$result .= 'No phone on file';
 			}
-			$result .= '</td>';
-			$result .= '<td><div class="btn-group">';
-			$result .= '<button class="btn dropdown-toggle">' . $ticket['status.status'];
+			$result .= '</td><td><div class="btn-group">';
+			$result .= '<button class="btn">'.$ticket['status.status'].'</button>';
 			$result .= '<button class="btn dropdown-toggle" data-toggle="dropdown">';
+			$result .= '<span class="caret"></span></button>';
 			$result .= '<ul class="dropdown-menu">
-                                            <li><a href="#">View</a></li>
-                                            <li><a href="#">Edit</a></li>
-                                            <li class="divider"></li>
-                                            <li><a href="#">Close</a></li>
-                                    </ul>';
-			$result .= '</div></td>';
-			$result .= '</tr>';
+				<li><a href="#">View</a></li>
+				<li><a href="#">Edit</a></li>
+				<li class="divider"></li>
+				<li><a href="#">Close</a></li>';
+			$result .= '</ul></div></td></tr>';
 		}
 		$result .= '</tbody></table>';
 		return $result;
