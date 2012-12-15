@@ -27,6 +27,16 @@ class pdf extends framework {
         $pdf->Ln(10);
         
         $pdf->SetFont('Arial', '', '13');
+
+        $cols = array(
+            array("Bill to", "L"),
+            array("Ship to", "L")
+        );
+        $data = array(
+            array("Name: Sean Grant", "Name: Sean Grant"),
+            array("My adress 1234 Street City, State", )
+        );
+
         $cols = array(
             array("Order Number", "C"),
             array("Invoice Date", "C"),
