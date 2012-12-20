@@ -101,18 +101,61 @@
   </div>
 </div>
 
-<div id="NewCustomerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<?php /*
+       * Modal to loan an overlay with the new customer form
+       */ ?>
+
+<div id="NewCustomerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="NewCustomerModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Modal header</h3>
+    <h3 id="NewCustomerModalLabel">New Customer</h3>
   </div>
   <div class="modal-body">
-    <p>One fine body.</p>
+    <form action="customers.php" method="post" class="form-horizontal">
+      <input type="hidden" name="savenew" value="true">
+      <legend>New customer</legend>
+      <div class="control-group">
+        <label class="control-label">Name</label>
+        <div class="controls">
+          <input type="text" name="name">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+          <input type="text" name="email">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Primary phone</label>
+        <div class="controls">
+          <input type="text" name="primaryPhone">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Secondary phone</label>
+        <div class="controls">
+          <input type="text" name="secondaryPhone">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Address</label>
+        <div class="controls">
+          <input type="text" name="address">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Referral</label>
+        <div class="controls">
+          <input type="text" name="referral">
+        </div>
+      </div>
   </div>
   <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary">Save changes</button>
+    <button class="btn warning" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary">Save</button>
   </div>
+  </form>
 </div>
 
 <div class="alert">
