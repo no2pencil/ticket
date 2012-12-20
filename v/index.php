@@ -59,6 +59,7 @@
           <ul class="dropdown-menu">
             <li><a href="customers.php?viewall=true">All customers</a></li>
             <li><a href="customers.php?new=true">New Customer</a></li>
+            <li><a href="#NewCustomerModal" data-toggle="modal">New Customer (Modal)</a></li>
             <li class="divider"></li>
             <li><form id="customers_select_form" action="customers.php" method="post" class="form-search" style="padding: 3px 15px; margin: 0;">
 <select id="customers_select" name="customers_select" data-placeholder="Customer Data" class="chzn-select searh-query span2"> 
@@ -97,6 +98,20 @@
         </a></li>
       </ul>
     </div>
+  </div>
+</div>
+
+<div id="NewCustomerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Modal header</h3>
+  </div>
+  <div class="modal-body">
+    <p>One fine body.</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary">Save changes</button>
   </div>
 </div>
 

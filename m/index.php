@@ -1,6 +1,7 @@
 <?php
 $content .= '<h2>Home</h2>';
 
+/* There should be a function to gather this number, not in the file */
 /*
 $tickets = $framework->get('tickets')->getAll();
 $ticketcount = count($tickets);
