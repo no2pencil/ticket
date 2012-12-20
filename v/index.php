@@ -58,8 +58,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><a href="customers.php?viewall=true">All customers</a></li>
-            <li><a href="customers.php?new=true">New Customer</a></li>
-            <li><a href="#NewCustomerModal" data-toggle="modal">New Customer (Modal)</a></li>
+            <li><a href="#NewCustomerModal" data-toggle="modal">New Customer</a></li>
             <li class="divider"></li>
             <li><form id="customers_select_form" action="customers.php" method="post" class="form-search" style="padding: 3px 15px; margin: 0;">
 <select id="customers_select" name="customers_select" data-placeholder="Customer Data" class="chzn-select searh-query span2"> 
