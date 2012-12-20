@@ -186,9 +186,18 @@ class customers extends framework {
 	/*
 	 * getAll()
 	 * Returns all customers
+	 * Returns false on error
 	*/
 	public function getAll(){
-		$stillmore = true;
+		$sql = "SELECT * FROM customers AS customer LEFT JOIN users AS creator ON customer.creator = creator.id;";
+		$result = parent::get('db')->mysqli()->query($sql);
+		if(!$result){
+			return false;
+		}
+		$rows = parent::get('db')->fetchArray($result);
+		return $rows;
+
+		/*$stillmore = true;
 		$result = array();
 		$page = 0;
 		while($stillmore){
@@ -198,7 +207,8 @@ class customers extends framework {
 			}
 			$result[] = $tmp;
 			$page++;
-		}
+		}*/
+
 	}
 }
 ?>

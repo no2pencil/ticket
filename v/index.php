@@ -65,8 +65,9 @@
               <?php
                 $data = $framework->get('customers')->getAll();
                 foreach($data as $id => $customer) {
-			$phone = $framework->get('utils')->formatPhone($customer[0]['customer.primaryPhone']);
-			printf("<option value=\"%s\">%s %s</option>\n",$customer[0]['customer.id'],$customer[0]['customer.name'],$phone);
+
+			$phone = $framework->get('utils')->formatPhone($customer['customer.primaryPhone']);
+			printf("<option value=\"%s\">%s %s</option>\n",$customer['customer.id'],$customer['customer.name'],$phone);
 		}
               ?>
             </select><input type="submit" id="hiddenbutton" value=""></form></li>
