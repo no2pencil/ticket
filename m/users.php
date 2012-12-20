@@ -24,10 +24,10 @@ $content .= '
 $content .= '<div style="margin-bottom: 15px;"></div>';
 
 // Page content for processing and stuff
-if(isset($_GET['new'])){
-	if($_GET['new'] == 'process'){
+if(isset($_POST['new'])){
+	if($_POST['new'] == 'process'){
 		// The form has been submitted, process data and return result
-		$result = $framework->get('user')->add($_GET['name'], $_GET['username'], $_GET['password'], 0); // TODO: User permissions and such
+		$result = $framework->get('user')->add($_POST['name'], $_POST['username'], $_POST['password'], 0); // TODO: User permissions and such
 		if($result === true){
 			$content .= '
 				<div class="alert alert-success">

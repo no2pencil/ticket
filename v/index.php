@@ -80,8 +80,7 @@
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="users.php?new=true">New User</a></li>
-            <li><a href="#NewUserModal" data-toggle="modal">New User (Modal)</a></li>
+            <li><a href="#NewUserModal" data-toggle="modal">New User</a></li>
             <li><a href="users.php?viewall=true">All Users</a></li>
             <li class="divider"></li>
             <li><a href="#">Search Users</a></li>
@@ -174,7 +173,6 @@
 
 <div id="NewUserModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="NewUserModalLabel" aria-hidden="true">
   <form action="users.php" method="post" class="form-horizontal">
-  <input type="hidden" name="savenew" value="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
     <h3 id="NewCustomerModalLabel">New User</h3>
