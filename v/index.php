@@ -150,8 +150,8 @@
       </div>
   </div>
   <div class="modal-footer">
-    <button class="btn warning" data-dismiss="modal" aria-hidden="true">Close</button>
     <button class="btn btn-primary">Save</button>
+    <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Cancel</button>
   </div>
   </form>
 </div>
@@ -165,13 +165,13 @@
   <div class="modal-body">
   </div>
   <div class="modal-footer">
-    <button class="btn warning" data-dismiss="modal" aria-hidden="true">Close</button>
     <button class="btn btn-primary">Save</button>
+    <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Cancel</button>
   </div>
   </form>
 </div>
 
-<div id="NewUserModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="NewUserModalLabel" aria-hidden="true">
+<div id="NewUserModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="NewUserModalLabel" aria-hidden="false">
   <form action="users.php" method="post" class="form-horizontal">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
@@ -208,8 +208,8 @@
     </fieldset>
   </div>
   <div class="modal-footer">
-    <button class="btn warning" data-dismiss="modal" aria-hidden="true">Close</button>
     <button class="btn btn-primary">Save</button>
+    <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Cancel</button>
   </div>
   </form>
 </div>
@@ -218,7 +218,7 @@
 
 <div class="alert">
   <button class="close" data-dismiss="alert">x</button>
-  <strong>Warning!</strong> this project is still under heavy construciton. Tread lightly!
+  <strong>Warning!</strong> this project is still under heavy construciton. Work your wget magic!
 </div>
 
 		<div class="wrapper">
@@ -239,6 +239,13 @@
               }
               $('#customers_select_form').submit();
             });
+          });
+          $('#NewCustomerModal').on('shown', function() {
+            $('#NewCustomerModal').click();
+          });
+          $('#NewUserModal').on('shown', function () {
+            //$('#NewUserModal').modal('show');
+            $('#NewUserModal').click();
           });
 	</script>
 	</body>

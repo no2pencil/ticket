@@ -283,11 +283,47 @@ class tickets extends framework {
 		$result = '
 			<table class="table">
 				<thead>
-					<tr><th>Invoice</th><th>Customer</th><th>Call</th><th>Status</th></tr>
+					<tr><th>&nbsp;</th><th>Invoice</th><th>Customer</th><th>Call</th><th>Status</th></tr>
 				</thead>
 				<tbody>';
 		foreach($tickets as $key => $ticket) {
-			$result .= '<tr><td><a href="tickets.php?view=' . $ticket['ticket.id'] . '">' .  $ticket['ticket.invoice'] . '</a></td>';
+			switch ($ticket['status.status']) {
+				case "Pending Payment":
+					$btn_atr='badge-success';
+					$btn_char='">$';
+				break;
+				case "Call Customer Admin":
+				case "Call Customer Tech":
+					$btn_atr='badge-warning';
+					$btn_char=' icon-warning-sign">';
+				break;
+				case "In Progress":
+					$btn_atr='';
+					$btn_char=' icon-wrench">';
+				break;
+				case "Parts need to be ordered";
+					$btn_atr='badge-info';
+					$btn_char=' icon-shopping-cart">';
+				break;
+				case "Post Payment";
+					$btn_atr='badge-important';
+					$btn_char=' icon-fire">';
+				break;
+				case "Waiting for Parts";
+					$btn_atr='badge-info';
+					$btn_char=' icon-time">';
+				break;
+				default:
+					$btn_atr='';
+					$btn_char='">';
+				break;
+			}
+			$result .= '<tr><td><a href="#" rel="tooltip" placement="left" title="';
+			$result .= $ticket['status.status'];
+			$result .= '"><span class="badge '.$btn_atr.'">';
+			$result .= '<em class="icon-white';
+			$result .= $btn_char.'</em></span></a></td>';
+			$result .= '<td><a href="tickets.php?view=' . $ticket['ticket.id'] . '">' .  $ticket['ticket.invoice'] . '</a></td>';
 			$result .= '<td><a href="customers.php?view=' . $ticket['customer.id'] . '" class="btn">' . $ticket['customer.name'] . '</a></td><td>';
 			if(!empty($ticket['customer.primaryPhone'])){
 				$ringurl = parent::get('ring_central')->make_url($ticket['customer.primaryPhone']);
