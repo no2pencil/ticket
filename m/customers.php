@@ -137,7 +137,8 @@ if(isset($_GET['view'])) {
 			<h4>Tickets </h4>
 			<div class="control-group">';
 				foreach($ticket_data as $ticket_data_element) {
-					$content .= '<label class="control-label">Ticket : '.$ticket_data_element['ticket.invoice'].'</label>';
+					$content .= '<label class="control-label">Ticket : ';
+					$content .= '<a href="tickets.php?view='.$ticket_data_element['ticket.id'].'">'.$ticket_data_element['ticket.invoice'].'</a></label>';
 					$content .= '<label class="control-label">Status : '.$ticket_data_element['status.status'].'</label>';
 				}
 				$content .='<label><hr></label>
