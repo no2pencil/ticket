@@ -301,17 +301,21 @@ class tickets extends framework {
 					$btn_atr='';
 					$btn_char=' icon-wrench">';
 				break;
-				case "Parts need to be ordered";
+				case "Parts need to be ordered":
 					$btn_atr='badge-info';
 					$btn_char=' icon-shopping-cart">';
 				break;
-				case "Post Payment";
+				case "Post Payment":
 					$btn_atr='badge-important';
 					$btn_char=' icon-fire">';
 				break;
-				case "Waiting for Parts";
+				case "Waiting for Parts":
 					$btn_atr='badge-info';
 					$btn_char=' icon-time">';
+				break;
+				case "Closed":
+					$btn_atr='badge-inverse';
+					$btn_char=' icon-lock">';
 				break;
 				default:
 					$btn_atr='';

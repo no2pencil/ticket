@@ -137,8 +137,50 @@ if(isset($_GET['view'])) {
 			<h4>Tickets </h4>
 			<div class="control-group">';
 				foreach($ticket_data as $ticket_data_element) {
+		                        switch ($ticket_data_element['status.status']) {
+                		                case "Pending Payment":
+                                		        $btn_atr='btn-success';
+                                        		$btn_char='">$';
+                                		break;
+                                		case "Call Customer Admin":
+                                		case "Call Customer Tech":
+                                        		$btn_atr='btn-warning';
+                                        		$btn_char=' icon-warning-sign">';
+                                		break;
+                                		case "In Progress":
+                                        		$btn_atr='';
+                                        		$btn_char=' icon-wrench">';
+                                		break;
+                                		case "Parts need to be ordered":
+                                        		$btn_atr='btn-info';
+                                        		$btn_char=' icon-shopping-cart">';
+                                		break;	
+                                		case "Post Payment":
+                                        		$btn_atr='btn-danger';
+                                        		$btn_char=' icon-fire">';
+                                		break;
+                                		case "Waiting for Parts":
+                                        		$btn_atr='btn-info';
+                                        		$btn_char=' icon-time">';
+                                		break;
+                                		case "Closed":
+                                        		$btn_atr='btn-inverse';
+                                        		$btn_char=' icon-lock">';
+						break;
+                               			default:
+                                        		$btn_atr='';
+                                        		$btn_char='">';
+                                		break;
+                        		}
+
 					$content .= '<label class="control-label">Ticket : ';
-					$content .= '<a href="tickets.php?view='.$ticket_data_element['ticket.id'].'">'.$ticket_data_element['ticket.invoice'].'</a></label>';
+
+					$content .= '<a href="tickets.php?view='.$ticket_data_element['ticket.id'].'" class="btn ';
+					$content .= $btn_atr.'" rel="tooltip" placement="left" title="';
+                        		$content .= $ticket_data_element['status.status'];
+					$content .= '">';
+					$content .= $ticket_data_element['ticket.invoice'];
+					$content .= '<i class="icon-white '.$btn_char.'</i></a></label>';
 					$content .= '<label class="control-label">Status : '.$ticket_data_element['status.status'].'</label>';
 				}
 				$content .='<label><hr></label>
