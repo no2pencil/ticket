@@ -1,7 +1,9 @@
 <?php
 date_default_timezone_set("EST");
-if(!empty($_POST['comment'])) {
-  $return = $framework->get('comments')->setComment($_POST['invoice_id'], $_POST['comment'], date("Y-m-d"), $_SESSION['user_id']);
+if($_POST['comment']) {
+	if(!$_POST['new']) {
+  		$return = $framework->get('comments')->setComment($_POST['invoice_id'], $_POST['comment'], date("Y-m-d"), $_SESSION['user_id']);
+	}
 }
 
 $content = '<h2>Tickets</h2>';
@@ -107,22 +109,43 @@ if(isset($_GET['search'])) {
 }
 
 if(isset($_GET['new'])) {
-	if(isset($_POST['comment'])) {
-		if(!$framework->get('tickets')->add($_POST['customer_id'], '', '', '', '', '', $_POST['comment'])) {
-			die("Unable to create new ticket, for whatever reason :(");
-		}
-		else {
-			die("Yay!");
-		}
+	if(isset($_GET['customer_id'])) {
+		$customer_id=$_GET['customer_id'];
 	}
-	else {
-		$CustomerData = $framework->get('customers')->getInfoById($_GET['customer_id']); 
+	if(isset($_POST['customer_id'])) {
+		$customer_id=$_POST['customer_id'];
+	}
+	if(!isset($customer_id)) {
+		die("Customer ID was not set!");
+	}
+	$CustomerData = $framework->get('customers')->getInfoById($customer_id);
+
+	if(isset($_POST['comment'])) {
+		// Get previous human readable ticket based on current id
+		$ticket_array = $framework->get('tickets')->getBulkOpen(1,1);
+		$ticket_id =(int)substr($ticket_array['ticket.invoice'], -4);
+		$ticket_id = date("Y").'-'.$ticket_id;
+		// Incriment, & store
+		while($framework->get('tickets')->searchTicketById($ticket_id)) {
+			// First pass should always return true...
+			$ticket_id_4=(int)substr($ticket_id, -4);
+			$ticket_id_4++;
+			$ticket_id = date("Y").'-'.$ticket_id_4;
+		}
+
+		$invoice_dbid = $framework->get('tickets')->add($customer_id, $ticket_id, 5, '', '', 56, '', date("Y-m-d"));
+		if(!$invoice_dbid) {
+			echo "<pre>";
+			print_r($_POST);
+			echo "</pre>";
+			die("Unable to create new ticket, for whatever reason :(");
+		} else {
+			if(!$framework->get('comments')->setComment($invoice_dbid, $_POST['comment'], date("Y-m-d"), $_SESSION['user_id'])) {
+				die("Unable to comment on new ticket, for whatever reason :(");
+			} 
+		}
+	} else {
 		$content .= '<h3>Creating ticket for '.$CustomerData['customer.name'];
-/*
-	echo "<pre>";
-	print_r($CustomerData);
-	echo "</pre>";
-*/
 		$content .= '<table class="table">
 		<tbody>
 		<tr><td>
@@ -137,6 +160,7 @@ if(isset($_GET['new'])) {
 			</div>
 			<div class="form-actions">
 				<input type="hidden" name="invoice_id" value="'.$_GET['view'].'">
+				<input type="hidden" name="customer_id" value="'.$customer_id.'">
 				<button type="submit" class="btn btn-primary">Save</button>
 				<button class="btn btn-danger">Cancel</button>
 			</div>

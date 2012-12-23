@@ -36,16 +36,8 @@ class comments extends framework {
 	 * Sets the comment for the ticket
 	*/
 	public function setComment($invoice_id, $comment, $date, $user_id) {
-		$sql = "INSERT INTO comments (
-			invoice_id,
-			comment,
-			dateadded,
-			user_id)
-		VALUES(
-			".$invoice_id.",
-			'".$comment."',
-			'".$date."',
-			$user_id)";
+		$sql = "INSERT INTO comments (invoice_id, comment, dateadded, user_id)
+		VALUES(?, ?, ?, ?)";
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
                         $stmt->bind_param('issi', $invoice_id, $comment, $date, $user_id);
                         $stmt->execute();

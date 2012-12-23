@@ -6,11 +6,11 @@ class tickets extends framework {
 	 * Adds a new ticket to the system with the provided information.
 	 * Returns insert ID on success, false on failure
 	*/
-	public function add($customer, $type, $priority, $dueDate, $status, $specialFields, $comments){
-		$sql = "INSERT INTO tickets(customer, type, priority, dueDate, status, specialFields, $comments, createDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	public function add($customer, $invoice, $type, $priority, $dueDate, $status, $specialFields, $date){
+		$sql = "INSERT INTO tickets(customer, invoice, type, priority, dueDate, status, specialFields, createDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
-			$timestamp = parent::get('utils')->timestamp();
-			$stmt->bind_param('iissssss', $customer, $type, $priority, $dueDate, $status, $specialFields, $comments, $timestamp);
+			//$timestamp = parent::get('utils')->timestamp();
+			$stmt->bind_param('isississ', $customer, $invoice, $type, $priority, $dueDate, $status, $specialFields, $date);
 			$stmt->execute();
 			$stmt->store_result();
 			if($stmt->affected_rows > 0){
@@ -226,7 +226,7 @@ class tickets extends framework {
 	}
 	
 	/*
-	 * getComments(int $invoie_id)
+	 * getComments(int $invoice_id)
 	 * Returns all comments for the ticket  with the specified invoice id
 	 * Uses LIKE for invoice number, see $sql below for more info.
 	*/
@@ -283,7 +283,7 @@ class tickets extends framework {
 		$result = '
 			<table class="table">
 				<thead>
-					<tr><th>&nbsp;</th><th>Invoice</th><th>Customer</th><th>Call</th><th>Status</th></tr>
+					<tr><th>Status</th><th>Invoice</th><th>Customer</th><th>Call</th></tr>
 				</thead>
 				<tbody>';
 		foreach($tickets as $key => $ticket) {
@@ -340,7 +340,9 @@ class tickets extends framework {
 			} else {
 				$result .= 'No phone on file';
 			}
-			$result .= '</td><td><div class="btn-group">';
+			$result .= '</td>';
+/*
+<td><div class="btn-group">';
 			$result .= '<button class="btn">'.$ticket['status.status'].'</button>';
 			$result .= '<button class="btn dropdown-toggle" data-toggle="dropdown">';
 			$result .= '<span class="caret"></span></button>';
@@ -349,7 +351,9 @@ class tickets extends framework {
 				<li><a href="#">Edit</a></li>
 				<li class="divider"></li>
 				<li><a href="#">Close</a></li>';
-			$result .= '</ul></div></td></tr>';
+			$result .= '</ul></div></td>';
+*/
+			$result .= '</tr>';
 		}
 		$result .= '</tbody></table>';
 		return $result;
