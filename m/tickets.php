@@ -2,7 +2,6 @@
 date_default_timezone_set("EST");
 $Statuses = $framework->get('status')->getStatuses();
 $StatusTypes = $framework->get('status')->getTypes();
-$comments = $framework->get('comments')->getAllByTicket($info['ticket.id']);
 
 if(isset($_POST['comment'])) {
 	if(!$_POST['new']) {
@@ -179,6 +178,7 @@ if(isset($_GET['new'])) {
 if(isset($_GET['view'])){
 	$info = $framework->get('tickets')->getTicketById($_GET['view']);
 	if($info) {
+		$comments = $framework->get('comments')->getAllByTicket($info['ticket.id']);
 		$content .= '
 				<h3>Viewing ticket ' . $info['ticket.invoice'] . '</h3>
 				<table class="table">
