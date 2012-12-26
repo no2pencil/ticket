@@ -1,23 +1,19 @@
 /*
   .............. 
-
   Simple Login Form
   HTML5/CSS3 Coded by: $hekh@r d-Ziner, CSSJunction.com
   PSD by:PremiumPixels.com
   
-  Uuage: Free. You can modify, remove our links and use wherever you want ..
-  
+  Usage: Free. You can modify, remove our links and use wherever you want ..
   ............... 
-  
 */
-body{
+body {
   background:#eff3f6;
 }
-.box
-{
+.box {
     background:#fefefe;
     border: 1px solid #C3D4DB;
-	border-top:1px;
+    border-top:1px;
     -webkit-border-radius:5px;
     -moz-border-radius:5px;
     border-radius:5px;
@@ -27,44 +23,40 @@ body{
     color:#444;
     font:normal 12px/14px Arial, Helvetica, Sans-serif;
     margin:0 auto 30px;
-	overflow:hidden;
+    overflow:hidden;
 }
-.box.login
-{
+.box.login {
 	height:260px;
-    width:332px;
+	width:332px;
 	position:absolute;
 	left:50%;
 	top:50%;
 	margin:-130px 0 0 -166px;
 }
-.boxBody
-{
+.boxBody {
     background:#fefefe;
     border-top:1px solid #dde0e8;
     border-bottom:1px solid #dde0e8;
     padding:10px 20px;
 }
 
-.box footer
-{
+.box footer {
     background:#eff4f6;
     border-top:1px solid #fff;
     padding:22px 26px;
     overflow:hidden;
 	height:32px;
 }
-.box label
-{
+.box label {
     display:block;
     font:14px/22px Arial, Helvetica, Sans-serif;
     margin:10px 0 0 6px;
 }
-.box footer label{
+.box footer label {
 	float:left;
 	margin:4px 0 0;
 }
-.box footer input[type=checkbox]{
+.box footer input[type=checkbox] {
 	vertical-align:sub;
 	*vertical-align:middle;
 	margin-right:10px;
@@ -72,9 +64,8 @@ body{
 .box input[type=text],
 .box input[type=password],
 .txtField,
-.cjComboBox
-{
-    border:6px solid #F7F9FA;
+.cjComboBox {
+    border:2px solid #37C5E5;
     -webkit-border-radius:3px;
     -moz-border-radius:3px;
     border-radius:3px;
@@ -89,26 +80,22 @@ body{
 .box input[type=text]:focus,
 .box input[type=password]:focus,
 .txtField:focus,
-.cjComboBox:focus
-{
-    border:6px solid #f0f7fc;
+.cjComboBox:focus {
+    border:2px solid #999999;
     -moz-box-shadow:2px 3px 3px rgba(0, 0, 0, 0.04) inset, 0 0 1px #0d6db6 inset;
     -webkit-box-shadow:2px 3px 3px rgba(0, 0, 0, 0.04) inset, 0 0 1px #0d6db6 inset;
     box-shadow:2px 3px 3px rgba(0, 0, 0, 0.04) inset, 0 0 1px #0d6db6 inset;
-	color:#333;
+    color:#333;
 }
-.cjComboBox
-{
+.cjComboBox {
     width:294px;
 }
-.cjComboBox.small
-{
+.cjComboBox.small {
     padding:3px 2px 3px 6px;
     width:100px;
     border-width:3px !important;
 }
-.txtField.small
-{
+.txtField.small {
     padding:3px 6px;
     width:200px;
     border-width:3px !important;
@@ -117,9 +104,8 @@ body{
 .rLink{padding:0 6px 0 0; font-size:11px; float:right;}
 .box a{color:#999;}
 .box a:hover, .box a:focus{text-decoration:underline;}
-.box a:active{color:#f84747;}
-.btnLogin
-{
+.box a:active{color:#F84747;}
+.btnLogin {
     -moz-border-radius:2px;
     -webkit-border-radius:2px;
     border-radius:15px;
@@ -149,11 +135,10 @@ body{
     background:-webkit-gradient(linear, left top, left bottom, from(#7acbed), to(#badff3));
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#7acbed', EndColorStr='#badff3')";
 }
-.btnLogin:active
-{
+.btnLogin:active {
     text-shadow:rgba(0,0,0,0.3) 0 -1px 0px; 
 }
-footer#main{
+footer#main {
 	position:fixed;
 	left:0;
 	bottom:10px;

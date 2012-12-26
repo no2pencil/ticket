@@ -1,26 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-  <title>Ticketing system</title>
-  <link type="text/css" href="v/css/jquery-ui/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
-  <script type="text/javascript" src="v/js/jquery-1.7.2.min.js"></script>
-  <script type="text/javascript" src="v/js/jquery-ui-1.8.21.custom.min.js"></script>
-  <script src="v/css/chosen/chosen/chosen.jquery.js" type="text/javascript"></script> 
-  <script type="text/javascript" src="v/js/scripts.js"></script>
-  <?php
-  // Include model scripts
-  if(file_exists("v/js/model_scripts/" . $page . ".js")){
-      echo '<script type="text/javascript" src="v/js/model_scripts/' . $page . '.js"></script>';
-  }
-  ?>
-  <script type="text/javascript" src="v/css/bootstrap/js/bootstrap.js"></script>
-  <link href="v/css/bootstrap/css/bootstrap.css" rel="stylesheet"> 
-  <link href="v/css/chosen/chosen/chosen.css" rel="stylesheet"> 
-  <link rel="stylesheet" href="v/css/style.css" type="text/css">
-</head>
+<?php
+	require_once("head.php");
+	$Statuses = $framework->get('status')->getStatuses();
+	$StatusTypes = $framework->get('status')->getTypes();
+?>
 <body>
-
 <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
@@ -31,7 +14,7 @@
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="icon-white icon-tags"></i> Tickets
+            <i class="icon-tags"></i> Tickets
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
@@ -51,12 +34,12 @@
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="icon-white icon-user"></i> Customers
+            <i class="icon-user"></i> Customers
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="customers.php?viewall=true">All customers</a></li>
             <li><a href="#NewCustomerModal" data-toggle="modal">New Customer</a></li>
+            <li><a href="customers.php?viewall=true">All customers</a></li>
             <li class="divider"></li>
             <li><form id="customers_select_form" action="customers.php" method="post" class="form-search" style="padding: 3px 15px; margin: 0;">
 <select id="customers_select" name="customers_select" data-placeholder="Customer Data" class="chzn-select searh-query span2"> 
@@ -75,7 +58,7 @@
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="icon-white icon-comment"></i> Users
+            <i class="icon-comment"></i> Users
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
@@ -88,11 +71,25 @@
       </ul>
       <ul class="nav pull-right">
         <!-- if user is admin -->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="icon-cog"></i> Administration
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="#NewUserModal" data-toggle="modal">New User</a></li>
+            <li class="divider"></li>
+            <li><a href="#StatusesModal" data-toggle="modal">Statuses</a></li>
+          </ul>
+        </li>
+
+	<!--
         <li><a href="admin.php">
-          <i class="icon-white icon-cog"></i> Administration
+          <i class="icon-cog"></i> Administration
         </a></li>
+	-->
         <li><a href="logout.php">
-          <i class="icon-white icon-off"></i> Logout
+          <i class="icon-off"></i> Logout
         </a></li>
       </ul>
     </div>
@@ -159,7 +156,7 @@
   <form>
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-    <h3 id="NewCustomerModalLabel">New Ticket</h3>
+    <h3 id="NewTicketModalLabel">New Ticket</h3>
   </div>
   <div class="modal-body">
   </div>
@@ -174,7 +171,7 @@
   <form action="users.php" method="post" class="form-horizontal">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-    <h3 id="NewCustomerModalLabel">New User</h3>
+    <h3 id="NewUserModalLabel">New User</h3>
   </div>
   <div class="modal-body">
     <input type="hidden" name="new" value="process">
@@ -213,6 +210,65 @@
   </form>
 </div>
 
+<?php /*
+       * Modals for Status management
+       */ ?>
+<div id="StatusesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="StatusesModalLabel" aria-hidden="false">
+  <form action="" method="post" class="form-horizontal">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    <h3 id="StatusesModalLabel">Status Management</h3>
+  </div>
+  <div class="modal-body">
+    <input type="hidden" name="new" value="process">
+    <fieldset>
+
+    <legend>Status Type</legend>
+    <div class="control-group">
+      <ul class="nav nav-pills">
+        <?php 
+		foreach($StatusTypes as $Type) {
+        ?>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+		<?php echo $Type['name']; ?>
+          <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+		<?php 
+			foreach($Statuses as $Status) { 
+				if($Type[id] == $Status[description]) {
+		?>
+            <li><a href="#"><?php echo $Status['status']; ?></a></li>
+		<?php 
+				}
+			} 
+		?>
+          </ul>
+        </li>
+	<?php } ?>
+      </ul>
+    </div>
+
+    <legend>New Status</legend>
+    <div class="control-group">
+      <label class="control-label" for="typename">Status Type</label>
+      <div class="controls">
+        <input type="text" class="input-xlarge" id="typename" name="typename">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="status">Status Name</label>
+      <div class="controls">
+        <input type="text" class="input-xlarge" id="status" name="status">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary">Save</button>
+    <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Cancel</button>
+  </div>
+  </form>
+</div>
 
 
 <div class="alert">
@@ -228,24 +284,6 @@
 				?>
 			</div>
 		</div>
-	<script> 
-          var selects = $('.chzn-select');
-          selects.chosen().change(function() {
-            var selected = [];
-            selects.find("option").each(function() {
-              if (this.selected) {
-                selected[this.value] = this;
-              }
-              $('#customers_select_form').submit();
-            });
-          });
-          $('#NewCustomerModal').on('shown', function() {
-            $('#NewCustomerModal').click();
-          });
-          $('#NewUserModal').on('shown', function () {
-            //$('#NewUserModal').modal('show');
-            $('#NewUserModal').click();
-          });
-	</script>
-	</body>
+	<?php require_once("scripts.php"); ?>
+</body>
 </html>

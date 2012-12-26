@@ -29,8 +29,8 @@ foreach($tickets as $ticket){
 	}
 
 $content .='<h5>There are ';
-$content .= $ticketcount;
+//$content .= $ticketcount;
 $content .= ' tickets. ';
-$content .= $ticketopen;
+//$content .= $ticketopen;
 $content .= ' of which are not closed.</h5>';
 ?>

@@ -1,6 +1,10 @@
 <?php
 date_default_timezone_set("EST");
-if($_POST['comment']) {
+$Statuses = $framework->get('status')->getStatuses();
+$StatusTypes = $framework->get('status')->getTypes();
+$comments = $framework->get('comments')->getAllByTicket($info['ticket.id']);
+
+if(isset($_POST['comment'])) {
 	if(!$_POST['new']) {
   		$return = $framework->get('comments')->setComment($_POST['invoice_id'], $_POST['comment'], date("Y-m-d"), $_SESSION['user_id']);
 	}
@@ -31,6 +35,7 @@ if(isset($_GET['search'])) {
                 if(!empty($customer)) $info[customer]='<a href="customers.php?view='.$customer[id].'">'.$customer[name].'</a> '.$customer[primaryPhone];
 		if(!empty($type)) $info[type]=$type[name];
 		if(!empty($status)) {
+			// All this needs to be fixed
 			switch($info[status]) {
 				case 19:
 				case 23:
@@ -52,7 +57,6 @@ if(isset($_GET['search'])) {
 					break;
 			}
 		}
-		// Currently not returning all items in the array... #2pencil
 		$comments = array();
 		$comments = $framework->get('comments')->getAllByTicket($id);
 		if($comments) {
@@ -179,13 +183,24 @@ if(isset($_GET['view'])){
 				<h3>Viewing ticket ' . $info['ticket.invoice'] . '</h3>
 				<table class="table">
 					<tbody>
-						<tr><th>Status</th><td>' . $info['status.status'] . '</td></tr>
-						<tr><th>Created on</th><td>' . $info['ticket.createDate'] . '</td></tr>
+						<tr><th>Status</th><td>
+							<div class="btn-group">
+								<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+							'.$info['status.status'].'
+							<span class="caret"></span></a>
+							<ul class="dropdown-menu">';
+		foreach($Statuses as $Status) {
+			if($Status['description']==$info['status.description']) {
+                		$content .= '<li><a href="#">'.$Status['status'].'</a></li>';
+			}
+		}
+		$content .= '				</ul></div>
+						</td></tr>';
+		$content .= '<tr><th>Created on</th><td>' . $info['ticket.createDate'] . '</td></tr>
 						<tr><th>Last Updated</th><td>&nbsp;</td></tr>
 						<tr><th>Customer</th><td>' . $info['customer.name'] . '&nbsp; <a href="' . $ringurl . '" target="_blank"><span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></td></tr>
 						<tr><th>Created by</th><td>' . $info['creator.name'] . '</td></tr>
 						<tr><th>Comments</th><td></td></tr>';
-	$comments = $framework->get('comments')->getAllByTicket($info['ticket.id']);
 	foreach($comments as $comment) {
 		$usersname = $framework->get('user')->get_user_info_by_id($comment['user_id']);
 		$content .= '<tr><th>'.$comment['lastupdated'].'</th><td>'.$comment['comment'].'</td><td>'.$usersname['name'].'</td></tr>';
