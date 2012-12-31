@@ -28,4 +28,7 @@
 	$('#StatusesModal').on('shown', function() {
 		$('#StatusesModal').click();
 	});
+	$('#ReferralsModal').on('shown', function() {
+		$('#ReferralsModal').click();
+	});
 </script>
