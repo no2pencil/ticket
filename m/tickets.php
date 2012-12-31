@@ -1,10 +1,16 @@
 <?php
-date_default_timezone_set("EST");
-$Statuses = $framework->get('status')->getStatuses();
-$StatusTypes = $framework->get('status')->getTypes();
+if(!isset($Statuses)) {
+	$Statuses = $framework->get('status')->getStatuses();
+	$StatusTypes = $framework->get('status')->getTypes();
+}
 
-if(isset($_POST['comment'])) {
-	if(!$_POST['new']) {
+if(!isset($_POST['new'])) {
+	if(isset($_POST['status'])) {
+		if(!$framework->get('tickets')->setStatusByID($_POST['invoice_id'], $_POST['status'])) {
+			$alert="Something jacked up with the status update ";
+		}
+	}
+	if(isset($_POST['comment'])) {
   		$return = $framework->get('comments')->setComment($_POST['invoice_id'], $_POST['comment'], date("Y-m-d"), $_SESSION['user_id']);
 	}
 }
@@ -64,7 +70,7 @@ if(isset($_GET['search'])) {
 			}
 		}
 		$info['Actions'] = '
-        <form method="POST" action="tickets.php" class="well form-search">
+        <!-- <form method="POST" action="tickets.php" class="well form-search"> -->
         <fieldset>  
           <div class="control-group">  
             <label class="control-label" for="textarea">Comment:</label>  
@@ -183,22 +189,35 @@ if(isset($_GET['view'])){
 				<h3>Viewing ticket ' . $info['ticket.invoice'] . '</h3>
 				<table class="table">
 					<tbody>
-						<tr><th>Status</th><td>
-							<div class="btn-group">
+						<tr><th>Status</th><td colspan="2">
+						<form method="POST" action="tickets.php?view='.$_GET['view'].'"  class="well form-search">';
+/*
+							<div id="status" class="btn-group">';
 								<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 							'.$info['status.status'].'
 							<span class="caret"></span></a>
 							<ul class="dropdown-menu">';
-		foreach($Statuses as $Status) {
+*/
+		$content .= '<select name="status">';
+		foreach($Statuses as $id => $Status) {
 			if($Status['description']==$info['status.description']) {
-                		$content .= '<li><a href="#">'.$Status['status'].'</a></li>';
+                		//$content .= '<li><a href="#">'.$Status['status'].'</a></li>';
+				$content .= '<option value="'.$Status['id'].'"';
+				if($Status['id']==$info['ticket.status']) {
+					$content .= ' selected="selected"';
+				}
+				$content .= '>'.$Status['status'].'</option>';
 			}
 		}
-		$content .= '				</ul></div>
+		//$content .= '				</ul></div>
+		$content .= '</select>';
+		$content .= '
 						</td></tr>';
-		$content .= '<tr><th>Created on</th><td>' . $info['ticket.createDate'] . '</td></tr>
+		$content .= '<tr><th>Created on</th><td>'.$info['ticket.createDate'].'</td></tr>
 						<tr><th>Last Updated</th><td>&nbsp;</td></tr>
-						<tr><th>Customer</th><td>' . $info['customer.name'] . '&nbsp; <a href="' . $ringurl . '" target="_blank"><span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></td></tr>
+						<tr><th>Customer</th><td>'.$info['customer.name'].'&nbsp; ';
+		if(isset($ringurl)) $content.'<a href="'.$ringurl.'" target="_blank">';
+		$content .= '<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></td></tr>
 						<tr><th>Created by</th><td>' . $info['creator.name'] . '</td></tr>
 						<tr><th>Comments</th><td></td></tr>';
 	foreach($comments as $comment) {
@@ -210,7 +229,6 @@ if(isset($_GET['view'])){
 				<table class="table">
                                 <tbody>
 <tr><td>
-        <form method="POST" action="tickets.php?view='.$_GET['view'].'"  class="well form-search">
         <fieldset>
           <!-- Span6 has reported IE7 issues -->
           <div class="control-group">

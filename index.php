@@ -5,6 +5,7 @@
   if(gethostname()=="xrms.akroncdnr.com") {
     $db_env="PROD";
   }
+  require_once("config.php");
   require_once("v/head.php");
   require_once("c/index.php");
   new page();

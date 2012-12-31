@@ -167,13 +167,31 @@ class tickets extends framework {
 	}
 
 	/*
+	 * setStatusByID(int $status_id, int $invoice, string $last_updated)
+	 */
+
+	public function setStatusByID($invoice_id, $status_id) {
+		$sql = "UPDATE tickets set status=? WHERE id=?";
+		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
+			$stmt->bind_param('ii', $status_id, $invoice_id);
+			$stmt->execute();
+			$stmt->store_result();
+			if($stmt->affected_rows > 0){
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	/*
 	 * getStatusById(int $id)
 	 * Returns the status with the given ID
 	*/
-    public function getStatusById($id) {
-            $statuses = $this->getStatuses(); // TODO: Benchmark test this vs querying the db
-            return $statuses[$id];
-    }
+	public function getStatusById($id) {
+		$statuses = $this->getStatuses(); // TODO: Benchmark test this vs querying the db
+		return $statuses[$id];
+	}
 	
 	/*
 	 * getStatuses()
@@ -181,12 +199,12 @@ class tickets extends framework {
 	*/
 	public function getStatuses() {
 		$sql = "SELECT id, status FROM statuses";
-        $result = parent::get('db')->mysqli()->query($sql);
-        $fresult = array();
-        while($row = $result->fetch_array()){
-                $fresult[$row['id']] = array("status" => $row['status']); 
-        }
-        return $fresult;
+		$result = parent::get('db')->mysqli()->query($sql);
+		$fresult = array();
+		while($row = $result->fetch_array()) {
+			$fresult[$row['id']] = array("status" => $row['status']); 
+		}
+		return $fresult;
 	}
 
 	public function getAllOpen() {

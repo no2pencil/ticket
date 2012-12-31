@@ -1,7 +1,9 @@
 <?php
-	require_once("head.php");
 	$Statuses = $framework->get('status')->getStatuses();
 	$StatusTypes = $framework->get('status')->getTypes();
+	if(!isset($alert)) {
+		$alert = "This project is still under heavy construciton. Work your wget magic!";
+	}
 ?>
 <body>
 <div class="navbar">
@@ -19,12 +21,12 @@
           </a>
           <ul class="dropdown-menu">
             <li>
-				<form action="tickets.php" method="post" name="searchform" style="margin: 0;">
-					<input type="hidden" name="search" value="<?php echo $_SESSION['user_name']; ?>">
-					<input type="hidden" name="searchcols[]" value="creator">
-				</form>
-				<a href="#" onclick="searchform.submit();">My Tickets</a>
-			</li>
+              <form action="tickets.php" method="post" name="searchform" style="margin: 0;">
+                <input type="hidden" name="search" value="<?php echo $_SESSION['user_name']; ?>">
+                <input type="hidden" name="searchcols[]" value="creator">
+              </form>
+              <a href="#" onclick="searchform.submit();">My Tickets</a>
+            </li>
             <li><a href="tickets.php?viewall=true">All Tickets</a></li>
             <li><a href="tickets.php?new=true">New Ticket</a></li>
             <li class="divider"></li>
@@ -47,7 +49,6 @@
               <?php
                 $data = $framework->get('customers')->getAll();
                 foreach($data as $id => $customer) {
-
 			$phone = $framework->get('utils')->formatPhone($customer['customer.primaryPhone']);
 			printf("<option value=\"%s\">%s %s</option>\n",$customer['customer.id'],$customer['customer.name'],$phone);
 		}
@@ -236,10 +237,12 @@
           <ul class="dropdown-menu">
 		<?php 
 			foreach($Statuses as $Status) { 
-				if($Type[id] == $Status[description]) {
-		?>
-            <li><a href="#"><?php echo $Status['status']; ?></a></li>
-		<?php 
+				if(isset($Status)) {
+					if($Type['id'] == $Status['description']) {
+            					echo '<li><a href="#">';
+						echo $Status['status']; 
+						echo '</a></li>';
+					}
 				}
 			} 
 		?>
@@ -273,7 +276,7 @@
 
 <div class="alert">
   <button class="close" data-dismiss="alert">x</button>
-  <strong>Warning!</strong> this project is still under heavy construciton. Work your wget magic!
+  <strong>Warning!</strong> <?php echo $alert; ?>
 </div>
 
 		<div class="wrapper">
