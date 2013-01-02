@@ -26,6 +26,9 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
           </a>
           <ul class="dropdown-menu">
             <?php
+              // This still needs some work & is not 100%
+              // The idea is to only load the new ticket modal option if we
+              // can assure the user is viewing a customer
               if(strpos($url,"customer")>0) {
                 $CustomerData = $framework->get('customers')->getInfoById($_GET['view']);
             ?>
@@ -185,34 +188,29 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
   </div>
   <div class="modal-body">
     <form action="tickets.php" method="post" class="form-horizontal">
-    <table class="table">
-     <tbody>
-       <tr><td>
-         <form method="POST" action="tickets.php?new=true" class="well form-search">
-           <fieldset>
-             <!-- Span6 has reported IE7 issues -->
-             <div class="control-group">
-               <!-- <select name="type" data-placeholder="Ticket Types" class="chzn-select search-query span3"> -->
-               <select name="type">
-                 <?php 
-                   foreach($StatusTypes as $Type) {
-                     echo '<option value='.$Type['id'].'>'.$Type['name'].'</option>';
-                   }
-                 ?>
-               </select>
-             </div>
-             <div class="control-group">
-               <label class="control-label" for="textarea">Comment:</label>
-               <div class="controls">
-                 <textarea class="span6 input-xlarge" id="comment" name="comment" rows="6"></textarea>
-               </div>
-             </div>
-             <input type="hidden" name="new" value="new">
-             <input type="hidden" name="customer_id" value="<?php if(isset($CustomerData)) echo $CustomerData['customer.id']; ?>">
-           </fieldset>
-       </tr></td>
-     </tbody>
-   </table>
+    <fieldset>
+    <!-- Span6 has reported IE7 issues -->
+    <div class="control-group">
+      <label class="control-label" for="name">Ticket Type</label>
+      <!-- <select name="type" data-placeholder="Ticket Types" class="chzn-select search-query span3"> -->
+      <div class="controls">
+        <select name="type">
+          <?php 
+           foreach($StatusTypes as $Type) {
+             echo '<option value='.$Type['id'].'>'.$Type['name'].'</option>';
+           }
+         ?>
+       </select>
+    </div>
+    <div class="control-group">
+       <label class="control-label" for="textarea">Comment:</label>
+       <div class="controls">
+         <textarea class="span6 input-xlarge" id="comment" name="comment" rows="6"></textarea>
+       </div>
+    </div>
+    <input type="hidden" name="new" value="new">
+    <input type="hidden" name="customer_id" value="<?php if(isset($CustomerData)) echo $CustomerData['customer.id']; ?>">
+    </fieldset>
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary">Save</button>
