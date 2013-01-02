@@ -15,8 +15,7 @@ $content = '<h2>Customers</h2>';
 $content .= '
         <div class="btn-group" style="margin: 9px 0;">
           <a href="customers.php?viewall=true" class="btn">View All</a>
-          <a href="customers.php?new=true" class="btn">New Customer</a>
-';
+          <a href="customers.php?new=true" class="btn">New Customer</a>';
 if($customer_id) {
           $content .= '<a href="customers.php?edit=true&customer_id='.$customer_id.'" class="btn">Edit Customer</a>';
 }
@@ -113,6 +112,7 @@ if(isset($_GET['view'])) {
 	$data = $framework->get('customers')->getInfoById($customer_id);
         $phone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
 	$ticket_data = $framework->get('customers')->getCustomerTickets($data['customer.id']);
+	$referral = $framework->get('customers')->getReferralByID($data['customer.referral']);
         $content .= '
                         <h4>Customer ID : '.$data['customer.id'].'</h4>
                         <div class="control-group">
@@ -131,7 +131,7 @@ if(isset($_GET['view'])) {
                                 <label class="control-label">Address : '.$data['customer.address'].'</label>
                         </div>
                         <div class="control-group">
-                                <label class="control-label">Referral : '.$data['customer.referral'].'</label>
+                                <label class="control-label">Referral : '.$referral['reff.reff'].'</label>
                         </div>
 
 			<h4>Tickets </h4>
@@ -189,7 +189,7 @@ if(isset($_GET['view'])) {
 }
 
 if($_POST['update']=='true') {
-        $result = $framework->get('customers')->update($_POST['customer_id'], $_POST['name'], $_POST['email'], $_POST['primaryPhone'], $_POST['secondaryPhone'], $_POST['address'], $_POST['referral']);
+        $result = $framework->get('customers')->update($_POST['customer_id'], $_POST['name'], $_POST['email'], trim($_POST['primaryPhone']), trim($_POST['secondaryPhone']), $_POST['address'], $_POST['referral']);
         if($result){
                 $content .= '
                         <div class="alert alert-success">

@@ -16,7 +16,7 @@ if(!isset($_POST['new'])) {
 }
 
 $content = '<h2>Tickets</h2>';
-
+/*
 $content .= '
         <div class="btn-group" style="margin: 9px 0;">
 	  <a href="tickets.php" class="btn">My Tickets</a>
@@ -24,7 +24,8 @@ $content .= '
           <a id="newticket" href="tickets.php?new=true" class="btn disabled">New Ticket</a>
 	  <a href="tickets.php" class="btn">Search Tickets</a> 
         </div>
-';
+'; 
+*/
 
 if(isset($_GET['search'])) {
 	$id = (int)$_GET['search'];
@@ -117,7 +118,7 @@ if(isset($_GET['search'])) {
         }
 }
 
-if(isset($_GET['new'])) {
+if(isset($_POST['new'])) {
 	if(isset($_GET['customer_id'])) {
 		$customer_id=$_GET['customer_id'];
 	}
@@ -183,25 +184,17 @@ if(isset($_GET['new'])) {
 
 if(isset($_GET['view'])){
 	$info = $framework->get('tickets')->getTicketById($_GET['view']);
+	$ringurl = $framework->get('ring_central')->make_url(trim($info['customer.primaryPhone']));
 	if($info) {
 		$comments = $framework->get('comments')->getAllByTicket($info['ticket.id']);
 		$content .= '
 				<h3>Viewing ticket ' . $info['ticket.invoice'] . '</h3>
 				<table class="table">
 					<tbody>
-						<tr><th>Status</th><td colspan="2">
-						<form method="POST" action="tickets.php?view='.$_GET['view'].'"  class="well form-search">';
-/*
-							<div id="status" class="btn-group">';
-								<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-							'.$info['status.status'].'
-							<span class="caret"></span></a>
-							<ul class="dropdown-menu">';
-*/
+						<tr><th>Status</th><td colspan="2">';
 		$content .= '<select name="status">';
 		foreach($Statuses as $id => $Status) {
 			if($Status['description']==$info['status.description']) {
-                		//$content .= '<li><a href="#">'.$Status['status'].'</a></li>';
 				$content .= '<option value="'.$Status['id'].'"';
 				if($Status['id']==$info['ticket.status']) {
 					$content .= ' selected="selected"';
@@ -209,14 +202,12 @@ if(isset($_GET['view'])){
 				$content .= '>'.$Status['status'].'</option>';
 			}
 		}
-		//$content .= '				</ul></div>
 		$content .= '</select>';
-		$content .= '
-						</td></tr>';
+		$content .= '			</td></tr>';
 		$content .= '<tr><th>Created on</th><td>'.$info['ticket.createDate'].'</td></tr>
 						<tr><th>Last Updated</th><td>&nbsp;</td></tr>
 						<tr><th>Customer</th><td>'.$info['customer.name'].'&nbsp; ';
-		if(isset($ringurl)) $content.'<a href="'.$ringurl.'" target="_blank">';
+		if(isset($ringurl)) $content.='<a href="'.$ringurl.'" target="_blank">';
 		$content .= '<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></td></tr>
 						<tr><th>Created by</th><td>' . $info['creator.name'] . '</td></tr>
 						<tr><th>Comments</th><td></td></tr>';

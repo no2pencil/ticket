@@ -79,6 +79,32 @@ class customers extends framework {
 		}
 		return false;
 	}
+
+	/*
+	 * getReferrals()
+	 * Returns an array of all referrals
+	 */
+	public function getReferrals() {
+		$sql = "SELECT id, reff from reff";
+		$result = parent::get('db')->mysqli()->query($sql);
+		if($result) {
+			return parent::get('db')->fetchArray($result);
+		} 
+		return false;
+	}
+
+	/* 
+	 * get ReferralByID(int id)
+	 *
+	 */
+	public function getReferralByID($id) {
+		$sql = "SELECT reff from reff where id='".(int)$id."' LIMIT 1";
+		$result = parent::get('db')->mysqli()->query($sql);
+		if($result) {
+			return parent::get('db')->fetchArray($result);
+		}
+		return false;
+	}
 	
 	/*
 	 * getInfoById(int $id)
@@ -89,10 +115,10 @@ class customers extends framework {
 					LEFT JOIN users as creator ON customer.creator = creator.id
 						WHERE customer.id='" . (int)$id . "' LIMIT 1";
 		$result = parent::get('db')->mysqli()->query($sql);
-		if(!$result){
-			return false;
+		if($result) {
+			return parent::get('db')->fetchArray($result);
 		}
-		return parent::get('db')->fetchArray($result);
+		return false;
 	}
 
 	/*

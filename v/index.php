@@ -1,4 +1,9 @@
 <?php
+$host = $_SERVER['HTTP_HOST'];
+$self = $_SERVER['PHP_SELF'];
+$query = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : null;
+$url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
+
 	$Statuses = $framework->get('status')->getStatuses();
 	$StatusTypes = $framework->get('status')->getTypes();
 	if(!isset($alert)) {
@@ -20,6 +25,12 @@
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
+            <?php
+              if(strpos($url,"customer")>0) {
+                $CustomerData = $framework->get('customers')->getInfoById($_GET['view']);
+            ?>
+            <li><a href="#NewTicketModal" data-toggle="modal">New Ticket</a></li>
+            <?php } ?>
             <li>
               <form action="tickets.php" method="post" name="searchform" style="margin: 0;">
                 <input type="hidden" name="search" value="<?php echo $_SESSION['user_name']; ?>">
@@ -28,9 +39,12 @@
               <a href="#" onclick="searchform.submit();">My Tickets</a>
             </li>
             <li><a href="tickets.php?viewall=true">All Tickets</a></li>
-            <li><a href="tickets.php?new=true">New Ticket</a></li>
             <li class="divider"></li>
-            <li><form action="tickets.php" method="post" class="form-search" style="padding: 3px 15px; margin: 0;"><input type="text" name="search" placeholder="Quick search" class="search-query span2"></form></li>
+            <li>
+              <form action="tickets.php" method="post" class="form-search" style="padding: 3px 15px; margin: 0;">
+                <input type="text" name="search" placeholder="Quick search" class="search-query span4">
+              </form>
+            </li>
             <li><a href="tickets.php?advancedsearch=true">Advanced Search</a></li>
           </ul>
         </li>
@@ -44,7 +58,7 @@
             <li><a href="customers.php?viewall=true">All customers</a></li>
             <li class="divider"></li>
             <li><form id="customers_select_form" action="customers.php" method="post" class="form-search" style="padding: 3px 15px; margin: 0;">
-<select id="customers_select" name="customers_select" data-placeholder="Customer Data" class="chzn-select searh-query span2"> 
+<select id="customers_select" name="customers_select" data-placeholder="Customer Data" class="chzn-select searh-query span4"> 
               <option value=""></option> 
               <?php
                 $data = $framework->get('customers')->getAll();
@@ -142,8 +156,18 @@
       </div>
       <div class="control-group">
         <label class="control-label">Referral</label>
+        <!-- <select name="referral" data-placeholder="Referrals" class="chzn-select search-query span3"> -->
         <div class="controls">
-          <input type="text" name="referral">
+          <select name="referral">
+          <?php
+            $Referrals = $framework->get('customers')->getReferrals();
+            if($Referrals) {
+              foreach($Referrals as $Referral) {
+                echo '<option value='.$Referral['reff.id'].'>'.$Referral['reff.reff'].'</option>';
+              }
+            }
+          ?>
+          </select>
         </div>
       </div>
   </div>
@@ -155,12 +179,40 @@
 </div>
 
 <div id="NewTicketModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="NewTicketModalLabel" aria-hidden="true">
-  <form>
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-    <h3 id="NewTicketModalLabel">New Ticket</h3>
+    <h3 id="NewTicketModalLabel">New Ticket for <?php if(isset($CustomerData)) echo $CustomerData['customer.name']; ?></h3>
   </div>
   <div class="modal-body">
+    <form action="tickets.php" method="post" class="form-horizontal">
+    <table class="table">
+     <tbody>
+       <tr><td>
+         <form method="POST" action="tickets.php?new=true" class="well form-search">
+           <fieldset>
+             <!-- Span6 has reported IE7 issues -->
+             <div class="control-group">
+               <!-- <select name="type" data-placeholder="Ticket Types" class="chzn-select search-query span3"> -->
+               <select name="type">
+                 <?php 
+                   foreach($StatusTypes as $Type) {
+                     echo '<option value='.$Type['id'].'>'.$Type['name'].'</option>';
+                   }
+                 ?>
+               </select>
+             </div>
+             <div class="control-group">
+               <label class="control-label" for="textarea">Comment:</label>
+               <div class="controls">
+                 <textarea class="span6 input-xlarge" id="comment" name="comment" rows="6"></textarea>
+               </div>
+             </div>
+             <input type="hidden" name="new" value="new">
+             <input type="hidden" name="customer_id" value="<?php if(isset($CustomerData)) echo $CustomerData['customer.id']; ?>">
+           </fieldset>
+       </tr></td>
+     </tbody>
+   </table>
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary">Save</button>
