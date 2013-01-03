@@ -47,8 +47,9 @@ foreach($tickets as $ticket){
 
         $content .= '                   
                 <div class="well">
-                        <ul class="pager">
-                                ' . $previousBtn . $nextBtn . '
+                        <ul class="pager">';
+        $content .= $previousBtn . $nextBtn;
+	$content .= '
                         </ul>
                 </div>';
 
@@ -59,4 +60,3 @@ $content .= ' tickets. ';
 $content .= $ticketopen;
 $content .= ' of which are not closed.</h5>';
 */
-?>

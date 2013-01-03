@@ -187,6 +187,7 @@ if(isset($_GET['view'])){
 	$ringurl = $framework->get('ring_central')->make_url(trim($info['customer.primaryPhone']));
 	if($info) {
 		$comments = $framework->get('comments')->getAllByTicket($info['ticket.id']);
+		$content .= '<form action="tickets.php" method="post">';
 		$content .= '
 				<h3>Viewing ticket ' . $info['ticket.invoice'] . '</h3>
 				<table class="table">

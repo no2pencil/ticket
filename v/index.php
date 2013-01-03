@@ -181,6 +181,9 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
   </form>
 </div>
 
+<?php
+	require_once("v/js/NewTicketModal.php");
+/*
 <div id="NewTicketModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="NewTicketModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
@@ -218,6 +221,8 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
   </div>
   </form>
 </div>
+*/
+?>
 
 <div id="NewUserModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="NewUserModalLabel" aria-hidden="false">
   <form action="users.php" method="post" class="form-horizontal">
@@ -359,6 +364,6 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 				?>
 			</div>
 		</div>
-	<?php require_once("scripts.php"); ?>
+	<?php require_once("js/scripts.php"); ?>
 </body>
 </html>
