@@ -1,0 +1,34 @@
+Home :
+Navigational menu
+Graphs (Google Charts API) breakdown of current open invoices
+
+Customers :
+Display most recent customers
+Search for existing customers, assign ticket to that customer
+Add new customers
+
+Tickets :
+Tickets Home Page : Display all currently open invoices
+Display users assigned tickets
+Search for existing tickets
+Create new tickets
+
+Administration :
+Manage users for the site
+Manage details, such as :
+  Ticket statuses
+  Ticket types (on site, drop off, specific repair/ipod/ds lite/& so on)
+  Customer status (non pay/don't take new tickets)
+  Sub Ticket numbering scheme (repairs, web hosting/services)
+
+Functionality :
+Email users of newly assigned tickets
+Email administration of tickets ready for invoice
+Users can view all tickets open, & just their own tickets
+Administrators can view reporting
+One click to invoice printing (using pdf/graphic api)
+VOIP Api (One Click Dial)
+
+Services :
+Windows Scheduled task to automate db backup/maintance/updates
+Linux/Unix crontab to automate db backup/maintance/updates

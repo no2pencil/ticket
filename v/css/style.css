@@ -1,0 +1,29 @@
+/* layout stuff */
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: sans-serif;
+}
+
+.wrapper {
+	margin: 20px 5%;
+	min-height: 500px;
+}
+
+.content {
+	padding: 10px;
+	min-height: 500px;
+	border: 1px solid black;
+}
+
+/* Misc. */
+.center {
+	text-align: center;
+}
+#hiddenbutton {
+	color:transparent;
+	display:none;
+}
