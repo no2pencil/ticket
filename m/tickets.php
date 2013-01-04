@@ -207,7 +207,8 @@ if(isset($_GET['view'])){
 		$content .= '			</td></tr>';
 		$content .= '<tr><th>Created on</th><td>'.$info['ticket.createDate'].'</td></tr>
 						<tr><th>Last Updated</th><td>&nbsp;</td></tr>
-						<tr><th>Customer</th><td>'.$info['customer.name'].'&nbsp; ';
+                                                <tr><th>Customer</th><td>'.$info['customer.name'].'&nbsp;('.$info['customer.id'].')&nbsp; ';
+
 		if(isset($ringurl)) $content.='<a href="'.$ringurl.'" target="_blank">';
 		$content .= '<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></td></tr>
 						<tr><th>Created by</th><td>' . $info['creator.name'] . '</td></tr>
