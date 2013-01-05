@@ -2,7 +2,7 @@
 ="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-    <h3 id="NewTicketModalLabel">New Ticket for <?php if(isset($CustomerData)) echo $CustomerData['customer.name']; ?></h3>
+    <h3 id="NewTicketModalLabel">New Ticket for <?php if(isset($CustomerData['customer.name'])) echo $CustomerData['customer.name']; ?></h3>
   </div>
   <div class="modal-body">
     <form action="tickets.php" method="post" class="form-horizontal">
@@ -27,7 +27,7 @@
        </div>
     </div>
     <input type="hidden" name="new" value="new">
-    <input type="hidden" name="customer_id" value="<?php if(isset($CustomerData)) echo $CustomerData['customer.id']; ?>">
+    <input type="hidden" name="customer_id" value="<?php if(isset($CustomerData['customer.id'])) echo $CustomerData['customer.id']; ?>">
     </fieldset>
   </div>
   <div class="modal-footer">

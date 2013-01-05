@@ -8,7 +8,7 @@
 	selects.chosen().change(function() {
 		var selected = [];
 		selects.find("option").each(function() {
-			if (this.selected) {
+			if(this.selected) {
 				selected[this.value] = this;
 			}
 			$('#customers_select_form').submit();

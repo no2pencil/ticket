@@ -1,7 +1,6 @@
-<div id="NewCustomerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="NewCustomerModalLabel" aria-hi
-dden="true">
+<div id="NewCustomerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="NewCustomerModalLabel" aria-hidden="true">
   <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\xd7</button>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&tab;</button>
     <h3 id="NewCustomerModalLabel">New Customer</h3>
   </div>
   <div class="modal-body">

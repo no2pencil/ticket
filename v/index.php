@@ -7,8 +7,11 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 	$Statuses = $framework->get('status')->getStatuses();
 	$StatusTypes = $framework->get('status')->getTypes();
 	if(!isset($alert)) {
-		$alert = "This project is still under heavy construciton. Work your wget magic!";
+		$alert = array();
+		$alert['status'] = 'warning';
+		$alert['msg'] = "This project is still under heavy construciton. Work your wget magic!";
 	}
+	//$RecentCustID = $framework->get('customer')->getRecentCustomer();
 ?>
 <body>
 <div class="navbar">
@@ -101,12 +104,6 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
             <li><a href="#ReferralsModal" data-toggle="modal">Referrals</a></li>
           </ul>
         </li>
-
-	<!--
-        <li><a href="admin.php">
-          <i class="icon-cog"></i> Administration
-        </a></li>
-	-->
         <li><a href="logout.php">
           <i class="icon-off"></i> Logout
         </a></li>
@@ -118,19 +115,19 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 <?php 
 	/*
 	 * Modals to load an overlay with the new customer, ticket, & user forms
-	 */ 
+	 */
 
-	require_once("js/NewCustomerModal.php");
-	require_once("js/NewTicketModal.php");
-	require_once("js/NewUserModal.php");
+	require_once("v/js/NewCustomerModal.php");
+	require_once("v/js/NewTicketModal.php");
+	require_once("v/js/NewUserModal.php");
 
-	require_once("js/StatusesModal.php");
-	require_once("js/ReferralsModal.php");
+	require_once("v/js/ReferralsModal.php");
+	require_once("v/js/StatusesModal.php");
 ?>
 
-<div class="alert">
-  <button class="close" data-dismiss="alert">x</button>
-  <strong>Warning!</strong> <?php echo $alert; ?>
+<div class="alert alert-block alert-<?php echo $alert['status']; ?>">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong><?php echo $alert['msg']; ?></strong> 
 </div>
 
 		<div class="wrapper">
