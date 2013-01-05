@@ -7,8 +7,11 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 	$Statuses = $framework->get('status')->getStatuses();
 	$StatusTypes = $framework->get('status')->getTypes();
 	if(!isset($alert)) {
-		$alert = "This project is still under heavy construciton. Work your wget magic!";
+		$alert = array();
+		$alert['status'] = 'warning';
+		$alert['msg'] = "This project is still under heavy construciton. Work your wget magic!";
 	}
+	//$RecentCustID = $framework->get('customer')->getRecentCustomer();
 ?>
 <body>
 <div class="navbar">
@@ -101,12 +104,6 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
             <li><a href="#ReferralsModal" data-toggle="modal">Referrals</a></li>
           </ul>
         </li>
-
-	<!--
-        <li><a href="admin.php">
-          <i class="icon-cog"></i> Administration
-        </a></li>
-	-->
         <li><a href="logout.php">
           <i class="icon-off"></i> Logout
         </a></li>
@@ -115,204 +112,22 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
   </div>
 </div>
 
-<?php /*
-       * Modals to load an overlay with the new customer, ticket, & user forms
-       */ ?>
+<?php 
+	/*
+	 * Modals to load an overlay with the new customer, ticket, & user forms
+	 */
 
-<div id="NewCustomerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="NewCustomerModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="NewCustomerModalLabel">New Customer</h3>
-  </div>
-  <div class="modal-body">
-    <form action="customers.php" method="post" class="form-horizontal">
-      <input type="hidden" name="savenew" value="true">
-      <div class="control-group">
-        <label class="control-label">Name</label>
-        <div class="controls">
-          <input type="text" name="name">
-        </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label">Email</label>
-        <div class="controls">
-          <input type="text" name="email">
-        </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label">Primary phone</label>
-        <div class="controls">
-          <input type="text" name="primaryPhone">
-        </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label">Secondary phone</label>
-        <div class="controls">
-          <input type="text" name="secondaryPhone">
-        </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label">Address</label>
-        <div class="controls">
-          <input type="text" name="address">
-        </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label">Referral</label>
-        <!-- <select name="referral" data-placeholder="Referrals" class="chzn-select search-query span3"> -->
-        <div class="controls">
-          <select name="referral">
-          <?php
-            $Referrals = $framework->get('customers')->getReferrals();
-            if($Referrals) {
-              foreach($Referrals as $Referral) {
-                echo '<option value='.$Referral['reff.id'].'>'.$Referral['reff.reff'].'</option>';
-              }
-            }
-          ?>
-          </select>
-        </div>
-      </div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary">Save</button>
-    <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Cancel</button>
-  </div>
-  </form>
-</div>
+	require_once("v/js/NewCustomerModal.php");
+	require_once("v/js/NewTicketModal.php");
+	require_once("v/js/NewUserModal.php");
 
-	<?php require_once("js/NewTicketModal.php"); ?>
+	require_once("v/js/ReferralsModal.php");
+	require_once("v/js/StatusesModal.php");
+?>
 
-<div id="NewUserModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="NewUserModalLabel" aria-hidden="false">
-  <form action="users.php" method="post" class="form-horizontal">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-    <h3 id="NewUserModalLabel">New User</h3>
-  </div>
-  <div class="modal-body">
-    <input type="hidden" name="new" value="process">
-    <fieldset>
-    <legend>New user</legend>
-    <div class="control-group">
-      <label class="control-label" for="name">Name</label>
-      <div class="controls">
-        <input type="text" class="input-xlarge" id="name" name="name">
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" for="username">Username</label>
-      <div class="controls">
-        <input type="text" class="input-xlarge" id="username" name="username">
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" for="password">Password</label>
-      <div class="controls">
-        <input type="password" class="input-xlarge" id="password" name="password">
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" for="password2">Retype password</label>
-      <div class="controls">
-        <input type="password" class="input-xlarge" id="password2" name="password2">
-      </div>
-    </div>
-    </fieldset>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary">Save</button>
-    <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Cancel</button>
-  </div>
-  </form>
-</div>
-
-<?php /*
-       * Modals for Status management
-       */ ?>
-<div id="StatusesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="StatusesModalLabel" aria-hidden="false">
-  <form action="" method="post" class="form-horizontal">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-    <h3 id="StatusesModalLabel">Status Management</h3>
-  </div>
-  <div class="modal-body">
-    <input type="hidden" name="new" value="process">
-    <fieldset>
-
-    <legend>Status Type</legend>
-    <div class="control-group">
-      <ul class="nav nav-pills">
-        <?php 
-		foreach($StatusTypes as $Type) {
-        ?>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-		<?php echo $Type['name']; ?>
-          <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-		<?php 
-			foreach($Statuses as $Status) { 
-				if(isset($Status)) {
-					if($Type['id'] == $Status['description']) {
-            					echo '<li><a href="#">';
-						echo $Status['status']; 
-						echo '</a></li>';
-					}
-				}
-			} 
-		?>
-          </ul>
-        </li>
-	<?php } ?>
-      </ul>
-    </div>
-
-    <legend>New Status</legend>
-    <div class="control-group">
-      <label class="control-label" for="typename">Status Type</label>
-      <div class="controls">
-        <input type="text" class="input-xlarge" id="typename" name="typename">
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" for="status">Status Name</label>
-      <div class="controls">
-        <input type="text" class="input-xlarge" id="status" name="status">
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary">Save</button>
-    <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Cancel</button>
-  </div>
-  </form>
-</div>
-
-<?php /*
-       * Modals for Status management
-       */ ?>
-<div id="ReferralsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="ReferralsModalLabel" aria-hidden="false">
-  <form action="" method="post" class="form-horizontal">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-    <h3 id="ReferralsModalLabel">Referrals Management</h3>
-  </div>
-  <div class="modal-body">
-    <input type="hidden" name="new" value="process">
-    <fieldset>
-    </fieldset>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary">Save</button>
-    <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Cancel</button>
-  </div>
-  </form>
-</div>
-
-
-<div class="alert">
-  <button class="close" data-dismiss="alert">x</button>
-  <strong>Warning!</strong> <?php echo $alert; ?>
+<div class="alert alert-block alert-<?php echo $alert['status']; ?>">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong><?php echo $alert['msg']; ?></strong> 
 </div>
 
 		<div class="wrapper">

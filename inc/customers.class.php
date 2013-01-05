@@ -14,7 +14,8 @@ class customers extends framework {
 			$stmt->execute();
 			$stmt->store_result();
 			if($stmt->affected_rows == 1){
-				return true;
+				$id = parent::get('db')->mysqli()->insert_id;
+				return $id;
 			}
 		}
 		return false;

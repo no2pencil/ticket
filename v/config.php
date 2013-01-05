@@ -6,6 +6,4 @@
 
 	$BASE = "http://ticdev.akroncdnr.com";
 	$DS = "/";
-
-	date_default_timezone_set("EST");
 ?>

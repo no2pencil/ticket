@@ -4,24 +4,29 @@ if(isset($_POST['customers_select'])) {
 	$customer_id=$_POST['customers_select'];
 	$_GET['view']=$customer_id;
 }
+
 if(isset($_GET['customer_id'])) {
 	$customer_id=$_GET['customer_id'];
 }
+
+if(isset($_POST['savenew'])){
+        $cust_id = $framework->get('customers')->add($_POST['name'], $_POST['email'], $_POST['primaryPhone'], $_POST['secondaryPhone'], $_POST['address'], $_POST['referral']);
+        if($cust_id > 0){
+		$alert['status']='success';
+		$alert['msg']='Customer '.$cust_id.' has been created'; 
+		$_GET['view']=$cust_id;
+	} else {
+		$alert['status']='error';
+		$alert['msg']='Somethign went wrong creating a new customer';
+	}
+}
+
 if(isset($_GET['view'])) {
 	$customer_id=$_GET['view'];
 	$_POST['customers_select']=$customer_id;
 }
 $content = '<h2>Customers</h2>';
-$content .= '
-        <div class="btn-group" style="margin: 9px 0;">
-          <a href="customers.php?viewall=true" class="btn">View All</a>
-          <a href="customers.php?new=true" class="btn">New Customer</a>';
-if($customer_id) {
-          $content .= '<a href="customers.php?edit=true&customer_id='.$customer_id.'" class="btn">Edit Customer</a>';
-}
-          $content .= '<a id="newticket" href="tickets.php?new=true&customer_id='.$customer_id.'" data-toggle="button" class="btn">New Ticket</a>
-        </div>';
-$content .= '<div style="margin-bottom: 15px;"></div></form>';
+$content .= '<div style="margin-bottom: 15px;"></div>';
 
 
 if(isset($_GET['viewall'])){
@@ -46,12 +51,14 @@ if(isset($_GET['viewall'])){
 				</ul>';
 	}
 }
+
+/*
 if(isset($_POST['savenew'])){
 	$result = $framework->get('customers')->add($_POST['name'], $_POST['email'], $_POST['primaryPhone'], $_POST['secondaryPhone'], $_POST['address'], $_POST['referral']);
-	if($result){
+	if($result>0){
 		$content .= '
 			<div class="alert alert-success">
-				<strong>Customer has been created</strong> | <a href="customers.php?new=true">Add another</a>
+				<strong>Customer '.$result.' has been created</strong> | <a href="customers.php?new=true">Add another</a>
 			</div>';
 	} else {
 		$content .= '
@@ -60,9 +67,11 @@ if(isset($_POST['savenew'])){
 			</div>';
 	}
 }
+*/
+
 if(isset($_GET['new'])){
 	$content .= '
-		<form action="customers.php" method="post" class="form-horizontal">
+		<form action="customers.php?view='.$customer_id.'" method="post" class="form-horizontal">
 			<input type="hidden" name="savenew" value="true">
 			<legend>New customer</legend>
 			<div class="control-group">
@@ -107,12 +116,15 @@ if(isset($_GET['new'])){
 		</form>';
 }
 
-//if($_POST['customers_select']) {
 if(isset($_GET['view'])) {
 	$data = $framework->get('customers')->getInfoById($customer_id);
-        $phone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
+        $PrimaryPhone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
+	//$SecondaryPhone = $framework->get('util')->formatPhone($data['customer.secondaryPhone']);
 	$ticket_data = $framework->get('customers')->getCustomerTickets($data['customer.id']);
 	$referral = $framework->get('customers')->getReferralByID($data['customer.referral']);
+	if(isset($PrimaryPhone)) {
+		$ringurl = $framework->get('ring_central')->make_url(trim($info['customer.primaryPhone']));
+	}
         $content .= '
                         <h4>Customer ID : '.$data['customer.id'].'</h4>
                         <div class="control-group">
@@ -122,10 +134,14 @@ if(isset($_GET['view'])) {
                                 <label class="control-label">Email : '.$data['customer.email'].'</label>
                         </div>
                         <div class="control-group">
-                                <label class="control-label">Primary phone : '.$data['customer.primaryPhone'].'</label>
-                        </div>
+                                <label class="control-label">Primary phone : '.$PrimaryPhone;
+	if(isset($ringurl)) $content.='<a href="'.$ringurl.'" target="_blank">';
+	$content .= '&nbsp;<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></label>
+			</div>
                         <div class="control-group">
-                                <label class="control-label">Secondary phone : '.$data['customer.secondaryPhone'].'</label>
+                                <label class="control-label">Secondary phone : ';
+			if(isset($SecondaryPhone)) echo $SecondaryPhone;
+				$content .= '</label>
                        </div>
                         <div class="control-group">
                                 <label class="control-label">Address : '.$data['customer.address'].'</label>
@@ -188,7 +204,7 @@ if(isset($_GET['view'])) {
 	';
 }
 
-if($_POST['update']=='true') {
+if(isset($_POST['update'])) {
         $result = $framework->get('customers')->update($_POST['customer_id'], $_POST['name'], $_POST['email'], trim($_POST['primaryPhone']), trim($_POST['secondaryPhone']), $_POST['address'], $_POST['referral']);
         if($result){
                 $content .= '
@@ -204,11 +220,11 @@ if($_POST['update']=='true') {
 
 }
 
-if($_GET['edit']=='true') {
+if(isset($_GET['edit'])) {
 	$data = $framework->get('customers')->getInfoById($customer_id);
         $phone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
         $content .= '
-                <form action="customers.php" method="post" class="form-horizontal">
+                <form action="customers.php?view='.$data['customer.id'].'" method="post" class="form-horizontal">
                         <input type="hidden" name="update" value="true">
 			<input type="hidden" name="customer_id" value="'.$data['customer.id'].'">
                         <legend>Customer ID : '.$data['customer.id'].'</legend>

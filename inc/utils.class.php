@@ -24,11 +24,11 @@ class utils extends framework {
 	/*
 	 * formatPhone(int $phone)
 	 * Formats a 10-digit phone number into something more user-friendly
-	*/
-        public function formatPhone($phone){
-                $result = substr($phone, 0, 3). ' '.substr($phone, 3, 3). ' ' .substr($phone, 6, 4);
-                return $result;
-        }
+	 */
+	public function formatPhone($phone){
+		$result = '('.substr($phone, 0, 3). ') '.substr($phone, 3, 3). '-' .substr($phone, 6, 4);
+		return $result;
+	}
 
 	/*
 	 * formatSearchPhone(int $phone)

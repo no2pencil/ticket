@@ -6,8 +6,13 @@ if(!isset($Statuses)) {
 
 if(!isset($_POST['new'])) {
 	if(isset($_POST['status'])) {
-		if(!$framework->get('tickets')->setStatusByID($_POST['invoice_id'], $_POST['status'])) {
-			$alert="Something jacked up with the status update ";
+		$result = $framework->get('tickets')->setStatusByID($_POST['invoice_id'], $_POST['status']);
+		if(!$result) {
+			$alert['status']='error';
+			$alert['msg']='Something jacked up with the status update ';
+		} else {
+			$alert['status']='success';
+			$alert['msg']='Update to status was saved';
 		}
 	}
 	if(isset($_POST['comment'])) {
@@ -16,16 +21,6 @@ if(!isset($_POST['new'])) {
 }
 
 $content = '<h2>Tickets</h2>';
-/*
-$content .= '
-        <div class="btn-group" style="margin: 9px 0;">
-	  <a href="tickets.php" class="btn">My Tickets</a>
-          <a href="tickets.php?viewall=true" class="btn">View All</a>
-          <a id="newticket" href="tickets.php?new=true" class="btn disabled">New Ticket</a>
-	  <a href="tickets.php" class="btn">Search Tickets</a> 
-        </div>
-'; 
-*/
 
 if(isset($_GET['search'])) {
 	$id = (int)$_GET['search'];
@@ -144,15 +139,17 @@ if(isset($_POST['new'])) {
 		}
 
 		$invoice_dbid = $framework->get('tickets')->add($customer_id, $ticket_id, 5, '', '', 56, '', date("Y-m-d"));
-		if(!$invoice_dbid) {
-			echo "<pre>";
-			print_r($_POST);
-			echo "</pre>";
-			die("Unable to create new ticket, for whatever reason :(");
-		} else {
+		if($invoice_dbid>0) {
+			$alert['status']='success';
+			$alert['msg']='Invoice '.$invoice_dbid.' created';
 			if(!$framework->get('comments')->setComment($invoice_dbid, $_POST['comment'], date("Y-m-d"), $_SESSION['user_id'])) {
-				die("Unable to comment on new ticket, for whatever reason :(");
+				$alert['status']='error';
+				$alert['msg']='Unable to comment on new ticket, for whatever reason :(';
 			} 
+			$_GET['view']=$invoice_dbid;
+		} else {
+			$alert['status']='error';
+			$alert['msg']='Unable to create an invoice';
 		}
 	} else {
 		$content .= '<h3>Creating ticket for '.$CustomerData['customer.name'];
@@ -187,7 +184,7 @@ if(isset($_GET['view'])){
 	$ringurl = $framework->get('ring_central')->make_url(trim($info['customer.primaryPhone']));
 	if($info) {
 		$comments = $framework->get('comments')->getAllByTicket($info['ticket.id']);
-		$content .= '<form action="tickets.php" method="post">';
+		$content .= '<form action="tickets.php?view='.$_GET['view'].'" method="post">';
 		$content .= '
 				<h3>Viewing ticket ' . $info['ticket.invoice'] . '</h3>
 				<table class="table">
@@ -207,7 +204,9 @@ if(isset($_GET['view'])){
 		$content .= '			</td></tr>';
 		$content .= '<tr><th>Created on</th><td>'.$info['ticket.createDate'].'</td></tr>
 						<tr><th>Last Updated</th><td>&nbsp;</td></tr>
-						<tr><th>Customer</th><td>'.$info['customer.name'].'&nbsp; ';
+                                                <tr><th>Customer</th>';
+		$content .= '			<td><a href="customers.php?view='.$info['customer.id'].'">'.$info['customer.name'].'</a>&nbsp;('.$info['customer.id'].')&nbsp; ';
+
 		if(isset($ringurl)) $content.='<a href="'.$ringurl.'" target="_blank">';
 		$content .= '<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></td></tr>
 						<tr><th>Created by</th><td>' . $info['creator.name'] . '</td></tr>
