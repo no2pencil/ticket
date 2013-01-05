@@ -2,7 +2,7 @@
 false">
   <form action="" method="post" class="form-horizontal">
   <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h3 id="StatusesModalLabel">Status Management</h3>
   </div>
   <div class="modal-body">
