@@ -15,6 +15,7 @@
 	<script src="v/css/chosen/chosen/chosen.jquery.js" type="text/javascript"></script>
 	<script type="text/javascript" src="v/js/scripts.js"></script>
 	<script type="text/javascript" src="v/css/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<link href="v/css/bootstrap/css/bootstrap.css" rel="stylesheet">
 	<link href="v/css/chosen/chosen/chosen.css" rel="stylesheet">
 	<link href="v/css/login-reset.css" rel="stylesheet" type="text/css">
