@@ -39,14 +39,20 @@ foreach($referrals as $referral) {
       ]);
 
       var options = {
-        title: 'Customer Sources'
+        title: 'Customer Sources',
+        is3D: true,
+        slices: {
+          7: {color: '#006EFF'},
+          8: {color: '#00FF08'}
+        }
       };
 
-      var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+      var chart = new google.visualization.PieChart(document.getElementById('chart_referrences'));
         chart.draw(data, options);
       }
     </script>
 <?php
 	$content = '<h2>Google Charts</h2>';
-	$content.= '<div id="chart_div" style="width: 900px; height: 500px;"></div>';
+	$content.= '<div id="chart_referrences" style="width: 600px; height: 275px;"></div>';
+	//$content.= '<div id="chart_open" style="width: 600px; height: 275px;"></div>';
 ?>

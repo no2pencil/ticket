@@ -272,8 +272,12 @@ if(isset($_POST['search'])){
 	$id = $framework->get('tickets')->searchTicketById($_POST['search']);
 	$results = $framework->get('tickets')->getTicketById($id);
 	if(empty($results)){
-		$content .= '<div class="alert alert-error"><strong>No results found</strong> <a href="tickets.php?advancedsearch=true">Redefine search</a></div>';
+		$alert['status']='error';
+		$alert['msg']='<strong>No results found</strong> <a href="tickets.php?advancedsearch=true">Redefine search</a>';
+
 	} else {
+		$alert['status']='success';
+		$alert['msg']='<strong>Results Provided</strong>  <a href="tickets.php?advancedsearch=true">Redefinesearch</a>';
 		$tickets = array();
 		$tickets[0] = $results;
 		$content .= $framework->get('tickets')->generateListDisplay($tickets);

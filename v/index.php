@@ -77,6 +77,7 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
             <li><a href="customers.php?advancedsearch=true">Advanced Search</a></li>
           </ul>
         </li>
+<!-- 
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="icon-comment"></i> Users
@@ -89,6 +90,16 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
             <li><a href="#">Search Users</a></li>
           </ul>
         </li>
+-->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="icon-tasks"></i> Reports
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="google.php">Customer Referrals</a></li>
+          </ul>
+        </li>
       </ul>
       <ul class="nav pull-right">
         <!-- if user is admin -->
@@ -99,6 +110,8 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
           </a>
           <ul class="dropdown-menu">
             <li><a href="#NewUserModal" data-toggle="modal">New User</a></li>
+            <li><a href="users.php?viewall=true">All Users</a></li>
+            <li><a href="#">Search Users</a></li>
             <li class="divider"></li>
             <li><a href="#StatusesModal" data-toggle="modal">Statuses</a></li>
             <li><a href="#ReferralsModal" data-toggle="modal">Referrals</a></li>
