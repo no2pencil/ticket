@@ -1,12 +1,7 @@
-<?php
-	/*
-	 * All jquery code goes in this file...
-	 */
-?>
 <script>
 	var selects = $('.chzn-select');
 	selects.chosen().change(function() {
-		var selected = [];
+		var selected=[];
 		selects.find("option").each(function() {
 			if(this.selected) {
 				selected[this.value] = this;
@@ -15,6 +10,9 @@
 		});
 	});
 
+	$('#EditCustomerModal').on('shown', function() {
+		$('#EditCustomerModal').click();
+	});
 	$('#NewTicketModal').on('shown', function() {
 		$('#NewTicketModal').click();
 	});
@@ -24,7 +22,6 @@
 	$('#NewUserModal').on('shown', function () {
 		$('#NewUserModal').click();
 	});
-
 	$('#StatusesModal').on('shown', function() {
 		$('#StatusesModal').click();
 	});

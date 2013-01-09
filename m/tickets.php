@@ -234,10 +234,11 @@ if(isset($_GET['view'])){
           </div>
         </fieldset></form> 
 </tr></td>
-					</tbody>
-				</table>'; 
+                                </tbody>
+                                </table>'; 
 	} else {
-		$content .= 'Error: Ticket not found...';
+		$alert['status']='error';
+		$alert['msg']='Ticket not found...';
 	}
 
 } 

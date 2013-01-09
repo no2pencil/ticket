@@ -22,13 +22,13 @@ class customers extends framework {
 	}
 
 	/*
-	 * update(string $customer_id, string $name, string $email, string $primaryPhone, string $secondaryPhone, string $address, string $referral)
+	 * update(string $name, string $email, string $primaryPhone, string $secondaryPhone, string $address, string $referral, string $customer_id )
 	 * Updates a customer in the database, based on the provided customer id, & form data
 	 * Returns true on success, false on failure
 	*/
-	public function update($customer_id, $name, $email, $primaryPhone, $secondaryPhone, $address, $referral){
-		$sql = "UPDATE customers SET name = ?, email = ?, primaryPhone = ?, secondaryPhone = ?, address = ?, referral = ? ";
-		$sql .= "WHERE id=? LIMIT 1";
+	public function update($name, $email, $primaryPhone, $secondaryPhone, $address, $referral, $customer_id){
+		$sql = 'UPDATE customers SET name = ?, email = ?, primaryPhone = ?, secondaryPhone = ?, address = ?, referral = ? ';
+		$sql .= 'WHERE id=? LIMIT 1';
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
 			$stmt->bind_param('sssssss', $name, $email, $primaryPhone, $secondaryPhone, $address, $referral, $customer_id);
 			$stmt->execute();

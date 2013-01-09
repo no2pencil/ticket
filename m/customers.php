@@ -118,12 +118,12 @@ if(isset($_GET['new'])){
 
 if(isset($_GET['view'])) {
 	$data = $framework->get('customers')->getInfoById($customer_id);
-        $PrimaryPhone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
-	//$SecondaryPhone = $framework->get('util')->formatPhone($data['customer.secondaryPhone']);
+	$PrimaryPhone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
+	//$SecondaryPhone = $framework->get('utils')->formatPhone($data['customer.secondaryPhone']);
 	$ticket_data = $framework->get('customers')->getCustomerTickets($data['customer.id']);
 	$referral = $framework->get('customers')->getReferralByID($data['customer.referral']);
-	if(isset($PrimaryPhone)) {
-		$ringurl = $framework->get('ring_central')->make_url(trim($info['customer.primaryPhone']));
+	if(isset($data['customer.primaryPhone'])) {
+		$ringurl = $framework->get('ring_central')->make_url(trim($data['customer.primaryPhone']));
 	}
         $content .= '
                         <h4>Customer ID : '.$data['customer.id'].'</h4>
@@ -205,19 +205,20 @@ if(isset($_GET['view'])) {
 }
 
 if(isset($_POST['update'])) {
-        $result = $framework->get('customers')->update($_POST['customer_id'], $_POST['name'], $_POST['email'], trim($_POST['primaryPhone']), trim($_POST['secondaryPhone']), $_POST['address'], $_POST['referral']);
-        if($result){
-                $content .= '
-                        <div class="alert alert-success">
-                                <strong>Customer has been updated</strong> | <a href="customers.php?new=true">Add another</a>
-                        </div>';
-        } else {
-                $content .= '
-                        <div class="alert alert-error">
-                                <strong>Error: </strong>Something went wrong. | <a href="#" onclick="history.go(-2)">Back</a>
-                        </div>';
-        }
-
+	if(!isset($_POST['customer_id'])) {
+		$alert['status']='error';
+		$alert['msg']='Customer ID is not set';
+	} else {
+        	$result = $framework->get('customers')->update($_POST['name'], $_POST['email'], trim($_POST['primaryPhone']), trim($_POST['secondaryPhone']), $_POST['address'], $_POST['referral'], $_POST['customer_id']);
+        	if($result){
+			$alert['status']='success';
+			$alert['msg']='Customer '.$_POST['customer_id'].' has been updated';
+			$_GET['view']=$_POST['customer_id'];
+		} else {
+			$alert['status']='error';
+			$alert['msg']='Somethign went wrong updating customer'.$_POST['customer_id'];
+        	}
+	}
 }
 
 if(isset($_GET['edit'])) {

@@ -11,7 +11,6 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 		$alert['status'] = 'warning';
 		$alert['msg'] = "This project is still under heavy construciton. Work your wget magic!";
 	}
-	//$RecentCustID = $framework->get('customer')->getRecentCustomer();
 ?>
 <body>
 <div class="navbar">
@@ -28,15 +27,16 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <?php
+<?php
               // This still needs some work & is not 100%
               // The idea is to only load the new ticket modal option if we
               // can assure the user is viewing a customer
               if(strpos($url,"customer")>0) {
                 $CustomerData = $framework->get('customers')->getInfoById($_GET['view']);
-            ?>
+?>
             <li><a href="#NewTicketModal" data-toggle="modal">New Ticket</a></li>
-            <?php } ?>
+            <li class="divider"></li>
+<?php } ?>
             <li>
               <form action="tickets.php" method="post" name="searchform" style="margin: 0;">
                 <input type="hidden" name="search" value="<?php echo $_SESSION['user_name']; ?>">
@@ -60,6 +60,10 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
+<?php if(isset($CustomerData)) { ?>
+            <li><a href="#EditCustomerModal" data-toggle="modal">Edit <?php echo $CustomerData['customer.name']; ?></a></li>
+            <li class="divider"></li>
+<?php } ?>
             <li><a href="#NewCustomerModal" data-toggle="modal">New Customer</a></li>
             <li><a href="customers.php?viewall=true">All customers</a></li>
             <li class="divider"></li>
@@ -69,7 +73,7 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
               <?php
                 $data = $framework->get('customers')->getAll();
                 foreach($data as $id => $customer) {
-			$phone = $framework->get('utils')->formatPhone($customer['customer.primaryPhone']);
+			$phone = $framework->get('utils')->formatSearchPhone($customer['customer.primaryPhone']);
 			printf("<option value=\"%s\">%s %s</option>\n",$customer['customer.id'],$customer['customer.name'],$phone);
 		}
               ?>
@@ -133,6 +137,7 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 	require_once("v/js/NewCustomerModal.php");
 	require_once("v/js/NewTicketModal.php");
 	require_once("v/js/NewUserModal.php");
+	require_once("v/js/EditCustomerModal.php");
 
 	require_once("v/js/ReferralsModal.php");
 	require_once("v/js/StatusesModal.php");
@@ -151,6 +156,6 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 				?>
 			</div>
 		</div>
-	<?php require_once("js/scripts.php"); ?>
+	<?php require_once("v/js/scripts.php"); ?>
 </body>
 </html>
