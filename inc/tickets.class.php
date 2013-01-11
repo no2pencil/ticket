@@ -348,10 +348,11 @@ class tickets extends framework {
 			$result .= '<td><a href="tickets.php?view=' . $ticket['ticket.id'] . '">' .  $ticket['ticket.invoice'] . '</a></td>';
 			$result .= '<td><a href="customers.php?view=' . $ticket['customer.id'] . '" class="btn">' . $ticket['customer.name'] . '</a></td><td>';
 			if(!empty($ticket['customer.primaryPhone'])){
+				$PrimaryPhone = parent::get('utils')->formatPhone($ticket['customer.primaryPhone']);
 				$ringurl = parent::get('ring_central')->make_url($ticket['customer.primaryPhone']);
 				if($ringurl){
 					$result .= '
-						<a href="' . $ringurl . '" target="_blank"><span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>';
+						<a href="'.$ringurl.'" rel="tooltip" title="Call '.$PrimaryPhone.'" target="_blank"><span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>';
 				} else {
 					$result .= $framework->get('utils')->formatPhone($ticket['customer.primaryPhone']); // User does not have ring central setup
 				}

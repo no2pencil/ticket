@@ -21,6 +21,24 @@ if(isset($_POST['savenew'])){
 	}
 }
 
+if(isset($_POST['update'])) {
+        if(!isset($_POST['customer_id'])) {
+                $alert['status']='error';
+                $alert['msg']='Customer ID is not set';
+        } else {
+                $_GET['view']=$_POST['customer_id'];
+                $result = $framework->get('customers')->update($_POST['name'], $_POST['email'], trim($_POST['primaryPhone']), trim($_POST['secondaryPhone']), $_POST['address'], $_POST['referral'], $_POST['customer_id']);
+                if($result){
+                        $alert['status']='success';
+                        $alert['msg']='Customer '.$_POST['customer_id'].' has been updated...';
+                } else {
+                        $alert['status']='error';
+                        $alert['msg']='Somethign went wrong updating customer'.$_POST['customer_id'];
+                }
+        }
+}
+
+
 if(isset($_GET['view'])) {
 	$customer_id=$_GET['view'];
 	$_POST['customers_select']=$customer_id;
@@ -53,22 +71,6 @@ if(isset($_GET['viewall'])){
 }
 
 /*
-if(isset($_POST['savenew'])){
-	$result = $framework->get('customers')->add($_POST['name'], $_POST['email'], $_POST['primaryPhone'], $_POST['secondaryPhone'], $_POST['address'], $_POST['referral']);
-	if($result>0){
-		$content .= '
-			<div class="alert alert-success">
-				<strong>Customer '.$result.' has been created</strong> | <a href="customers.php?new=true">Add another</a>
-			</div>';
-	} else {
-		$content .= '
-			<div class="alert alert-error">
-				<strong>Error: </strong>Something went wrong. | <a href="#" onclick="history.go(-2)">Back</a>
-			</div>';
-	}
-}
-*/
-
 if(isset($_GET['new'])){
 	$content .= '
 		<form action="customers.php?view='.$customer_id.'" method="post" class="form-horizontal">
@@ -115,6 +117,7 @@ if(isset($_GET['new'])){
 			</div>
 		</form>';
 }
+*/
 
 if(isset($_GET['view'])) {
 	$data = $framework->get('customers')->getInfoById($customer_id);
@@ -135,17 +138,21 @@ if(isset($_GET['view'])) {
                         </div>
                         <div class="control-group">
                                 <label class="control-label">Primary phone : '.$PrimaryPhone;
-	if(isset($ringurl)) $content.='<a href="'.$ringurl.'" target="_blank">';
+	if(isset($ringurl)) $content.='<a href="'.$ringurl.'" rel="tooltip" title="Call '.$PrimaryPhone.'" target="_blank">';
 	$content .= '&nbsp;<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></label>
 			</div>
                         <div class="control-group">
                                 <label class="control-label">Secondary phone : ';
 			if(isset($SecondaryPhone)) echo $SecondaryPhone;
 				$content .= '</label>
-                       </div>
-                        <div class="control-group">
-                                <label class="control-label">Address : '.$data['customer.address'].'</label>
-                        </div>
+                       </div>';
+	if(!empty($data['customer.address'])) {
+		$content .='
+                       <div class="control-group">
+                                <label class="control-label">Address : <a href="http://maps.google.com/?q='.$data['customer.address'].'" target="_blank"><span class="badge badge-info"><i class="icon-road icon-white"></i></span>&nbsp;'.$data['customer.address'].'</a></label>
+                        </div>';
+	}
+	$content .= '
                         <div class="control-group">
                                 <label class="control-label">Referral : '.$referral['reff.reff'].'</label>
                         </div>
@@ -202,72 +209,5 @@ if(isset($_GET['view'])) {
 				$content .='<label><hr></label>
 			</div>
 	';
-}
-
-if(isset($_POST['update'])) {
-	if(!isset($_POST['customer_id'])) {
-		$alert['status']='error';
-		$alert['msg']='Customer ID is not set';
-	} else {
-        	$result = $framework->get('customers')->update($_POST['name'], $_POST['email'], trim($_POST['primaryPhone']), trim($_POST['secondaryPhone']), $_POST['address'], $_POST['referral'], $_POST['customer_id']);
-        	if($result){
-			$alert['status']='success';
-			$alert['msg']='Customer '.$_POST['customer_id'].' has been updated';
-			$_GET['view']=$_POST['customer_id'];
-		} else {
-			$alert['status']='error';
-			$alert['msg']='Somethign went wrong updating customer'.$_POST['customer_id'];
-        	}
-	}
-}
-
-if(isset($_GET['edit'])) {
-	$data = $framework->get('customers')->getInfoById($customer_id);
-        $phone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
-        $content .= '
-                <form action="customers.php?view='.$data['customer.id'].'" method="post" class="form-horizontal">
-                        <input type="hidden" name="update" value="true">
-			<input type="hidden" name="customer_id" value="'.$data['customer.id'].'">
-                        <legend>Customer ID : '.$data['customer.id'].'</legend>
-                        <div class="control-group">
-                                <label class="control-label">Name</label>
-                                <div class="controls">
-                                        <input type="text" name="name" value="'.$data['customer.name'].'">
-                                </div>
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">Email</label>
-                                <div class="controls">
-                                        <input type="text" name="email" value="'.$data['customer.email'].'">
-                                </div>
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">Primary phone</label>
-                                <div class="controls">
-                                        <input type="text" name="primaryPhone" value="'.$phone.'">
-                                </div>
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">Secondary phone</label>
-                                <div class="controls">
-                                        <input type="text" name="secondaryPhone" value="'.$data['customer.seondaryPhone'].'">
-                                </div>
-                       </div>
-                        <div class="control-group">
-                                <label class="control-label">Address</label>
-                                <div class="controls">
-                                        <input type="text" name="address" value="'.$data['customer.address'].'">
-                                </div>
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">Referral</label>
-                                <div class="controls">
-                                        <input type="text" name="referral" value="'.$data['customer.referral'].'">
-                                </div>
-                        </div>
-                        <div class="form-actions">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                        </div>
-                </form>';
 }
 ?>

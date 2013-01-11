@@ -1,37 +1,32 @@
 <?php
 	require_once("head.php");
 ?>
-<body>
-	<p align=center>
-		<img src="http://www.imagine-net-tech.com/images/network.jpg" width="50%">
-	</p>
-	<?php
-		echo '<form class="box login" action="index.php" method="POST" ';
-		if(isset($_GET['msg'])) echo 'style="height: 300px;"'; 
-		echo '>';
-		if(isset($_GET['msg'])){
-		echo '<fieldset class="boxBody">
-			<label>' . $_GET['msg'] . '</label></fieldset>';
-		}
-	?>
-	<fieldset class="boxBody">
-		<label>Username</label>
-		<input type="text" name="username" tabindex="1" placeholder="" required>
-		<label>
-			<a href="#" class="rLink" tabindex="5">Forget your password?</a>Password
-		</label>
-		<input type="password" name="password" tabindex="2" required>
-	</fieldset>
-	<footer>
-		<label><input type="checkbox" tabindex="3">Keep me logged in</label>
-		<button class="btn btn-primary" type="submit">Login</button>
-	</footer>
-	</form>
-	<footer id="main" class="hidden-phone">
-		<div class="hidden-phone">
-			<em class="icon-globe"></em><em class="icon-tasks"></em>
-		</div>
-	</footer>
+<body id="main">
+  <div class="row">
+    <div class="span4 offset4">
+      <div class="well">
+        <legend>Sign in to Ticket System</legend>
+        <form method="POST" action="index.php" accept-charset="UTF-8">
+          <?php if(isset($_GET['msg'])) { ?>
+          <div class="alert alert-error">
+            <a class="close" data-dismiss="alert" href="#">x</a><?php echo $_GET['msg']; ?>
+          </div>
+          <?php } ?>
+          <input class="span3" placeholder="Username" type="text" name="username">
+          <input class="span3" placeholder="Password" type="password" name="password"> 
+          <label class="checkbox">
+            <input type="checkbox" name="remember" value="1"> Remember Me
+          </label>
+          <button class="btn-info btn" type="submit">Login</button>      
+        </form>    
+      </div>
+    </div>
+  </div>
+  <footer id="main" class="hidden-phone">
+    <div class="hidden-phone">
+      <em class="icon-globe"></em><em class="icon-tasks"></em>
+    </div>
+  </footer>
 </body>
 </html>
 

@@ -181,6 +181,7 @@ if(isset($_POST['new'])) {
 
 if(isset($_GET['view'])){
 	$info = $framework->get('tickets')->getTicketById($_GET['view']);
+	$PrimaryPhone = $framework->get('utils')->formatPhone($info['customer.primaryPhone']);
 	$ringurl = $framework->get('ring_central')->make_url(trim($info['customer.primaryPhone']));
 	if($info) {
 		$comments = $framework->get('comments')->getAllByTicket($info['ticket.id']);
@@ -202,14 +203,14 @@ if(isset($_GET['view'])){
 		}
 		$content .= '</select>';
 		$content .= '			</td></tr>';
-		$content .= '<tr><th>Created on</th><td>'.$info['ticket.createDate'].'</td></tr>
-						<tr><th>Last Updated</th><td>&nbsp;</td></tr>
+		$content .= '<tr><th>Created on</th><td colspan="2">'.$info['ticket.createDate'].'</td></tr>
+						<tr><th>Created by</th><td colspan="2">' . $info['creator.name'] . '</td></tr>
+						<tr><th>Last Updated</th><td colspan="2">&nbsp;</td></tr>
                                                 <tr><th>Customer</th>';
-		$content .= '			<td><a href="customers.php?view='.$info['customer.id'].'">'.$info['customer.name'].'</a>&nbsp;('.$info['customer.id'].')&nbsp; ';
+		$content .= '			<td colspan="2"><a href="customers.php?view='.$info['customer.id'].'">'.$info['customer.name'].'</a>&nbsp;('.$info['customer.id'].')&nbsp; ';
 
-		if(isset($ringurl)) $content.='<a href="'.$ringurl.'" target="_blank">';
+		if(isset($ringurl)) $content.='<a href="'.$ringurl.'" rel="tooltip" title="Call '.$PrimaryPhone.'" target="_blank">';
 		$content .= '<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></td></tr>
-						<tr><th>Created by</th><td>' . $info['creator.name'] . '</td></tr>
 						<tr><th>Comments</th><td></td></tr>';
 	foreach($comments as $comment) {
 		$usersname = $framework->get('user')->get_user_info_by_id($comment['user_id']);

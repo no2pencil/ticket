@@ -5,7 +5,7 @@
   </div>
   <div class="modal-body">
     <form action="customers.php" method="post" class="form-horizontal">
-      <input type="hidden" name="update" value="true">
+      <input type="hidden" name="update" value="update">
       <input type="hidden" name="customer_id" value="<?php echo $CustomerData['customer.id']; ?>">
       <div class="control-group">
         <label class="control-label">Name</label>
