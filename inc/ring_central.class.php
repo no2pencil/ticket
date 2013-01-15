@@ -3,6 +3,7 @@
  * ring_central extends framework
  * Used for Ring Central related functions
 */
+
 class ring_central extends framework {
 	/*
 	 * get_creds
@@ -44,6 +45,20 @@ class ring_central extends framework {
 		$result .= '&clid='.$creds['rng_frm'];
 		
 		return $result;
+	}
+
+	/*
+	 * log_call(string user, string phone, int id)
+	 * Log the call in the database when the 'call' icon is clicked
+	 */
+	public function log_call($user, $phone, $id) {
+
+        	$time = date("H:i:s");
+		$today = date("m-d-Y");
+		$comment = $user." initiated call to ".$phone." on invoice ".$id." at ".$time;
+
+		$sql = "INSERT INTO comments ('comment', 'invoice_id', 'dateadded', 'lastupdated', user_id) VALUES('$comment', '$id', '$today', '$time', '')";
+		echo json_encode($resp);
 	}
 }
 ?>

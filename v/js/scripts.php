@@ -28,4 +28,17 @@
 	$('#ReferralsModal').on('shown', function() {
 		$('#ReferralsModal').click();
 	});
+	$('.RingUrl').click(function() {
+		var id = $(this).data('id');
+		var phone = $(this).data('phone');
+		var user = $(this).data('user');
+		$.post("/ajax/RingCentral.php", { 
+			user: user, 
+			phone: phone,
+			id: id
+		},
+		function(data) {
+			console.log("Logging " + data.user + " making call to " + data.phone + " on invoice " + data.id + " at " + data.time);
+		}, "json");
+	});
 </script>

@@ -141,6 +141,8 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 
 	require_once("v/js/ReferralsModal.php");
 	require_once("v/js/StatusesModal.php");
+
+	require_once("v/js/RingUrlModal.php");
 ?>
 
 <div class="alert alert-block alert-<?php echo $alert['status']; ?>">

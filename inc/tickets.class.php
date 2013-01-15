@@ -39,19 +39,6 @@ class tickets extends framework {
 	}
 	
 	/*
-	| id            | int(255)      | NO   | PRI | NULL    | AUTO_INCREMENT |
-	| createDate    | varchar(30)   | NO   |     | NULL    |                |
-	| creator       | int(5)        | NO   |     | NULL    |                |
-	| type          | int(255)      | NO   |     | NULL    |                |
-	| priority      | varchar(255)  | NO   |     | NULL    |                |
-	| dueDate       | varchar(10)   | NO   |     | NULL    |                |
-	| status        | int(255)      | NO   |     | NULL    |                |
-	| customer      | int(255)      | NO   |     | NULL    |                |
-	| specialFields | varchar(1000) | NO   |     | NULL    |                |
-	| invoice       | varchar(12)   | YES  |     | NULL    |                |
-	*/
-
-	/*
 	 * searchTicketById(int $id)
 	 * Searches ticket ids by partial name given from ticket name
 	 * Returns id, & that is passed to getTicketById 
@@ -207,42 +194,6 @@ class tickets extends framework {
 		return $fresult;
 	}
 
-	public function getAllOpen() {
-		//$sql = "SELECT * from tickets as t JOIN customers AS c ON t.customer = c.id where";
-		$sql = "SELECT id, status, customer, invoice from tickets where ";
-		$sql .= " status != 11";
-		$sql .= " and status != 20";
-		$sql .= " and status != 23";
-		$sql .= " and status != 26";
-		$sql .= " and status != 29";
-		$sql .= " and status != 39";
-		$sql .= " and status != 41";
-		$sql .= " and status != 46";
-		$sql .= " and status != 47";
-		$sql .= " and status != 54";
-		$sql .= " and status != 55";
-		$sql .= " and status != 61";
-		$sql .= " and status != 62";
-		$sql .= " and status != 63";
-		$sql .= " order by id DESC";
-		$result = parent::get('db')->mysqli()->query($sql);
-		if($result !== false){
-			$fresult= array();
-			while($row = $result->fetch_array()) {
-				$fresult[$row['id']] = array(
-					"id" => $row['id'],
-					"status" => $row['status'],
-					"customer" => $row['customer'],
-					"invoice" => $row['invoice']
-				);
-			}
-		} else {
-			return false;
-		}
-		
-		return $fresult;
-	}
-	
 	/*
 	 * getComments(int $invoice_id)
 	 * Returns all comments for the ticket  with the specified invoice id
@@ -352,7 +303,10 @@ class tickets extends framework {
 				$ringurl = parent::get('ring_central')->make_url($ticket['customer.primaryPhone']);
 				if($ringurl){
 					$result .= '
-						<a href="'.$ringurl.'" rel="tooltip" title="Call '.$PrimaryPhone.'" target="_blank"><span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>';
+						<a href="#" class="RingUrl" data-user="'.$_SESSION['user_name'].'" data-phone="'.$ticket['customer.primaryPhone'].'" data-id="'.$ticket['ticket.id'].'" rel="tooltip" title="Call '.$PrimaryPhone.'"><span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>
+					';
+					/* $result .= '
+						<a href="'.$ringurl.'" rel="tooltip" title="Call '.$PrimaryPhone.'" target="_blank"><span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>'; */
 				} else {
 					$result .= $framework->get('utils')->formatPhone($ticket['customer.primaryPhone']); // User does not have ring central setup
 				}
