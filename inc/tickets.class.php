@@ -308,7 +308,7 @@ class tickets extends framework {
 					/* $result .= '
 						<a href="'.$ringurl.'" rel="tooltip" title="Call '.$PrimaryPhone.'" target="_blank"><span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>'; */
 				} else {
-					$result .= $framework->get('utils')->formatPhone($ticket['customer.primaryPhone']); // User does not have ring central setup
+					//$result .= $framework->get('utils')->formatPhone($ticket['customer.primaryPhone']); // User does not have ring central setup
 				}
 			} else {
 				$result .= 'No phone on file';
