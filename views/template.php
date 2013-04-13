@@ -57,6 +57,7 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li><a href="<?php echo _SITE_ROOT; ?>/Admin/users/">Users</a></li>
+								<li><a href="<?php echo _SITE_ROOT; ?>/Admin/settings/">Settings</a></li>
 							</ul>
 						</li>
 						<li>

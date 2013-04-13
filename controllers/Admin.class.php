@@ -30,4 +30,10 @@ class Admin extends BaseController {
 		$this->view->users = $users->getAll(); // For the all users tab
 		$this->displayView(false, "users_all");
 	}
+
+	public function settings(){
+		$settings = new SiteSettingsModel();
+		$this->view->settings = $settings->getAll();
+		$this->displayView();
+	}
 }
