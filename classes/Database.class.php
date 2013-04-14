@@ -70,7 +70,7 @@ class Database {
 	public function update($table, $set, $where=array()){
 		try {
 			if(empty($where)) $where = array("1" => "1");
-			$data = $this->convertArrayToSQL('AND', $set, array("WHERE"), $where); // ;_; this design pattern sucks
+			$data = $this->convertArrayToSQL(', ', $set, array("WHERE"), $where); // ;_; this design pattern sucks
 			$sql = 'UPDATE `' . $table . '` SET ' . $data[0];
 			$sth = $this->PDO->prepare($sql);
 			$sth->execute($data[1]);

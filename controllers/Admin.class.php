@@ -33,6 +33,15 @@ class Admin extends BaseController {
 
 	public function settings(){
 		$settings = new SiteSettingsModel();
+		if($this->gets['id'] == "save"){
+			foreach($this->posts as $key => $value){
+				if(strpos($key, 'setting_') === 0){
+					$key = str_replace('_', ' ', substr($key, 8)); // remove 'setting_' prefix from our keys, convert underscores to spaces.
+					$settings->set($key, $value);
+				}
+				$this->view->success_msg = "Settings have been saved";
+			}
+		}
 		$this->view->settings = $settings->getAll();
 		$this->displayView();
 	}
