@@ -23,7 +23,7 @@
 				<div class="control-group">
 					<label class="control-label"><?php echo $setting['keyname']; ?></label>
 					<div class="controls">
-						<input class="span6" type="text" name="<?php echo str_replace(' ', '_', $setting['keyname']); ?>" value="<?php echo $setting['keyvalue']; ?>"/><?php if(!empty($setting['helptext'])){ ?><span class="help-inline"><?php echo $setting['helptext']; ?></span><?php } ?>
+						<input class="span6" type="text" name="<?php echo $setting['keyname']; ?>" value="<?php echo $setting['keyvalue']; ?>"/><?php if(!empty($setting['helptext'])){ ?><span class="help-inline"><?php echo $setting['helptext']; ?></span><?php } ?>
 					</div>
 				</div>
 		<?php
