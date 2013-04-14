@@ -42,7 +42,7 @@ class Admin extends BaseController {
 				$this->view->success_msg = "Settings have been saved";
 			}
 		}
-		$this->view->settings = $settings->getAll();
+		$this->view->settings = $settings->getAll(false);
 		$this->displayView();
 	}
 }

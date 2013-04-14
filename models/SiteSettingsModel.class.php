@@ -1,13 +1,21 @@
 <?php
 class SiteSettingsModel extends BaseModel {
 	/*
-	 * getAll()
-	 * Returns all settings in an array
-	 * Warning: This will just return the rows. It doesn't turn it into an associative array.
-	 * TODO: Make associative array option
+	 * getAll(boolean $associative_array)
+	 * If $associative_array is true, settings will be returned in array('keyname' => 'keyvalue') fashion (meaning no category/helptext stuff).
+	 * If $associative_array is false, will return everything inside of the settings table, each key in the returning array containing row info.
 	*/
-	public function getAll(){
-		return $this->database->select('site_settings', array());
+	public function getAll($associative_array){
+		$rows = $this->database->select('site_settings', array());
+		if($associative_array){
+			$results = array();
+			foreach($rows as $setting){
+				$results[$setting['keyname']] = $setting['keyvalue'];
+			}
+			return $results;
+		} else {
+			return $rows;
+		}
 	}
 
 	public function get($key){

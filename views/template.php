@@ -69,8 +69,21 @@
 					</ul>
 				</div>
 			</div>
+			<?php
+			if(isset($view->site_settings['site warning message'])){
+			?>
+				<div class="alert" class="">
+					<div class="container">
+						<?php echo htmlentities($view->site_settings['site warning message']); ?>
+					</div>
+				</div>
+				<style>body { padding-top:90px; }</style>
+			<?php } ?>
 		</div>
 		<div class="container">
+			Wassup
+
+			
 			<?php echo $view->_contents; ?>
 		</div>
 	</body>
