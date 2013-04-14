@@ -70,7 +70,7 @@
 				</div>
 			</div>
 			<?php
-			if(isset($view->site_settings['site warning message'])){
+			if(!empty($view->site_settings['site warning message'])){
 			?>
 				<div class="alert" class="">
 					<div class="container">
@@ -81,9 +81,6 @@
 			<?php } ?>
 		</div>
 		<div class="container">
-			Wassup
-
-			
 			<?php echo $view->_contents; ?>
 		</div>
 	</body>
