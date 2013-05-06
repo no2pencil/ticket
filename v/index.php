@@ -97,7 +97,7 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 -->
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="icon-tasks"></i> Reports
+            <i class="icon-bar-chart"></i> Reports
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">

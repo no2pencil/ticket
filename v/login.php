@@ -24,7 +24,9 @@
   </div>
   <footer id="main" class="hidden-phone">
     <div class="hidden-phone">
-      <em class="icon-globe"></em><em class="icon-tasks"></em>
+      <em class="icon-globe"></em>
+      <em class="icon-tasks"></em>
+      <em class="icon-ambulance"></em>
     </div>
   </footer>
 </body>

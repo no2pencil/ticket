@@ -259,16 +259,16 @@ class tickets extends framework {
 			switch ($ticket['status.status']) {
 				case "Pending Payment":
 					$btn_atr='badge-success';
-					$btn_char='">$';
+					$btn_char=' icon-money">';
 				break;
 				case "Call Customer Admin":
 				case "Call Customer Tech":
 					$btn_atr='badge-warning';
-					$btn_char=' icon-warning-sign">';
+					$btn_char=' icon-phone">';
 				break;
 				case "In Progress":
 					$btn_atr='';
-					$btn_char=' icon-wrench">';
+					$btn_char=' icon-stethoscope">';
 				break;
 				case "Parts need to be ordered":
 					$btn_atr='badge-info';
@@ -288,7 +288,7 @@ class tickets extends framework {
 				break;
 				default:
 					$btn_atr='';
-					$btn_char='">';
+					$btn_char=' icon-hand-right">';
 				break;
 			}
 			$result .= '<tr><td><a href="#" rel="tooltip" placement="left" title="';

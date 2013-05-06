@@ -7,7 +7,7 @@
   <div class="modal-body">
     <input type="hidden" name="new" value="process">
     <fieldset>
-    <legend>Status Type</legend>
+    <legend>Repair Type</legend>
     <div class="control-group">
       <ul class="nav nav-pills">
         <?php foreach($StatusTypes as $Type) { ?>
@@ -32,9 +32,9 @@
       </ul>
     </div>
 
-    <legend>New Status</legend>
+    <legend>New Repair</legend>
     <div class="control-group">
-      <label class="control-label" for="typename">Status Type</label>
+      <label class="control-label" for="typename">Repair Type</label>
       <div class="controls">
         <input type="text" class="input-xlarge input-typename" id="typename" name="typename">
       </div>

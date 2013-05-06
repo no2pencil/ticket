@@ -163,16 +163,16 @@ if(isset($_GET['view'])) {
 		                        switch ($ticket_data_element['status.status']) {
                 		                case "Pending Payment":
                                 		        $btn_atr='btn-success';
-                                        		$btn_char='">$';
+                                        		$btn_char=' icon-money">';
                                 		break;
                                 		case "Call Customer Admin":
                                 		case "Call Customer Tech":
                                         		$btn_atr='btn-warning';
-                                        		$btn_char=' icon-warning-sign">';
+                                        		$btn_char=' icon-phone">';
                                 		break;
                                 		case "In Progress":
                                         		$btn_atr='';
-                                        		$btn_char=' icon-wrench">';
+                                        		$btn_char=' icon-stethoscope">';
                                 		break;
                                 		case "Parts need to be ordered":
                                         		$btn_atr='btn-info';
@@ -192,7 +192,7 @@ if(isset($_GET['view'])) {
 						break;
                                			default:
                                         		$btn_atr='';
-                                        		$btn_char='">';
+                                        		$btn_char=' icon-hand-left">';
                                 		break;
                         		}
 
