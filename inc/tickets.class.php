@@ -109,12 +109,12 @@ class tickets extends framework {
 		"LEFT JOIN statuses AS status ON ticket.status = status.id " .
 		"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
 		"LEFT JOIN users AS creator ON ticket.creator = creator.id " .
-		"LEFT JOIN repair AS type ON ticket.repair = repair.id ".
+		//"LEFT JOIN repair AS repair ON ticket.repair = repair.id ".
 		"WHERE ticket.id=" . (int)$id . " LIMIT 1";
 		$result = parent::get('db')->mysqli()->query($sql);
 		$result = parent::get('db')->fetchArray($result);
 		// This part is for turning NULL into empty strings.
-/*
+
 		foreach($result as $key => $value){
 			if(gettype($value == 'array')){
 				foreach($value as $key2 => $value2){
@@ -126,7 +126,7 @@ class tickets extends framework {
 				$result[$key] = '';
 			}
 		}
-*/
+
 		return $result; 
 	}
 	
@@ -193,6 +193,41 @@ class tickets extends framework {
 			$fresult[$row['id']] = array("status" => $row['status']); 
 		}
 		return $fresult;
+	}
+
+	/*
+	 * getRepairs()
+	 * Returns all Repairs & Repair Descriptions
+	*/
+	public function getRepairs() {
+		$sql = "SELECT id, repair, description FROM repairs";
+		$result = parent::get('db')->mysqli()->query($sql);
+		$fresult = array();
+		while($row = $result->fetch_array()) {
+			$fresult[$row['id']] = array(
+				"id" =>$row['id'],
+				"repair" =>$row['repair'],
+				"description" =>$row['description']
+			);
+		}
+		return $fresult;
+	}
+
+	/*
+	 * setStatusByID(int $status_id, int $invoice, string $last_updated)
+	*/
+
+	public function setRepairByID($invoice_id, $repair_id) {
+		$sql = "UPDATE tickets set repair=? WHERE id=?";
+		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
+			$stmt->bind_param('ii', $repair_id, $invoice_id);
+			$stmt->execute();
+			$stmt->store_result();
+			if($stmt->affected_rows > 0){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/*
@@ -309,26 +344,29 @@ class tickets extends framework {
 			$result .= '"><span class="badge badge-inverse">';
 			$result .= '<em class="icon-';
 			switch($ticket['ticket.repair']) {
-				case 0:
+				case 1:
 					$result .= 'desktop">&nbsp;Desktop/PC';
 					break;
-				case 1:
+				case 2:
 					$result .= 'laptop">&nbsp;Laptop';
 					break;
-				case 2:
+				case 3:
 					$result .= 'tablet">&nbsp;iPad';
 					break;
-				case 3:
+				case 4:
 					$result .= 'mobile-phone">&nbsp;iPhone';
 					break;
-				case 4:
+				case 5:
 					$result .= 'keyboard">&nbsp;Coding/Web';
 					break;
-				case 5:
+				case 6:
 					$result .= 'sitemap">&nbsp;Networking';
 					break;
-				case 6:
+				case 7:
 					$result .= 'shield">&nbsp;Nintendo DS/DSi/3DS/XL';
+					break;
+				case 8:
+					$result .= 'cloud-upload".&nbsp;Web Hosting';
 					break;
 				default:
 					$result .= 'desktop">&nbsp;Desktop/PC';

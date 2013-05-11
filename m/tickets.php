@@ -4,10 +4,15 @@ if(!isset($Statuses)) {
 	$StatusTypes = $framework->get('status')->getTypes();
 }
 
+if(!isset($Repairs)) {
+	$Repairs = $framework->get('tickets')->getRepairs();
+}
+
 if(!isset($_POST['new'])) {
 	if(isset($_POST['status'])) {
-		$result = $framework->get('tickets')->setStatusByID($_POST['invoice_id'], $_POST['status']);
-		if(!$result) {
+		$statusResult = $framework->get('tickets')->setStatusByID($_POST['invoice_id'], $_POST['status']);
+		$repairResult = $framework->get('tickets')->setRepairByID($_POST['invoice_id'], $_POST['repair']);
+		if(!$statusResult||!$repairResult) {
 			$alert['status']='error';
 			$alert['msg']='Something jacked up with the status update ';
 		} else {
@@ -203,6 +208,19 @@ if(isset($_GET['view'])){
 		}
 		$content .= '</select>';
 		$content .= '			</td></tr>';
+
+		$content .= '<tr><th>Repair Type</th><td colspan="2">';
+		$content .= '<select name="repair">';
+		foreach($Repairs as $id => $Repair) {
+			$content .= '<option value="'.$Repair['id'].'"';
+			if($Repair['id']==$info['ticket.repair']) {
+				$content .= ' selected="selected"';
+			}
+			$content .= '>'.$Repair['repair'].'</option>';
+		}
+		$content .= '</seclect>';
+		$content .= '			</td></tr>';
+
 		$content .= '<tr><th>Created on</th><td colspan="2">'.$info['ticket.createDate'].'</td></tr>
 						<tr><th>Created by</th><td colspan="2">' . $info['creator.name'] . '</td></tr>
 						<tr><th>Last Updated</th><td colspan="2">&nbsp;</td></tr>
@@ -241,7 +259,6 @@ if(isset($_GET['view'])){
 		$alert['status']='error';
 		$alert['msg']='Ticket not found...';
 	}
-
 } 
 
 if(isset($_GET['advancedsearch'])){

@@ -43,7 +43,7 @@ if(isset($_GET['view'])) {
 	$customer_id=$_GET['view'];
 	$_POST['customers_select']=$customer_id;
 }
-$content = '<h2>Customers</h2>';
+$content = '<h2>Customer History</h2>';
 $content .= '<div style="margin-bottom: 15px;"></div>';
 
 
@@ -69,55 +69,6 @@ if(isset($_GET['viewall'])){
 				</ul>';
 	}
 }
-
-/*
-if(isset($_GET['new'])){
-	$content .= '
-		<form action="customers.php?view='.$customer_id.'" method="post" class="form-horizontal">
-			<input type="hidden" name="savenew" value="true">
-			<legend>New customer</legend>
-			<div class="control-group">
-				<label class="control-label">Name</label>
-				<div class="controls">
-					<input type="text" name="name">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">Email</label>
-				<div class="controls">
-					<input type="text" name="email">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">Primary phone</label>
-				<div class="controls">
-					<input type="text" name="primaryPhone">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">Secondary phone</label>
-				<div class="controls">
-					<input type="text" name="secondaryPhone">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">Address</label>
-				<div class="controls">
-					<input type="text" name="address">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">Referral</label>
-				<div class="controls">
-					<input type="text" name="referral">
-				</div>
-			</div>
-			<div class="form-actions">
-				<button type="submit" class="btn btn-primary">Save</button>
-			</div>
-		</form>';
-}
-*/
 
 if(isset($_GET['view'])) {
 	$data = $framework->get('customers')->getInfoById($customer_id);
@@ -160,6 +111,35 @@ if(isset($_GET['view'])) {
 			<h4>Tickets </h4>
 			<div class="control-group">';
 				foreach($ticket_data as $ticket_data_element) {
+					switch ($ticket_data_element['ticket.repair']) {
+						case 1:
+							$btn_repair = 'desktop';
+							break;
+						case 2:
+							$btn_repair = 'laptop';
+							break;
+						case 3:
+							$btn_repair = 'tablet';
+							break;
+						case 4:
+							$btn_repair = 'mobile-phone';
+							break;
+						case 5:
+							$btn_repair = 'keyboard';
+							break;
+						case 6:
+							$btn_repair = 'sitemap';
+							break;
+						case 7:
+							$btn_repair = 'shield';
+							break;
+						case 8:
+							$btn_repair = 'cloud-upload';
+							break;
+						default:
+							$btn_repair = 'desktop';
+							break;
+					}
 		                        switch ($ticket_data_element['status.status']) {
                 		                case "Pending Payment":
                                 		        $btn_atr='btn-success';
@@ -203,7 +183,8 @@ if(isset($_GET['view'])) {
                         		$content .= $ticket_data_element['status.status'];
 					$content .= '">';
 					$content .= $ticket_data_element['ticket.invoice'];
-					$content .= '<i class="icon-white '.$btn_char.'</i></a></label>';
+					$content .= '&nbsp;<i class="icon-white '.$btn_char.'</i>';
+					$content .= '&nbsp;<i class="icon-white icon-'.$btn_repair.'"></i></a></label>';
 					$content .= '<label class="control-label">Status : '.$ticket_data_element['status.status'].'</label>';
 				}
 				$content .='<label><hr></label>
