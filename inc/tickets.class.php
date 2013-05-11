@@ -109,6 +109,7 @@ class tickets extends framework {
 		"LEFT JOIN statuses AS status ON ticket.status = status.id " .
 		"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
 		"LEFT JOIN users AS creator ON ticket.creator = creator.id " .
+		"LEFT JOIN repair AS type ON ticket.repair = repair.id ".
 		"WHERE ticket.id=" . (int)$id . " LIMIT 1";
 		$result = parent::get('db')->mysqli()->query($sql);
 		$result = parent::get('db')->fetchArray($result);
@@ -252,7 +253,13 @@ class tickets extends framework {
 		$result = '
 			<table class="table">
 				<thead>
-					<tr><th>Status</th><th>Invoice</th><th>Customer</th><th>Call</th></tr>
+					<tr>
+						<th>Status</th>
+						<th>Repair</th>
+						<th>Invoice</th>
+						<th>Customer</th>
+						<th>Call</th>
+					</tr>
 				</thead>
 				<tbody>';
 		foreach($tickets as $key => $ticket) {
@@ -296,6 +303,39 @@ class tickets extends framework {
 			$result .= '"><span class="badge '.$btn_atr.'">';
 			$result .= '<em class="icon-white';
 			$result .= $btn_char.'</em></span></a></td>';
+
+			$result .= '<td><a href="#" rel="tooltip" placement="left" title="';
+			$result .= $ticket['status.status'];
+			$result .= '"><span class="badge badge-inverse">';
+			$result .= '<em class="icon-';
+			switch($ticket['ticket.repair']) {
+				case 0:
+					$result .= 'desktop">&nbsp;Desktop/PC';
+					break;
+				case 1:
+					$result .= 'laptop">&nbsp;Laptop';
+					break;
+				case 2:
+					$result .= 'tablet">&nbsp;iPad';
+					break;
+				case 3:
+					$result .= 'mobile-phone">&nbsp;iPhone';
+					break;
+				case 4:
+					$result .= 'keyboard">&nbsp;Coding/Web';
+					break;
+				case 5:
+					$result .= 'sitemap">&nbsp;Networking';
+					break;
+				case 6:
+					$result .= 'shield">&nbsp;Nintendo DS/DSi/3DS/XL';
+					break;
+				default:
+					$result .= 'desktop">&nbsp;Desktop/PC';
+					break;
+			}
+			$result .= '</em></span></a></td>';
+
 			$result .= '<td><a href="tickets.php?view=' . $ticket['ticket.id'] . '">' .  $ticket['ticket.invoice'] . '</a></td>';
 			$result .= '<td><a href="customers.php?view=' . $ticket['customer.id'] . '" class="btn">' . $ticket['customer.name'] . '</a></td><td>';
 			if(!empty($ticket['customer.primaryPhone'])){

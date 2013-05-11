@@ -17,6 +17,9 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
   <div class="navbar-inner">
     <div class="container">
       <ul class="nav">
+	<?php 
+/* Replace XRMS-Mini with variable that can be set by admin panel */
+	?>
         <li><a class="brand" href="#">XRMS-Mini</a></li>
         <li class="active">
           <a href="index.php"><i class="icon-white icon-home"></i> Home</a>
@@ -142,7 +145,7 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 	require_once("v/js/ReferralsModal.php");
 	require_once("v/js/StatusesModal.php");
 
-	require_once("v/js/RingUrlModal.php");
+	//require_once("v/js/RingUrlModal.php");
 ?>
 
 <div class="alert alert-block alert-<?php echo $alert['status']; ?>">
