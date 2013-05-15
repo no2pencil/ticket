@@ -89,9 +89,11 @@ if(isset($_GET['view'])) {
                         </div>
                         <div class="control-group">
                                 <label class="control-label">Primary phone : '.$PrimaryPhone;
-	if(isset($ringurl)) $content.='<a href="'.$ringurl.'" rel="tooltip" title="Call '.$PrimaryPhone.'" target="_blank">';
-	$content .= '&nbsp;<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></label>
-			</div>
+        if(isset($ringurl)) {
+		$content .= '<a href="#RingUrlModal" data-toggle="modal" rel="tooltip" title="Call '.$PrimaryPhone.'">';
+		$content .= '&nbsp;<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></label>';
+	}
+	$content .= '	</div>
                         <div class="control-group">
                                 <label class="control-label">Secondary phone : ';
 			if(isset($SecondaryPhone)) echo $SecondaryPhone;

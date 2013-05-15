@@ -20,6 +20,16 @@
          ?>
        </select>
     </div>
+    <label class="control-label" for="name">Repair Type</label>
+    <div class="controls">
+       <select name="repair">
+         <?php
+           foreach($Repairs as $Repair) {
+             echo '<option value='.$Repair['id'].'>'.$Repair['description'].'</option>';
+           }
+         ?>
+       </select>
+    </div>
     <div class="control-group">
        <label class="control-label" for="textarea">Comment:</label>
        <div class="controls">

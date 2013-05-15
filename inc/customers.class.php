@@ -155,8 +155,9 @@ class customers extends framework {
 			if(!empty($value['customer.primaryPhone'])){
 				$ringurl = parent::get('ring_central')->make_url($value['customer.primaryPhone']);
 				if($ringurl){
-					$call = '
-						<a href="' . $ringurl . '" target="_blank"><span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>';
+					$call = '<a href="#RingUrlModal" data-toggle="modal" rel="tooltip" title="Call '.$PrimaryPhone.'">';
+					$call .= '<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>';
+
 				} else {
 					$call = $framework->get('utils')->formatPhone($value['customer.primaryPhone']); // User does not have ring central setup
 				}
@@ -164,7 +165,7 @@ class customers extends framework {
 				$call = 'No phone on file';
 			}
 			$ticketcount = '3/10'; // Do this later
-			$result .= '<tr><td>' . $value['customer.name'] . '</td><td>' . $value['customer.email'] . '</td><td>' . $call . '</td><td>' . $ticketcount . '</td>';
+			$result .= '<tr><td>' . $value['customer.name'] . '</td><td>' . $value['customer.email'] . '</td><td>'. $call . '</td><td>' . $ticketcount . '</td>';
 			$result .= '
 				<td><div class="btn-group">
 				  <button class="btn" onclick="window.location.href=\'customers.php?view=' . $value['customer.id'] . '\'">View</button>

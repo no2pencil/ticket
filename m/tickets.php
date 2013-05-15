@@ -1,4 +1,8 @@
 <?php
+if(!$framework->get('ring_central')->get_creds()) {
+	echo "<h2>Ring Central</h2>";
+}
+
 if(!isset($Statuses)) {
 	$Statuses = $framework->get('status')->getStatuses();
 	$StatusTypes = $framework->get('status')->getTypes();
@@ -227,9 +231,10 @@ if(isset($_GET['view'])){
                                                 <tr><th>Customer</th>';
 		$content .= '			<td colspan="2"><a href="customers.php?view='.$info['customer.id'].'">'.$info['customer.name'].'</a>&nbsp;('.$info['customer.id'].')&nbsp; ';
 
-		if(isset($ringurl)) $content.='<a href="'.$ringurl.'" rel="tooltip" title="Call '.$PrimaryPhone.'" target="_blank">';
-		$content .= '<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></td></tr>
-						<tr><th>Comments</th><td></td></tr>';
+		$content .= '<a href="#RingUrlModal" data-toggle="modal" rel="tooltip" title="Call '.$PrimaryPhone.'">';
+		$content .= '<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>';
+		$content .= '</td></tr>';
+		$content .= '<tr><th>Comments</th><td></td></tr>';
 	foreach($comments as $comment) {
 		$usersname = $framework->get('user')->get_user_info_by_id($comment['user_id']);
 		$content .= '<tr><th>'.$comment['lastupdated'].'</th><td>'.$comment['comment'].'</td><td>'.$usersname['name'].'</td></tr>';

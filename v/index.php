@@ -6,6 +6,7 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 
 	$Statuses = $framework->get('status')->getStatuses();
 	$StatusTypes = $framework->get('status')->getTypes();
+        $Repairs = $framework->get('tickets')->getRepairs();
 	if(!isset($alert)) {
 		$alert = array();
 		$alert['status'] = 'warning';
@@ -145,13 +146,14 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 	require_once("v/js/ReferralsModal.php");
 	require_once("v/js/StatusesModal.php");
 
-	//require_once("v/js/RingUrlModal.php");
+	require_once("v/js/RingUrlModal.php");
+	if($alert['msg']) {
 ?>
-
 <div class="alert alert-block alert-<?php echo $alert['status']; ?>">
   <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <strong><?php echo $alert['msg']; ?></strong> 
+    <strong><?php echo $alert['msg']; ?></strong> 
 </div>
+<?php } ?>
 
 		<div class="wrapper">
 			<div class="content">

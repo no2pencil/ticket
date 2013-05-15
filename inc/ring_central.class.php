@@ -15,7 +15,7 @@ class ring_central extends framework {
 		$rng_pss = parent::get('settings')->get('rng_pss');
 		$rng_frm = parent::get('settings')->get('rng_frm');
 		// Until the settings are working, these will be manually set
-		//$rng_num = "18666112601";
+		$rng_num = "18666112601";
 		$rng_pss = "26272627";
 		$rng_frm = "3309292600";
 		if(empty($rng_num) || empty($rng_pss) || empty($rng_frm)){
