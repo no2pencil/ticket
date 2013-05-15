@@ -380,7 +380,6 @@ class tickets extends framework {
 				$PrimaryPhone = parent::get('utils')->formatPhone($ticket['customer.primaryPhone']);
 				$ringurl = parent::get('ring_central')->make_url($ticket['customer.primaryPhone']);
 				if($ringurl){
-					$result .= '
 					$result .= '<a href="#RingUrlModal" data-toggle="modal" rel="tooltip" title="Call '.$PrimaryPhone.'">&nbsp;<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>';
 				} else {
 					//$result .= $framework->get('utils')->formatPhone($ticket['customer.primaryPhone']); // User does not have ring central setup
