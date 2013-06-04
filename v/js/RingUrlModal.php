@@ -1,7 +1,6 @@
 <?php
 if($_GET['view']) {
   if(strpos($_SERVER['REQUEST_URI'],'tickets')) {
-    echo '<h2>Ticket</h2>';
     $tickets[] = $framework->get('tickets')->getTicketById($_GET['view']);
     /* DEBUG INFO */
     foreach($tickets as $key => $_ticket) {
@@ -15,7 +14,6 @@ if($_GET['view']) {
     $call_url = $framework->get('ring_central')->make_url($_ticket['customer.primaryPhone']);
   } else {
     if(strpos($_SERVER['REQUEST_URI'],'customers')) {
-      echo '<h2>Customer</h2>';
       $customers[] =  $framework->get('customers')->getInfoById($_GET['view']);
       /* DEBUG INFO */
       foreach($customers as $key => $_customer) {

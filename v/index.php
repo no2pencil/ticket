@@ -106,6 +106,7 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
           </a>
           <ul class="dropdown-menu">
             <li><a href="google.php">Customer Referrals</a></li>
+            <li><a href="repair_types.php">Repair Types</a></li>
           </ul>
         </li>
       </ul>

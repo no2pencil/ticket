@@ -116,30 +116,39 @@ if(isset($_GET['view'])) {
 					switch ($ticket_data_element['ticket.repair']) {
 						case 1:
 							$btn_repair = 'desktop';
+							$ticket_data_element['ticket.repair_text']="Desktop";
 							break;
 						case 2:
 							$btn_repair = 'laptop';
+							$ticket_data_element['ticket.repair_text']="Laptop";
 							break;
 						case 3:
 							$btn_repair = 'tablet';
+							$ticket_data_element['ticket.repair_text']="iPad";
 							break;
 						case 4:
 							$btn_repair = 'mobile-phone';
+							$ticket_data_element['ticket.repair_text']="iPhone";
 							break;
 						case 5:
 							$btn_repair = 'keyboard';
+							$ticket_data_element['ticket.repair_text']="???";
 							break;
 						case 6:
 							$btn_repair = 'sitemap';
+							$ticket_data_element['ticket.repair_text']="Networking";
 							break;
 						case 7:
 							$btn_repair = 'shield';
+							$ticket_data_element['ticket.repair_text']="?????";
 							break;
 						case 8:
 							$btn_repair = 'cloud-upload';
+							$ticket_data_element['ticket.repair_text']="Website/Coding";
 							break;
 						default:
 							$btn_repair = 'desktop';
+							$ticket_data_element['ticket.repair_text']="Desktop";
 							break;
 					}
 		                        switch ($ticket_data_element['status.status']) {
@@ -182,7 +191,7 @@ if(isset($_GET['view'])) {
 
 					$content .= '<a href="tickets.php?view='.$ticket_data_element['ticket.id'].'" class="btn ';
 					$content .= $btn_atr.'" rel="tooltip" placement="left" title="';
-                        		$content .= $ticket_data_element['status.status'];
+                        		$content .= $ticket_data_element['status.status'].' : '.$ticket_data_element['ticket.repair_text'];
 					$content .= '">';
 					$content .= $ticket_data_element['ticket.invoice'];
 					$content .= '&nbsp;<i class="icon-white '.$btn_char.'</i>';
