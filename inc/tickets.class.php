@@ -357,16 +357,19 @@ class tickets extends framework {
 					$result .= 'mobile-phone">&nbsp;iPhone';
 					break;
 				case 5:
-					$result .= 'keyboard">&nbsp;Coding/Web';
+					$result .= 'keyboard">&nbsp;Coding';
 					break;
 				case 6:
 					$result .= 'sitemap">&nbsp;Networking';
 					break;
 				case 7:
-					$result .= 'shield">&nbsp;Nintendo DS/DSi/3DS/XL';
+					$result .= 'gamepad">&nbsp;Nintendo DS/DSi/3DS/XL';
 					break;
 				case 8:
-					$result .= 'cloud-upload".&nbsp;Web Hosting';
+					$result .= 'cloud-upload">&nbsp;Web Hosting';
+					break;
+				case 9:
+					$result .= 'folder-open-alt">&nbsp;Data Recovery';
 					break;
 				default:
 					$result .= 'desktop">&nbsp;Desktop/PC';
