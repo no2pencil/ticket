@@ -371,6 +371,12 @@ class tickets extends framework {
 				case 9:
 					$result .= 'folder-open-alt">&nbsp;Data Recovery';
 					break;
+                                case 10:
+                                        $result .= 'folder-open-alt">&nbsp;eBay';
+                                        break;
+                                case 11:
+                                        $result .= 'mobile-phone">&nbsp;iPod';
+                                        break;
 				default:
 					$result .= 'desktop">&nbsp;Desktop/PC';
 					break;
