@@ -85,20 +85,6 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
             <li><a href="customers.php?advancedsearch=true">Advanced Search</a></li>
           </ul>
         </li>
-<!-- 
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="icon-comment"></i> Users
-            <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a href="#NewUserModal" data-toggle="modal">New User</a></li>
-            <li><a href="users.php?viewall=true">All Users</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Search Users</a></li>
-          </ul>
-        </li>
--->
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="icon-bar-chart"></i> Reports
@@ -106,7 +92,7 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
           </a>
           <ul class="dropdown-menu">
             <li><a href="google.php">Customer Referrals</a></li>
-            <li><a href="repair_types.php">Repair Types</a></li>
+            <li><a href="repairtypes.php">Repair Types</a></li>
           </ul>
         </li>
       </ul>

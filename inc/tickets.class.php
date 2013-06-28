@@ -366,13 +366,13 @@ class tickets extends framework {
 					$result .= 'gamepad">&nbsp;Nintendo DS/DSi/3DS/XL';
 					break;
 				case 8:
-					$result .= 'cloud-upload">&nbsp;Web Hosting';
+					$result .= 'linux">&nbsp;Web Hosting';
 					break;
 				case 9:
 					$result .= 'folder-open-alt">&nbsp;Data Recovery';
 					break;
                                 case 10:
-                                        $result .= 'folder-open-alt">&nbsp;eBay';
+                                        $result .= 'gift">&nbsp;eBay';
                                         break;
                                 case 11:
                                         $result .= 'mobile-phone">&nbsp;iPod';

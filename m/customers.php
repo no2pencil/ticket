@@ -143,12 +143,21 @@ if(isset($_GET['view'])) {
 							$ticket_data_element['ticket.repair_text']="Nintendo DS/DSi/3DS";
 							break;
 						case 8:
-							$btn_repair = 'cloud-upload';
+							$btn_repair = 'linux';
 							$ticket_data_element['ticket.repair_text']="Web Hosting";
 							break;
 						case 9:
 							$btn_repair = 'folder-open-alt';
 							$ticket_data_element['ticket.repair_text']="Data Recovery";
+							break;
+						case 10:
+							$btn_repair = 'gift';
+							$ticket_data_element['ticket.repair_text']='eBay';
+							break;
+						case 11:
+							$btn_repair = 'mobile-phone';
+							$ticket_data_element['ticket.repair_text']='iPod';
+							break;
 						default:
 							$btn_repair = 'desktop';
 							$ticket_data_element['ticket.repair_text']="Desktop";
