@@ -6,16 +6,18 @@
 		$alert['status']="error";
 		return;
 	}
+	echo "<pre>";
+	print_r($repairTypes);
+	echo "</pre>";
 	// Build a new array :)
 	$repairs = array();
-	foreach($repairs $id => $repair) {
-		$repair[$repairTypes['tickettypes.id']]= array(
+	foreach($repairTypes $id => $repairs) {
+		$repairs[$repairTypes['tickettypes.id']]= array(
 			'id'=>$repairTypes['tickettypes.id'],
 			'count'=>0,
 			'repairType'=>$repairTypes['tickettypes.description']
 		);
 	}
-	unset($referrences);
 
 	// Step 2 Gather the referrals per customer in the database
 	$result = $framework->get('customers')->getAll();

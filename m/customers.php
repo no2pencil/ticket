@@ -183,7 +183,7 @@ if(isset($_GET['view'])) {
                                 		break;	
                                 		case "Post Payment":
                                         		$btn_atr='btn-danger';
-                                        		$btn_char=' icon-fire">';
+                                        		$btn_char=' icon-bolt">';
                                 		break;
                                 		case "Waiting for Parts":
                                         		$btn_atr='btn-info';

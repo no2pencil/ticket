@@ -100,16 +100,16 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
         <!-- if user is admin -->
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="icon-cog"></i> Administration
+            <i class="icon-fixed-width icon-cogs"></i> Administration
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="#NewUserModal" data-toggle="modal">New User</a></li>
-            <li><a href="users.php?viewall=true">All Users</a></li>
-            <li><a href="#">Search Users</a></li>
+            <li><a href="#NewUserModal" data-toggle="modal"><i class="icon-user"></i> New User</a></li>
+            <li><a href="users.php?viewall=true"><i class="icon-group"></i> All Users</a></li>
+            <li><a href="#"><i class="icon-search"></i> Search Users</a></li>
             <li class="divider"></li>
-            <li><a href="#StatusesModal" data-toggle="modal">Statuses</a></li>
-            <li><a href="#ReferralsModal" data-toggle="modal">Referrals</a></li>
+            <li><a href="#StatusesModal" data-toggle="modal"><i class="icon-th-list"></i> Statuses</a></li>
+            <li><a href="#ReferralsModal" data-toggle="modal"><i class="icon-comments"></i> Referrals</a></li>
           </ul>
         </li>
         <li><a href="logout.php">

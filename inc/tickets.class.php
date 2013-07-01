@@ -144,7 +144,7 @@ class tickets extends framework {
 	 * Returns all ticket types
 	*/
 	public function getTypes(){
-		$sql = "SELECT id, name FROM tickettypes";
+		$sql = "SELECT id, name, description FROM tickettypes";
 		$result = parent::get('db')->mysqli()->query($sql);
 		$fresult = array();
 		while($row = $result->fetch_array()){
@@ -318,7 +318,7 @@ class tickets extends framework {
 				break;
 				case "Post Payment":
 					$btn_atr='badge-important';
-					$btn_char=' icon-fire">';
+					$btn_char=' icon-bolt">';
 				break;
 				case "Waiting for Parts":
 					$btn_atr='badge-info';
