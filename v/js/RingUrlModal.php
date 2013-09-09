@@ -1,5 +1,5 @@
 <?php
-if($_GET['view']) {
+if(isset($_GET['view'])) {
   if(strpos($_SERVER['REQUEST_URI'],'tickets')) {
     $tickets[] = $framework->get('tickets')->getTicketById($_GET['view']);
     /* DEBUG INFO */
@@ -34,10 +34,15 @@ if($_GET['view']) {
   $hangup_url="https://service.ringcentral.com/ringout.asp?cmd=cancel&sessionid=";
 }
 ?>
-<div id="RingUrlModal" class="modal hide fade" data-invoice="<?php echo $ticket['ticket.id']; ?>" data-phone="<?php echo $ticket['customer.primaryPhone']; ?>" tabindex="-1" role="dialog" aria-labelledby="RingUrlModalLabel" aria-hidden="true">
+<div id="RingUrlModal" class="modal hide fade" 
+<?php if(isset($ticket)) {
+  echo 'data-invoice="'.$ticket['ticket.id'].'" ';
+  echo 'data-phone="'.$ticket['customer.primaryPhone'].'" ';
+}
+?> tabindex="-1" role="dialog" aria-labelledby="RingUrlModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3 id="RingUrlModal">Calling <?php echo $ticket['customer.name'].' : '.$phone; ?></h3>
+    <h3 id="RingUrlModal">Calling <?php if(isset($ticket)) { echo $ticket['customer.name'].' : '.$phone; } ?></h3>
   </div>
   <div class="modal-body" id="body">
     <?php if($phone) { ?>

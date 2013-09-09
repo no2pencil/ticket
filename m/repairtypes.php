@@ -6,24 +6,21 @@
 		$alert['status']="error";
 		return;
 	}
-	echo "<pre>";
-	print_r($repairTypes);
-	echo "</pre>";
+
 	// Build a new array 
 	$repairs = array();
-	foreach($repairTypes $id => $repairs) {
-		$repairs[$repairTypes['tickettypes.id']]= array(
-			'id'=>$repairTypes['tickettypes.id'],
-			'count'=>0,
-			'repairType'=>$repairTypes['tickettypes.description']
-		);
-	}
+	foreach($repairTypes as $id => $repairType) {
+                $repairTypes[$id]['count'] = 0;
+        }
 
-	// Step 2 Gather the referrals per customer in the database
-	$result = $framework->get('customers')->getAll();
+	// Step 2 Gather the Repairs per tickets in the database
+	$result = $framework->get('tickets')->getAll();
+
 	foreach($result as $row) {
-		$referrals[$row['customer.referral']]['count']++;
-	}
+                if(isset($row['ticket.repair'])) {
+                	$repairTypes[$row['ticket.repair']]['count']++;
+                }
+	} 
 
 	// Step 3 Present the details with Google Charts
 ?>
@@ -32,16 +29,17 @@
   google.setOnLoadCallback(drawChart);
   function drawChart() {
     var data = google.visualization.arrayToDataTable([
-      ['', 'Customer Source Results'],
+      ['', 'Repair Type Results'],
 <?php
-foreach($referrals as $referral) {
-	printf("      [\"%s\",%s],\n",$referral['referral'],$referral['count']);
+foreach($repairTypes as $repair) {
+        $string_to_display = $repair['description']." (".$repair['count'].")"; 
+	printf("      [\"%s\",%s],\n",$string_to_display,$repair['count']);
 }
 ?>
       ]);
 
       var options = {
-        title: 'Customer Sources',
+        title: 'Repair Types',
         is3D: true,
         slices: {
           7: {color: '#006EFF'},
@@ -54,7 +52,7 @@ foreach($referrals as $referral) {
       }
     </script>
 <?php
-	$content = '<h2>Google Charts</h2>';
+	$content = '<h2>Repair Report</h2>';
 	$content.= '<div id="chart_referrences" style="width: 600px; height: 275px;"></div>';
 	//$content.= '<div id="chart_open" style="width: 600px; height: 275px;"></div>';
 ?>

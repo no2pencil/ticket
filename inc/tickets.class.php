@@ -144,7 +144,7 @@ class tickets extends framework {
 	 * Returns all ticket types
 	*/
 	public function getTypes(){
-		$sql = "SELECT id, name, description FROM tickettypes";
+		$sql = "SELECT id, repair, description FROM repairs";
 		$result = parent::get('db')->mysqli()->query($sql);
 		$fresult = array();
 		while($row = $result->fetch_array()){
