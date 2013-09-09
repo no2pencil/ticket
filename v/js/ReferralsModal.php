@@ -5,6 +5,9 @@
     <h3 id="ReferralsModalLabel">Referrals Management</h3>
   </div>
   <div class="modal-body">
+    <div id='body'>
+      <i class="icon-spinner icon-spin icon-large"></i> aving...
+    </div>
     <fieldset>
     <table id='referrals_management' class="table table-striped">
       <tbody>
@@ -36,6 +39,18 @@
 
   $('#save').click(function (e) {
     e.preventDefault();
-    alert('Saving...');
+    $.ajax({
+      url: 'v/ReferralsEngine.php',
+      type: 'POST',
+      data: 'test',
+      success: function (response) {
+        var temp = new Array();
+        temp = response.split(" ");
+        $("#body span").text(temp[1]);
+      }
+      error: function (response) {
+        var temp = 'Something went horribly wrong!';
+      }
+    });
   });
 </script>

@@ -2,15 +2,15 @@
 class tickets extends framework {
 
 	/*
-	 * add(string $customer, int $type, string $priority, string $dueDate, int $status, string $specialFields)
+	 * add(string $customer, int $type, string $priority, string $dueDate, int $status, int $repair, string $specialFields)
 	 * Adds a new ticket to the system with the provided information.
 	 * Returns insert ID on success, false on failure
 	*/
-	public function add($customer, $invoice, $type, $priority, $dueDate, $status, $specialFields, $date){
-		$sql = "INSERT INTO tickets(customer, invoice, type, priority, dueDate, status, specialFields, createDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	public function add($customer, $invoice, $type, $status, $repair, $specialFields, $date){
+		$sql = "INSERT INTO tickets(customer, invoice, type, status, repair, specialFields, createDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
 			//$timestamp = parent::get('utils')->timestamp();
-			$stmt->bind_param('isississ', $customer, $invoice, $type, $priority, $dueDate, $status, $specialFields, $date);
+			$stmt->bind_param('isiiiss', $customer, $invoice, $type, $status, $repair, $specialFields, $date);
 			$stmt->execute();
 			$stmt->store_result();
 			if($stmt->affected_rows > 0){

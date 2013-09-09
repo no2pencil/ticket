@@ -9,7 +9,7 @@
 	echo "<pre>";
 	print_r($repairTypes);
 	echo "</pre>";
-	// Build a new array :)
+	// Build a new array 
 	$repairs = array();
 	foreach($repairTypes $id => $repairs) {
 		$repairs[$repairTypes['tickettypes.id']]= array(
