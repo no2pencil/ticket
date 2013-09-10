@@ -123,6 +123,9 @@ if(isset($_GET['search'])) {
 }
 
 if(isset($_POST['new'])) {
+	$repairType = $_POST['type'];
+	$repairID = $_POST['repair'];
+
 	if(isset($_GET['customer_id'])) {
 		$customer_id=$_GET['customer_id'];
 	}
@@ -147,7 +150,7 @@ if(isset($_POST['new'])) {
 			$ticket_id = date("Y").'-'.$ticket_id_4;
 		}
 
-		$invoice_dbid = $framework->get('tickets')->add($customer_id, $ticket_id, 5, '', '', 56, '', date("Y-m-d"));
+		$invoice_dbid = $framework->get('tickets')->add($customer_id, $ticket_id, $repairType, 56, $repairID, '', date("Y-m-d"));
 		if($invoice_dbid>0) {
 			$alert['status']='success';
 			$alert['msg']='Invoice '.$invoice_dbid.' created';
