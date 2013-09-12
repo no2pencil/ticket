@@ -6,18 +6,21 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 
 	$Statuses = $framework->get('status')->getStatuses();
 	$StatusTypes = $framework->get('status')->getTypes();
+        $Repairs = $framework->get('tickets')->getRepairs();
 	if(!isset($alert)) {
 		$alert = array();
 		$alert['status'] = 'warning';
 		$alert['msg'] = "This project is still under heavy construciton. Work your wget magic!";
 	}
-	//$RecentCustID = $framework->get('customer')->getRecentCustomer();
 ?>
 <body>
 <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
       <ul class="nav">
+	<?php 
+/* Replace XRMS-Mini with variable that can be set by admin panel */
+	?>
         <li><a class="brand" href="#">XRMS-Mini</a></li>
         <li class="active">
           <a href="index.php"><i class="icon-white icon-home"></i> Home</a>
@@ -28,15 +31,16 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <?php
+<?php
               // This still needs some work & is not 100%
               // The idea is to only load the new ticket modal option if we
               // can assure the user is viewing a customer
               if(strpos($url,"customer")>0) {
                 $CustomerData = $framework->get('customers')->getInfoById($_GET['view']);
-            ?>
+?>
             <li><a href="#NewTicketModal" data-toggle="modal">New Ticket</a></li>
-            <?php } ?>
+            <li class="divider"></li>
+<?php } ?>
             <li>
               <form action="tickets.php" method="post" name="searchform" style="margin: 0;">
                 <input type="hidden" name="search" value="<?php echo $_SESSION['user_name']; ?>">
@@ -60,6 +64,10 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
+<?php if(isset($CustomerData)) { ?>
+            <li><a href="#EditCustomerModal" data-toggle="modal">Edit <?php echo $CustomerData['customer.name']; ?></a></li>
+            <li class="divider"></li>
+<?php } ?>
             <li><a href="#NewCustomerModal" data-toggle="modal">New Customer</a></li>
             <li><a href="customers.php?viewall=true">All customers</a></li>
             <li class="divider"></li>
@@ -69,7 +77,7 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
               <?php
                 $data = $framework->get('customers')->getAll();
                 foreach($data as $id => $customer) {
-			$phone = $framework->get('utils')->formatPhone($customer['customer.primaryPhone']);
+			$phone = $framework->get('utils')->formatSearchPhone($customer['customer.primaryPhone']);
 			printf("<option value=\"%s\">%s %s</option>\n",$customer['customer.id'],$customer['customer.name'],$phone);
 		}
               ?>
@@ -79,14 +87,12 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="icon-comment"></i> Users
+            <i class="icon-bar-chart"></i> Reports
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="#NewUserModal" data-toggle="modal">New User</a></li>
-            <li><a href="users.php?viewall=true">All Users</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Search Users</a></li>
+            <li><a href="google.php">Customer Referrals</a></li>
+            <li><a href="repairtypes.php">Repair Types</a></li>
           </ul>
         </li>
       </ul>
@@ -94,14 +100,16 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
         <!-- if user is admin -->
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="icon-cog"></i> Administration
+            <i class="icon-fixed-width icon-cogs"></i> Administration
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="#NewUserModal" data-toggle="modal">New User</a></li>
+            <li><a href="#NewUserModal" data-toggle="modal"><i class="icon-user"></i> New User</a></li>
+            <li><a href="users.php?viewall=true"><i class="icon-group"></i> All Users</a></li>
+            <li><a href="#"><i class="icon-search"></i> Search Users</a></li>
             <li class="divider"></li>
-            <li><a href="#StatusesModal" data-toggle="modal">Statuses</a></li>
-            <li><a href="#ReferralsModal" data-toggle="modal">Referrals</a></li>
+            <li><a href="#StatusesModal" data-toggle="modal"><i class="icon-th-list"></i> Statuses</a></li>
+            <li><a href="#ReferralsModal" data-toggle="modal"><i class="icon-comments"></i> Referrals</a></li>
           </ul>
         </li>
         <li><a href="logout.php">
@@ -120,15 +128,19 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 	require_once("v/js/NewCustomerModal.php");
 	require_once("v/js/NewTicketModal.php");
 	require_once("v/js/NewUserModal.php");
+	require_once("v/js/EditCustomerModal.php");
 
 	require_once("v/js/ReferralsModal.php");
 	require_once("v/js/StatusesModal.php");
-?>
 
+	require_once("v/js/RingUrlModal.php");
+	if($alert['msg']) {
+?>
 <div class="alert alert-block alert-<?php echo $alert['status']; ?>">
   <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <strong><?php echo $alert['msg']; ?></strong> 
+    <strong><?php echo $alert['msg']; ?></strong> 
 </div>
+<?php } ?>
 
 		<div class="wrapper">
 			<div class="content">
@@ -138,6 +150,6 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
 				?>
 			</div>
 		</div>
-	<?php require_once("js/scripts.php"); ?>
+	<?php require_once("v/js/scripts.php"); ?>
 </body>
 </html>

@@ -2,15 +2,15 @@
 class tickets extends framework {
 
 	/*
-	 * add(string $customer, int $type, string $priority, string $dueDate, int $status, string $specialFields)
+	 * add(string $customer, int $type, string $priority, string $dueDate, int $status, int $repair, string $specialFields)
 	 * Adds a new ticket to the system with the provided information.
 	 * Returns insert ID on success, false on failure
 	*/
-	public function add($customer, $invoice, $type, $priority, $dueDate, $status, $specialFields, $date){
-		$sql = "INSERT INTO tickets(customer, invoice, type, priority, dueDate, status, specialFields, createDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	public function add($customer, $invoice, $type, $status, $repair, $specialFields, $date){
+		$sql = "INSERT INTO tickets(customer, invoice, type, status, repair, specialFields, createDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
 			//$timestamp = parent::get('utils')->timestamp();
-			$stmt->bind_param('isississ', $customer, $invoice, $type, $priority, $dueDate, $status, $specialFields, $date);
+			$stmt->bind_param('isiiiss', $customer, $invoice, $type, $status, $repair, $specialFields, $date);
 			$stmt->execute();
 			$stmt->store_result();
 			if($stmt->affected_rows > 0){
@@ -38,19 +38,6 @@ class tickets extends framework {
 		return false;
 	}
 	
-	/*
-	| id            | int(255)      | NO   | PRI | NULL    | AUTO_INCREMENT |
-	| createDate    | varchar(30)   | NO   |     | NULL    |                |
-	| creator       | int(5)        | NO   |     | NULL    |                |
-	| type          | int(255)      | NO   |     | NULL    |                |
-	| priority      | varchar(255)  | NO   |     | NULL    |                |
-	| dueDate       | varchar(10)   | NO   |     | NULL    |                |
-	| status        | int(255)      | NO   |     | NULL    |                |
-	| customer      | int(255)      | NO   |     | NULL    |                |
-	| specialFields | varchar(1000) | NO   |     | NULL    |                |
-	| invoice       | varchar(12)   | YES  |     | NULL    |                |
-	*/
-
 	/*
 	 * searchTicketById(int $id)
 	 * Searches ticket ids by partial name given from ticket name
@@ -122,13 +109,14 @@ class tickets extends framework {
 		"LEFT JOIN statuses AS status ON ticket.status = status.id " .
 		"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
 		"LEFT JOIN users AS creator ON ticket.creator = creator.id " .
+		//"LEFT JOIN repair AS repair ON ticket.repair = repair.id ".
 		"WHERE ticket.id=" . (int)$id . " LIMIT 1";
 		$result = parent::get('db')->mysqli()->query($sql);
 		$result = parent::get('db')->fetchArray($result);
 		// This part is for turning NULL into empty strings.
-/*
+
 		foreach($result as $key => $value){
-			if(gettype($value == 'array')){
+			if(is_array($value)) {
 				foreach($value as $key2 => $value2){
 					if(gettype($value2) == 'NULL'){
 						$result[$key][$key2] = '';
@@ -138,7 +126,7 @@ class tickets extends framework {
 				$result[$key] = '';
 			}
 		}
-*/
+
 		return $result; 
 	}
 	
@@ -156,7 +144,7 @@ class tickets extends framework {
 	 * Returns all ticket types
 	*/
 	public function getTypes(){
-		$sql = "SELECT id, name FROM tickettypes";
+		$sql = "SELECT id, repair, description FROM repairs";
 		$result = parent::get('db')->mysqli()->query($sql);
 		$fresult = array();
 		while($row = $result->fetch_array()){
@@ -207,42 +195,41 @@ class tickets extends framework {
 		return $fresult;
 	}
 
-	public function getAllOpen() {
-		//$sql = "SELECT * from tickets as t JOIN customers AS c ON t.customer = c.id where";
-		$sql = "SELECT id, status, customer, invoice from tickets where ";
-		$sql .= " status != 11";
-		$sql .= " and status != 20";
-		$sql .= " and status != 23";
-		$sql .= " and status != 26";
-		$sql .= " and status != 29";
-		$sql .= " and status != 39";
-		$sql .= " and status != 41";
-		$sql .= " and status != 46";
-		$sql .= " and status != 47";
-		$sql .= " and status != 54";
-		$sql .= " and status != 55";
-		$sql .= " and status != 61";
-		$sql .= " and status != 62";
-		$sql .= " and status != 63";
-		$sql .= " order by id DESC";
+	/*
+	 * getRepairs()
+	 * Returns all Repairs & Repair Descriptions
+	*/
+	public function getRepairs() {
+		$sql = "SELECT id, repair, description FROM repairs";
 		$result = parent::get('db')->mysqli()->query($sql);
-		if($result !== false){
-			$fresult= array();
-			while($row = $result->fetch_array()) {
-				$fresult[$row['id']] = array(
-					"id" => $row['id'],
-					"status" => $row['status'],
-					"customer" => $row['customer'],
-					"invoice" => $row['invoice']
-				);
-			}
-		} else {
-			return false;
+		$fresult = array();
+		while($row = $result->fetch_array()) {
+			$fresult[$row['id']] = array(
+				"id" =>$row['id'],
+				"repair" =>$row['repair'],
+				"description" =>$row['description']
+			);
 		}
-		
 		return $fresult;
 	}
-	
+
+	/*
+	 * setStatusByID(int $status_id, int $invoice, string $last_updated)
+	*/
+
+	public function setRepairByID($invoice_id, $repair_id) {
+		$sql = "UPDATE tickets set repair=? WHERE id=?";
+		if($stmt = parent::get('db')->mysqli()->prepare($sql)){
+			$stmt->bind_param('ii', $repair_id, $invoice_id);
+			$stmt->execute();
+			$stmt->store_result();
+			if($stmt->affected_rows > 0){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/*
 	 * getComments(int $invoice_id)
 	 * Returns all comments for the ticket  with the specified invoice id
@@ -301,23 +288,29 @@ class tickets extends framework {
 		$result = '
 			<table class="table">
 				<thead>
-					<tr><th>Status</th><th>Invoice</th><th>Customer</th><th>Call</th></tr>
+					<tr>
+						<th>Status</th>
+						<th>Repair</th>
+						<th>Invoice</th>
+						<th>Customer</th>
+						<th>Call</th>
+					</tr>
 				</thead>
 				<tbody>';
 		foreach($tickets as $key => $ticket) {
 			switch ($ticket['status.status']) {
 				case "Pending Payment":
 					$btn_atr='badge-success';
-					$btn_char='">$';
+					$btn_char=' icon-money">';
 				break;
 				case "Call Customer Admin":
 				case "Call Customer Tech":
 					$btn_atr='badge-warning';
-					$btn_char=' icon-warning-sign">';
+					$btn_char=' icon-phone">';
 				break;
 				case "In Progress":
 					$btn_atr='';
-					$btn_char=' icon-wrench">';
+					$btn_char=' icon-stethoscope">';
 				break;
 				case "Parts need to be ordered":
 					$btn_atr='badge-info';
@@ -325,7 +318,7 @@ class tickets extends framework {
 				break;
 				case "Post Payment":
 					$btn_atr='badge-important';
-					$btn_char=' icon-fire">';
+					$btn_char=' icon-bolt">';
 				break;
 				case "Waiting for Parts":
 					$btn_atr='badge-info';
@@ -337,7 +330,7 @@ class tickets extends framework {
 				break;
 				default:
 					$btn_atr='';
-					$btn_char='">';
+					$btn_char=' icon-hand-right">';
 				break;
 			}
 			$result .= '<tr><td><a href="#" rel="tooltip" placement="left" title="';
@@ -345,15 +338,60 @@ class tickets extends framework {
 			$result .= '"><span class="badge '.$btn_atr.'">';
 			$result .= '<em class="icon-white';
 			$result .= $btn_char.'</em></span></a></td>';
+
+			$result .= '<td><a href="#" rel="tooltip" placement="left" title="';
+			$result .= $ticket['status.status'];
+			$result .= '"><span class="badge badge-inverse">';
+			$result .= '<em class="icon-';
+			switch($ticket['ticket.repair']) {
+				case 1:
+					$result .= 'desktop">&nbsp;Desktop/PC';
+					break;
+				case 2:
+					$result .= 'laptop">&nbsp;Laptop';
+					break;
+				case 3:
+					$result .= 'tablet">&nbsp;iPad';
+					break;
+				case 4:
+					$result .= 'mobile-phone">&nbsp;iPhone';
+					break;
+				case 5:
+					$result .= 'keyboard">&nbsp;Coding';
+					break;
+				case 6:
+					$result .= 'sitemap">&nbsp;Networking';
+					break;
+				case 7:
+					$result .= 'gamepad">&nbsp;Nintendo DS/DSi/3DS/XL';
+					break;
+				case 8:
+					$result .= 'linux">&nbsp;Web Hosting';
+					break;
+				case 9:
+					$result .= 'folder-open-alt">&nbsp;Data Recovery';
+					break;
+                                case 10:
+                                        $result .= 'gift">&nbsp;eBay';
+                                        break;
+                                case 11:
+                                        $result .= 'mobile-phone">&nbsp;iPod';
+                                        break;
+				default:
+					$result .= 'desktop">&nbsp;Desktop/PC';
+					break;
+			}
+			$result .= '</em></span></a></td>';
+
 			$result .= '<td><a href="tickets.php?view=' . $ticket['ticket.id'] . '">' .  $ticket['ticket.invoice'] . '</a></td>';
 			$result .= '<td><a href="customers.php?view=' . $ticket['customer.id'] . '" class="btn">' . $ticket['customer.name'] . '</a></td><td>';
 			if(!empty($ticket['customer.primaryPhone'])){
+				$PrimaryPhone = parent::get('utils')->formatPhone($ticket['customer.primaryPhone']);
 				$ringurl = parent::get('ring_central')->make_url($ticket['customer.primaryPhone']);
 				if($ringurl){
-					$result .= '
-						<a href="' . $ringurl . '" target="_blank"><span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>';
+					$result .= '<a href="#RingUrlModal" data-toggle="modal" rel="tooltip" title="Call '.$PrimaryPhone.'">&nbsp;<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>';
 				} else {
-					$result .= $framework->get('utils')->formatPhone($ticket['customer.primaryPhone']); // User does not have ring central setup
+					//$result .= $framework->get('utils')->formatPhone($ticket['customer.primaryPhone']); // User does not have ring central setup
 				}
 			} else {
 				$result .= 'No phone on file';

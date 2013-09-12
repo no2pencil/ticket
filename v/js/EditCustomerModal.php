@@ -1,39 +1,40 @@
-<div id="NewCustomerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="NewCustomerModalLabel" aria-hidden="true">
+<div id="EditCustomerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="EditCustomerModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3 id="NewCustomerModalLabel">New Customer</h3>
+    <h3 id="EditCustomerModalLabel">Edit <?php echo $CustomerData['customer.name']; ?></h3>
   </div>
   <div class="modal-body">
     <form action="customers.php" method="post" class="form-horizontal">
-      <input type="hidden" name="savenew" value="true">
+      <input type="hidden" name="update" value="update">
+      <input type="hidden" name="customer_id" value="<?php echo $CustomerData['customer.id']; ?>">
       <div class="control-group">
         <label class="control-label">Name</label>
         <div class="controls">
-          <input type="text" name="name">
+          <input type="text" name="name" value="<?php echo $CustomerData['customer.name']; ?>">
         </div>
       </div>
       <div class="control-group">
         <label class="control-label">Email</label>
         <div class="controls">
-          <input type="text" name="email">
+          <input type="text" name="email" value="<?php echo $CustomerData['customer.email']; ?>">
         </div>
       </div>
       <div class="control-group">
         <label class="control-label">Primary phone</label>
         <div class="controls">
-          <input type="text" name="primaryPhone">
+          <input type="text" name="primaryPhone" value="<?php echo $CustomerData['customer.primaryPhone']; ?>">
         </div>
       </div>
       <div class="control-group">
         <label class="control-label">Secondary phone</label>
         <div class="controls">
-          <input type="text" name="secondaryPhone">
+          <input type="text" name="secondaryPhone" value="<?php echo $CustomerData['customer.secondaryPhone']; ?>">
         </div>
       </div>
       <div class="control-group">
         <label class="control-label">Address</label>
         <div class="controls">
-          <input type="text" name="address">
+          <input type="text" name="address" value="<?php echo $CustomerData['customer.address']; ?>">
         </div>
       </div>
       <div class="control-group">
@@ -45,7 +46,11 @@
             $Referrals = $framework->get('customers')->getReferrals();
             if($Referrals) {
               foreach($Referrals as $Referral) {
-                echo '<option value='.$Referral['reff.id'].'>'.$Referral['reff.reff'].'</option>';
+                echo '<option value="'.$Referral['reff.id'].'"';
+		if($CustomerData['customer.referral']==$Referral['reff.id']) {
+			echo ' selected="selected"';
+		}
+		echo '>'.$Referral['reff.reff'].'</option>';
               }
             }
           ?>

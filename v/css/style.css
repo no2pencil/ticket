@@ -8,6 +8,12 @@ body {
 	font-family: sans-serif;
 }
 
+body#main {
+	background-image:url('http://www.imagine-net-tech.com/images/network.jpg');
+	background-repeat:no-repeat;
+	background-position:center;
+}
+
 .wrapper {
 	margin: 20px 5%;
 	min-height: 500px;
@@ -26,4 +32,21 @@ body {
 #hiddenbutton {
 	color:transparent;
 	display:none;
+}
+
+footer#main {
+        position:fixed;
+        left:0;
+        bottom:10px;
+        text-align:center;
+        font:normal 11px/16px Arial, Helvetica, sans-serif;
+        width:100%;
+}
+
+.row {
+        position:fixed;
+        left:0;
+        top:250px;
+	font:normal 11px/16px Arial, Helvetica, sans-serif;
+        width:100%;
 }

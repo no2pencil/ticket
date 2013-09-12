@@ -21,11 +21,29 @@ if(isset($_POST['savenew'])){
 	}
 }
 
+if(isset($_POST['update'])) {
+        if(!isset($_POST['customer_id'])) {
+                $alert['status']='error';
+                $alert['msg']='Customer ID is not set';
+        } else {
+                $_GET['view']=$_POST['customer_id'];
+                $result = $framework->get('customers')->update($_POST['name'], $_POST['email'], trim($_POST['primaryPhone']), trim($_POST['secondaryPhone']), $_POST['address'], $_POST['referral'], $_POST['customer_id']);
+                if($result){
+                        $alert['status']='success';
+                        $alert['msg']='Customer '.$_POST['customer_id'].' has been updated...';
+                } else {
+                        $alert['status']='error';
+                        $alert['msg']='Somethign went wrong updating customer'.$_POST['customer_id'];
+                }
+        }
+}
+
+
 if(isset($_GET['view'])) {
 	$customer_id=$_GET['view'];
 	$_POST['customers_select']=$customer_id;
 }
-$content = '<h2>Customers</h2>';
+$content = '<h2>Customer History</h2>';
 $content .= '<div style="margin-bottom: 15px;"></div>';
 
 
@@ -52,78 +70,14 @@ if(isset($_GET['viewall'])){
 	}
 }
 
-/*
-if(isset($_POST['savenew'])){
-	$result = $framework->get('customers')->add($_POST['name'], $_POST['email'], $_POST['primaryPhone'], $_POST['secondaryPhone'], $_POST['address'], $_POST['referral']);
-	if($result>0){
-		$content .= '
-			<div class="alert alert-success">
-				<strong>Customer '.$result.' has been created</strong> | <a href="customers.php?new=true">Add another</a>
-			</div>';
-	} else {
-		$content .= '
-			<div class="alert alert-error">
-				<strong>Error: </strong>Something went wrong. | <a href="#" onclick="history.go(-2)">Back</a>
-			</div>';
-	}
-}
-*/
-
-if(isset($_GET['new'])){
-	$content .= '
-		<form action="customers.php?view='.$customer_id.'" method="post" class="form-horizontal">
-			<input type="hidden" name="savenew" value="true">
-			<legend>New customer</legend>
-			<div class="control-group">
-				<label class="control-label">Name</label>
-				<div class="controls">
-					<input type="text" name="name">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">Email</label>
-				<div class="controls">
-					<input type="text" name="email">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">Primary phone</label>
-				<div class="controls">
-					<input type="text" name="primaryPhone">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">Secondary phone</label>
-				<div class="controls">
-					<input type="text" name="secondaryPhone">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">Address</label>
-				<div class="controls">
-					<input type="text" name="address">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">Referral</label>
-				<div class="controls">
-					<input type="text" name="referral">
-				</div>
-			</div>
-			<div class="form-actions">
-				<button type="submit" class="btn btn-primary">Save</button>
-			</div>
-		</form>';
-}
-
 if(isset($_GET['view'])) {
 	$data = $framework->get('customers')->getInfoById($customer_id);
-        $PrimaryPhone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
-	//$SecondaryPhone = $framework->get('util')->formatPhone($data['customer.secondaryPhone']);
+	$PrimaryPhone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
+	//$SecondaryPhone = $framework->get('utils')->formatPhone($data['customer.secondaryPhone']);
 	$ticket_data = $framework->get('customers')->getCustomerTickets($data['customer.id']);
 	$referral = $framework->get('customers')->getReferralByID($data['customer.referral']);
-	if(isset($PrimaryPhone)) {
-		$ringurl = $framework->get('ring_central')->make_url(trim($info['customer.primaryPhone']));
+	if(isset($data['customer.primaryPhone'])) {
+		$ringurl = $framework->get('ring_central')->make_url(trim($data['customer.primaryPhone']));
 	}
         $content .= '
                         <h4>Customer ID : '.$data['customer.id'].'</h4>
@@ -135,17 +89,23 @@ if(isset($_GET['view'])) {
                         </div>
                         <div class="control-group">
                                 <label class="control-label">Primary phone : '.$PrimaryPhone;
-	if(isset($ringurl)) $content.='<a href="'.$ringurl.'" target="_blank">';
-	$content .= '&nbsp;<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></label>
-			</div>
+        if(isset($ringurl)) {
+		$content .= '<a href="#RingUrlModal" data-toggle="modal" rel="tooltip" title="Call '.$PrimaryPhone.'">';
+		$content .= '&nbsp;<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></label>';
+	}
+	$content .= '	</div>
                         <div class="control-group">
                                 <label class="control-label">Secondary phone : ';
 			if(isset($SecondaryPhone)) echo $SecondaryPhone;
 				$content .= '</label>
-                       </div>
-                        <div class="control-group">
-                                <label class="control-label">Address : '.$data['customer.address'].'</label>
-                        </div>
+                       </div>';
+	if(!empty($data['customer.address'])) {
+		$content .='
+                       <div class="control-group">
+                                <label class="control-label">Address : <a href="http://maps.google.com/?q='.$data['customer.address'].'" target="_blank"><span class="badge badge-info"><i class="icon-road icon-white"></i></span>&nbsp;'.$data['customer.address'].'</a></label>
+                        </div>';
+	}
+	$content .= '
                         <div class="control-group">
                                 <label class="control-label">Referral : '.$referral['reff.reff'].'</label>
                         </div>
@@ -153,19 +113,69 @@ if(isset($_GET['view'])) {
 			<h4>Tickets </h4>
 			<div class="control-group">';
 				foreach($ticket_data as $ticket_data_element) {
+					switch ($ticket_data_element['ticket.repair']) {
+						case 1:
+							$btn_repair = 'desktop';
+							$ticket_data_element['ticket.repair_text']="Desktop";
+							break;
+						case 2:
+							$btn_repair = 'laptop';
+							$ticket_data_element['ticket.repair_text']="Laptop";
+							break;
+						case 3:
+							$btn_repair = 'tablet';
+							$ticket_data_element['ticket.repair_text']="iPad";
+							break;
+						case 4:
+							$btn_repair = 'mobile-phone';
+							$ticket_data_element['ticket.repair_text']="iPhone";
+							break;
+						case 5:
+							$btn_repair = 'keyboard';
+							$ticket_data_element['ticket.repair_text']="???";
+							break;
+						case 6:
+							$btn_repair = 'sitemap';
+							$ticket_data_element['ticket.repair_text']="Networking";
+							break;
+						case 7:
+							$btn_repair = 'gamepad';
+							$ticket_data_element['ticket.repair_text']="Nintendo DS/DSi/3DS";
+							break;
+						case 8:
+							$btn_repair = 'linux';
+							$ticket_data_element['ticket.repair_text']="Web Hosting";
+							break;
+						case 9:
+							$btn_repair = 'folder-open-alt';
+							$ticket_data_element['ticket.repair_text']="Data Recovery";
+							break;
+						case 10:
+							$btn_repair = 'gift';
+							$ticket_data_element['ticket.repair_text']='eBay';
+							break;
+						case 11:
+							$btn_repair = 'mobile-phone';
+							$ticket_data_element['ticket.repair_text']='iPod';
+							break;
+						default:
+							$btn_repair = 'desktop';
+							$ticket_data_element['ticket.repair_text']="Desktop";
+							break;
+					}
 		                        switch ($ticket_data_element['status.status']) {
                 		                case "Pending Payment":
                                 		        $btn_atr='btn-success';
-                                        		$btn_char='">$';
+                                        		$btn_char=' icon-money">';
                                 		break;
                                 		case "Call Customer Admin":
                                 		case "Call Customer Tech":
                                         		$btn_atr='btn-warning';
-                                        		$btn_char=' icon-warning-sign">';
+                                        		$btn_char=' icon-phone">';
                                 		break;
                                 		case "In Progress":
                                         		$btn_atr='';
-                                        		$btn_char=' icon-wrench">';
+                                        		$btn_char=' icon-stethoscope">';
                                 		break;
                                 		case "Parts need to be ordered":
                                         		$btn_atr='btn-info';
@@ -173,7 +183,7 @@ if(isset($_GET['view'])) {
                                 		break;	
                                 		case "Post Payment":
                                         		$btn_atr='btn-danger';
-                                        		$btn_char=' icon-fire">';
+                                        		$btn_char=' icon-bolt">';
                                 		break;
                                 		case "Waiting for Parts":
                                         		$btn_atr='btn-info';
@@ -185,7 +195,7 @@ if(isset($_GET['view'])) {
 						break;
                                			default:
                                         		$btn_atr='';
-                                        		$btn_char='">';
+                                        		$btn_char=' icon-hand-left">';
                                 		break;
                         		}
 
@@ -193,80 +203,15 @@ if(isset($_GET['view'])) {
 
 					$content .= '<a href="tickets.php?view='.$ticket_data_element['ticket.id'].'" class="btn ';
 					$content .= $btn_atr.'" rel="tooltip" placement="left" title="';
-                        		$content .= $ticket_data_element['status.status'];
+                        		$content .= $ticket_data_element['status.status'].' : '.$ticket_data_element['ticket.repair_text'];
 					$content .= '">';
 					$content .= $ticket_data_element['ticket.invoice'];
-					$content .= '<i class="icon-white '.$btn_char.'</i></a></label>';
+					$content .= '&nbsp;<i class="icon-white '.$btn_char.'</i>';
+					$content .= '&nbsp;<i class="icon-white icon-'.$btn_repair.'"></i></a></label>';
 					$content .= '<label class="control-label">Status : '.$ticket_data_element['status.status'].'</label>';
 				}
 				$content .='<label><hr></label>
 			</div>
 	';
-}
-
-if(isset($_POST['update'])) {
-        $result = $framework->get('customers')->update($_POST['customer_id'], $_POST['name'], $_POST['email'], trim($_POST['primaryPhone']), trim($_POST['secondaryPhone']), $_POST['address'], $_POST['referral']);
-        if($result){
-                $content .= '
-                        <div class="alert alert-success">
-                                <strong>Customer has been updated</strong> | <a href="customers.php?new=true">Add another</a>
-                        </div>';
-        } else {
-                $content .= '
-                        <div class="alert alert-error">
-                                <strong>Error: </strong>Something went wrong. | <a href="#" onclick="history.go(-2)">Back</a>
-                        </div>';
-        }
-
-}
-
-if(isset($_GET['edit'])) {
-	$data = $framework->get('customers')->getInfoById($customer_id);
-        $phone = $framework->get('utils')->formatPhone($data['customer.primaryPhone']);
-        $content .= '
-                <form action="customers.php?view='.$data['customer.id'].'" method="post" class="form-horizontal">
-                        <input type="hidden" name="update" value="true">
-			<input type="hidden" name="customer_id" value="'.$data['customer.id'].'">
-                        <legend>Customer ID : '.$data['customer.id'].'</legend>
-                        <div class="control-group">
-                                <label class="control-label">Name</label>
-                                <div class="controls">
-                                        <input type="text" name="name" value="'.$data['customer.name'].'">
-                                </div>
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">Email</label>
-                                <div class="controls">
-                                        <input type="text" name="email" value="'.$data['customer.email'].'">
-                                </div>
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">Primary phone</label>
-                                <div class="controls">
-                                        <input type="text" name="primaryPhone" value="'.$phone.'">
-                                </div>
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">Secondary phone</label>
-                                <div class="controls">
-                                        <input type="text" name="secondaryPhone" value="'.$data['customer.seondaryPhone'].'">
-                                </div>
-                       </div>
-                        <div class="control-group">
-                                <label class="control-label">Address</label>
-                                <div class="controls">
-                                        <input type="text" name="address" value="'.$data['customer.address'].'">
-                                </div>
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">Referral</label>
-                                <div class="controls">
-                                        <input type="text" name="referral" value="'.$data['customer.referral'].'">
-                                </div>
-                        </div>
-                        <div class="form-actions">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                        </div>
-                </form>';
 }
 ?>

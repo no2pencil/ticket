@@ -1,13 +1,22 @@
 <?php
+if(!$framework->get('ring_central')->get_creds()) {
+	echo "<h2>Ring Central</h2>";
+}
+
 if(!isset($Statuses)) {
 	$Statuses = $framework->get('status')->getStatuses();
 	$StatusTypes = $framework->get('status')->getTypes();
 }
 
+if(!isset($Repairs)) {
+	$Repairs = $framework->get('tickets')->getRepairs();
+}
+
 if(!isset($_POST['new'])) {
 	if(isset($_POST['status'])) {
-		$result = $framework->get('tickets')->setStatusByID($_POST['invoice_id'], $_POST['status']);
-		if(!$result) {
+		$statusResult = $framework->get('tickets')->setStatusByID($_POST['invoice_id'], $_POST['status']);
+		$repairResult = $framework->get('tickets')->setRepairByID($_POST['invoice_id'], $_POST['repair']);
+		if(!$statusResult||!$repairResult) {
 			$alert['status']='error';
 			$alert['msg']='Something jacked up with the status update ';
 		} else {
@@ -114,6 +123,9 @@ if(isset($_GET['search'])) {
 }
 
 if(isset($_POST['new'])) {
+	$repairType = $_POST['type'];
+	$repairID = $_POST['repair'];
+
 	if(isset($_GET['customer_id'])) {
 		$customer_id=$_GET['customer_id'];
 	}
@@ -138,7 +150,7 @@ if(isset($_POST['new'])) {
 			$ticket_id = date("Y").'-'.$ticket_id_4;
 		}
 
-		$invoice_dbid = $framework->get('tickets')->add($customer_id, $ticket_id, 5, '', '', 56, '', date("Y-m-d"));
+		$invoice_dbid = $framework->get('tickets')->add($customer_id, $ticket_id, $repairType, 56, $repairID, '', date("Y-m-d"));
 		if($invoice_dbid>0) {
 			$alert['status']='success';
 			$alert['msg']='Invoice '.$invoice_dbid.' created';
@@ -181,6 +193,7 @@ if(isset($_POST['new'])) {
 
 if(isset($_GET['view'])){
 	$info = $framework->get('tickets')->getTicketById($_GET['view']);
+	$PrimaryPhone = $framework->get('utils')->formatPhone($info['customer.primaryPhone']);
 	$ringurl = $framework->get('ring_central')->make_url(trim($info['customer.primaryPhone']));
 	if($info) {
 		$comments = $framework->get('comments')->getAllByTicket($info['ticket.id']);
@@ -202,15 +215,29 @@ if(isset($_GET['view'])){
 		}
 		$content .= '</select>';
 		$content .= '			</td></tr>';
-		$content .= '<tr><th>Created on</th><td>'.$info['ticket.createDate'].'</td></tr>
-						<tr><th>Last Updated</th><td>&nbsp;</td></tr>
-                                                <tr><th>Customer</th>';
-		$content .= '			<td><a href="customers.php?view='.$info['customer.id'].'">'.$info['customer.name'].'</a>&nbsp;('.$info['customer.id'].')&nbsp; ';
 
-		if(isset($ringurl)) $content.='<a href="'.$ringurl.'" target="_blank">';
-		$content .= '<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a></td></tr>
-						<tr><th>Created by</th><td>' . $info['creator.name'] . '</td></tr>
-						<tr><th>Comments</th><td></td></tr>';
+		$content .= '<tr><th>Repair Type</th><td colspan="2">';
+		$content .= '<select name="repair">';
+		foreach($Repairs as $id => $Repair) {
+			$content .= '<option value="'.$Repair['id'].'"';
+			if($Repair['id']==$info['ticket.repair']) {
+				$content .= ' selected="selected"';
+			}
+			$content .= '>'.$Repair['repair'].'</option>';
+		}
+		$content .= '</seclect>';
+		$content .= '			</td></tr>';
+
+		$content .= '<tr><th>Created on</th><td colspan="2">'.$info['ticket.createDate'].'</td></tr>
+						<tr><th>Created by</th><td colspan="2">' . $info['creator.name'] . '</td></tr>
+						<tr><th>Last Updated</th><td colspan="2">&nbsp;</td></tr>
+                                                <tr><th>Customer</th>';
+		$content .= '			<td colspan="2"><a href="customers.php?view='.$info['customer.id'].'">'.$info['customer.name'].'</a>&nbsp;('.$info['customer.id'].')&nbsp; ';
+
+		$content .= '<a href="#RingUrlModal" data-toggle="modal" rel="tooltip" title="Call '.$PrimaryPhone.'">';
+		$content .= '<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>';
+		$content .= '</td></tr>';
+		$content .= '<tr><th>Comments</th><td></td></tr>';
 	foreach($comments as $comment) {
 		$usersname = $framework->get('user')->get_user_info_by_id($comment['user_id']);
 		$content .= '<tr><th>'.$comment['lastupdated'].'</th><td>'.$comment['comment'].'</td><td>'.$usersname['name'].'</td></tr>';
@@ -234,12 +261,12 @@ if(isset($_GET['view'])){
           </div>
         </fieldset></form> 
 </tr></td>
-					</tbody>
-				</table>'; 
+                                </tbody>
+                                </table>'; 
 	} else {
-		$content .= 'Error: Ticket not found...';
+		$alert['status']='error';
+		$alert['msg']='Ticket not found...';
 	}
-
 } 
 
 if(isset($_GET['advancedsearch'])){
@@ -272,8 +299,12 @@ if(isset($_POST['search'])){
 	$id = $framework->get('tickets')->searchTicketById($_POST['search']);
 	$results = $framework->get('tickets')->getTicketById($id);
 	if(empty($results)){
-		$content .= '<div class="alert alert-error"><strong>No results found</strong> <a href="tickets.php?advancedsearch=true">Redefine search</a></div>';
+		$alert['status']='error';
+		$alert['msg']='<strong>No results found</strong> <a href="tickets.php?advancedsearch=true">Redefine search</a>';
+
 	} else {
+		$alert['status']='success';
+		$alert['msg']='<strong>Results Provided</strong>  <a href="tickets.php?advancedsearch=true">Redefinesearch</a>';
 		$tickets = array();
 		$tickets[0] = $results;
 		$content .= $framework->get('tickets')->generateListDisplay($tickets);
