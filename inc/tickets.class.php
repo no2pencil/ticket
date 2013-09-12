@@ -116,7 +116,7 @@ class tickets extends framework {
 		// This part is for turning NULL into empty strings.
 
 		foreach($result as $key => $value){
-			if(gettype($value == 'array')){
+			if(is_array($value)) {
 				foreach($value as $key2 => $value2){
 					if(gettype($value2) == 'NULL'){
 						$result[$key][$key2] = '';
@@ -265,16 +265,19 @@ class tickets extends framework {
 	}
 
 	/*
-	 * getBulk(int $limit, int $page)
+	 * getBulk(int $limit, int $page, int $year)
 	 * Returns an array full of tickets
 	*/
-	public function getBulk($limit, $page){
+	public function getBulk($limit, $page, $year = 0){
 		$offset = $page * $limit;
 		$sql = "SELECT * FROM tickets AS ticket " .
 			"LEFT JOIN statuses AS status ON ticket.status = status.id " .
 			"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
-			"LEFT JOIN users AS user ON ticket.creator = user.id " .
-			"LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+			"LEFT JOIN users AS user ON ticket.creator = user.id ";
+                        if($year > 0) {
+                                $sql .= "where ticket.invoice like '".$year."%' ";
+                        }
+			$sql .= "LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
 		
 		$result = parent::get('db')->mysqli()->query($sql);
 		return parent::get('db')->fetchArray($result);
@@ -419,12 +422,12 @@ class tickets extends framework {
 	 * getAll()
 	 * Returns all tickets
 	*/
-	public function getAll(){
+	public function getAll($year = 0){
 		$stillmore = true;
 		$result = array();
 		$page = 0;
 		while($stillmore){
-			$tmp = $this->getBulk(1, $page);
+			$tmp = $this->getBulk(1, $page, $year);
 			if(empty($tmp)){
 				return $result;
 			}
