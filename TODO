@@ -1,7 +1,8 @@
 Home :
 These should be moved to a graph/specific location because Google Charts API requires header modification
 Graphs (Google Charts API) breakdown of current open invoices
-Graphs (Google Charts API) breakdown of customer sources (functional, needs link)
+Graphs (Google Charts API) breakdown of customer sources
+Graphs (Google Charts API) breakdown of closed tickets, sub-by year
 
 Customers :
 Customer Home Page : Display most recent customers
@@ -23,8 +24,9 @@ Need to setup ticket status table, so results will be dynamic for future project
 
 Functionality :
 Email users of newly assigned tickets
+Email users of tickets not updated within x days (configurable)
 Email administration of tickets ready for invoice
-Users can view all tickets open, & just their own tickets
+Users can view all tickets open, & not just their own tickets
 Administrators can view reporting
 One click to invoice printing (using pdf/graphic api)
 VOIP Api (One Click Dial) (was working, corrected, please verify)
