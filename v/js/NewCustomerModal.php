@@ -20,14 +20,14 @@
       </div>
       <div class="control-group">
         <label class="control-label">Primary phone</label>
-        <div class="controls">
-          <input type="text" name="primaryPhone">
+        <div id="PrimaryPhone" class="controls">
+          <input type="text" class="Phone" name="primaryPhone">
         </div>
       </div>
       <div class="control-group">
         <label class="control-label">Secondary phone</label>
         <div class="controls">
-          <input type="text" name="secondaryPhone">
+          <input type="text" class="Phone" name="secondaryPhone">
         </div>
       </div>
       <div class="control-group">
@@ -59,3 +59,12 @@
   </div>
   </form>
 </div>
+<script>
+$(document).ready(function() {
+    $(".Phone").keydown(function(event) {
+      if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+        event.preventDefault(); 
+      }   
+    });
+});
+</script>
