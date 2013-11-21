@@ -9,7 +9,8 @@
     }
     if(isset($call_url)) {
       $ch = curl_init();
-      curl_setopt($ch, CURLOPT_GET, 1);
+      //curl_setopt($ch, CURLOPT_GET, 1);
+      curl_setopt($ch, CURLOPT_HTTPGET, 1);
       $call_url_post = http_build_query(array(
         'cmd' => 'call',
         'username' => $_POST['username'],
@@ -18,7 +19,9 @@
         'from'     => $_POST['from'],
         'clid'     => $_POST['clid']
       ));
-      curl_setopt($ch, CURLOPT_GETFIELDS, $call_url_post);
+
+      //curl_setopt($ch, CURLOPT_GETFIELDS, $call_url_post);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $call_url_post);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
       curl_setopt($ch, CURLOPT_MAXREDIRS, 5);

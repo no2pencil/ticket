@@ -11,17 +11,16 @@ class ring_central extends framework {
 	 * Returns false if not all information is filled out
 	*/
 	public function get_creds() {
-		$rng_num = parent::get('settings')->get('rng_num');
-		$rng_pss = parent::get('settings')->get('rng_pss');
-		$rng_frm = parent::get('settings')->get('rng_frm');
-		// Until the settings are working, these will be manually set
-		$rng_num = "18666112601";
-		$rng_pss = "26272627";
-		$rng_frm = "3309292600";
-		if(empty($rng_num) || empty($rng_pss) || empty($rng_frm)){
-			return false;
-		}
-		return array('rng_num' => $rng_num, 'rng_pss' => $rng_pss, 'rng_frm' => $rng_frm);
+                $sql = "SELECT rng_num, rng_pss, rng_frm from ring_cntrl where id = 1";
+                $result = parent::get('db')->mysqli()->query($sql);
+                if($result) {
+                        $sql_array=$result->fetch_array(MYSQLI_ASSOC);
+                        if($sql_array) {
+				return $sql_array;
+                        }
+                        return false;
+                }
+		return false;
 	}
 	
 	/*
