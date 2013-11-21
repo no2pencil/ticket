@@ -229,13 +229,13 @@ if(isset($_GET['view'])){
 		$content .= '			</td></tr>';
 
 		$content .= '<tr><th>Created on</th><td colspan="2">'.$info['ticket.createDate'].'</td></tr>
-						<tr><th>Created by</th><td colspan="2">' . $info['creator.name'] . '</td></tr>
-						<tr><th>Last Updated</th><td colspan="2">&nbsp;</td></tr>
-                                                <tr><th>Customer</th>';
-		$content .= '			<td colspan="2"><a href="customers.php?view='.$info['customer.id'].'">'.$info['customer.name'].'</a>&nbsp;('.$info['customer.id'].')&nbsp; ';
+		  <tr><th>Created by</th><td colspan="2">' . $info['creator.name'] . '</td></tr>
+		  <tr><th>Last Updated</th><td colspan="2">&nbsp;</td></tr>
+                  <tr><th>Customer</th>';
+		$content .= '<td colspan="2"><a href="customers.php?view='.$info['customer.id'].'">'.$info['customer.name'].'</a>&nbsp;('.$info['customer.id'].')&nbsp; ';
 
 		$content .= '<a href="#RingUrlModal" data-toggle="modal" rel="tooltip" title="Call '.$PrimaryPhone.'">';
-		$content .= '<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a>';
+		$content .= '<span class="badge badge-warning"><i class="icon-comment icon-white"></i></span></a> '.$PrimaryPhone;
 		$content .= '</td></tr>';
 		$content .= '<tr><th>Comments</th><td></td></tr>';
 	foreach($comments as $comment) {
