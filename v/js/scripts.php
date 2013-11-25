@@ -41,4 +41,26 @@
 			console.log("Logging " + data.user + " making call to " + data.phone + " on invoice " + data.id + " at " + data.time);
 		}, "json");
 	});
+
+	/* Only Allow Numerical Keypress in Phone Number Input Box */
+	$(".Phone").keydown(function(e) {
+		var key = e.keyCode;
+		if(e.shiftKey) {
+			return false;
+		}
+		if(
+			key == 8 ||
+			key == 9 ||
+			key == 37 ||
+			key == 39 ||
+			key == 46 ||
+			key == 110 ||
+			key == 190 || 
+			(key >= 48 && key <= 57) ||
+			(key >= 96 && key <= 105)) {
+			console.log(key);
+		} else {
+			e.preventDefault();
+		}
+	});
 </script>

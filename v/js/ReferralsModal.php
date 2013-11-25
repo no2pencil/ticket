@@ -48,9 +48,9 @@
         temp = response.split(" ");
         $("#body span").text(temp[1]);
       }
-      error: function (response) {
+      /*error: function (response) {
         var temp = 'Something went horribly wrong!';
-      }
+      }*/
     });
   });
 </script>

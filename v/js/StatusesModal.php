@@ -7,42 +7,50 @@
   <div class="modal-body">
     <input type="hidden" name="new" value="process">
     <fieldset>
-    <legend>Repair Type</legend>
+    <legend>Statuses</legend>
     <div class="control-group">
       <ul class="nav nav-pills">
-        <?php foreach($StatusTypes as $Type) { ?>
-        <li class="dropdown">
-          <a class="dropdown-toggle input-class-typename" id="<?php echo $Type['id']; ?>" data-toggle="dropdown" href="#" data-value="<?php echo $Type['name']; ?>">
-            <?php echo $Type['name']; ?>
-            <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <?php
-              foreach($Statuses as $Status) {
-                if(isset($Status)) {
-                  if($Type['id'] == $Status['description']) {
-                    echo '<li><a href="#">'.$Status['status'].'</a></li>';
-                  }
-                }
-              }
-            ?>
-          </ul>
+        <?php foreach($Statuses as $Status) { 
+          $status_content = '<span class="badge badge-';
+          $status_content .= $Status['color'].'">';
+          $status_content .= '<i class="'.$Status['icon'];
+          $status_content .= ' id="'.$Status['id']; 
+          $status_content .= '" data-value="';
+          $status_content .= $Status['text'];
+          $status_content .= '"> '.$Status['text'].'</i></span>';
+          $status_content .= '<span class="badge badge-invert"><a href="#" class="icon-edit"> Edit</a></span>';
+          echo $status_content;
+        ?>
         </li><br><br>
         <?php } ?>
       </ul>
     </div>
 
-    <legend>New Repair</legend>
+    <legend>New Status</legend>
     <div class="control-group">
-      <label class="control-label" for="typename">Repair Type</label>
+      <label class="control-label" for="text">Status Text</label>
       <div class="controls">
-        <input type="text" class="input-xlarge input-typename" id="typename" name="typename">
+        <input type="text" class="input-xlarge input-typename" id="text" name="text">
       </div>
     </div>
     <div class="control-group">
-      <label class="control-label" for="status">Status Name</label>
+      <label class="control-label" for="icon">Status Icon</label>
       <div class="controls">
-        <input type="text" class="input-xlarge" id="status" name="status">
+        <input type="text" class="input-xlarge" id="icon" name="icon">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="color">Status Color</label>
+      <div class="controls">
+        <select name="color" id="color">
+          <option value="default">Gray</option>
+          <option value="primary">Blue</option>
+          <option value="info">Light-Blue</option>
+          <option value="success">Green</option>
+          <option value="warning">Yellow</option>
+          <option value="error">Red</option>
+          <option value="inverse">Black</option>
+        </select>
       </div>
     </div>
     <div class="modal-footer">
