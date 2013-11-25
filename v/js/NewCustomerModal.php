@@ -59,12 +59,3 @@
   </div>
   </form>
 </div>
-<script>
-$(document).ready(function() {
-    $(".Phone").keydown(function(event) {
-      if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
-        event.preventDefault(); 
-      }   
-    });
-});
-</script>
