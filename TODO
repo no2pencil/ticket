@@ -7,11 +7,14 @@ Graphs (Google Charts API) breakdown of closed tickets, sub-by year
 Customers :
 Customer Home Page : Display most recent customers
 Assign ticket to that customer
+Flag customers
+Add comments to customer account
 
 Tickets :
 Tickets Home Page : Display all currently open invoices (moved to main, need to replicate)
 Create new tickets
 Search functionality is jacked, it needs corrected or possibly re-written
+Filter / Sort-by Status
 
 Administration :
 Manage users for the site
