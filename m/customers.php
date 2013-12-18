@@ -81,6 +81,7 @@ if(isset($_GET['view'])) {
 	}
         $content .= '
                         <h4>Customer ID : '.$data['customer.id'].'</h4>
+			<h3><i class="fa fa-exclamation-circle" style="color:red"></i></h3>
                         <div class="control-group">
                                 <label class="control-label">Name : '.$data['customer.name'].'</label>
                         </div>

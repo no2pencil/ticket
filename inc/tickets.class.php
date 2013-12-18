@@ -387,7 +387,11 @@ class tickets extends framework {
 			$result .= '</em></span></a></td>';
 
 			$result .= '<td><a href="tickets.php?view=' . $ticket['ticket.id'] . '">' .  $ticket['ticket.invoice'] . '</a></td>';
-			$result .= '<td><a href="customers.php?view=' . $ticket['customer.id'] . '" class="btn">' . $ticket['customer.name'] . '</a></td><td>';
+			$result .= '<td><a href="customers.php?view=' . $ticket['customer.id'] . '" class="btn"';
+			if($ticket['customer.flagged']==TRUE) $result .= ' rel="tooltip" placement="left" title="This customer has been flagged!"';
+			$result .= '>'.$ticket['customer.name'];
+			if($ticket['customer.flagged']==TRUE) $result .= ' <i class="fa fa-exclamation-triangle" style="color:red"></i>';
+			$result .= '</a></td><td>';
 			if(!empty($ticket['customer.primaryPhone'])){
 				$PrimaryPhone = parent::get('utils')->formatPhone($ticket['customer.primaryPhone']);
 				$ringurl = parent::get('ring_central')->make_url($ticket['customer.primaryPhone']);

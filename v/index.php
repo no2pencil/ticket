@@ -32,13 +32,10 @@ $url = !empty($query) ? "http://$host$self?$query" : "http://$host$self";
           </a>
           <ul class="dropdown-menu">
 <?php
-              // This still needs some work & is not 100%
-              // The idea is to only load the new ticket modal option if we
-              // can assure the user is viewing a customer
-              if(strpos($url,"customer")>0) {
+              if($data['customer.id']>0) {
                 $CustomerData = $framework->get('customers')->getInfoById($_GET['view']);
 ?>
-            <li><a href="#NewTicketModal" data-toggle="modal">New Ticket</a></li>
+            <li<?php if($data['customer.flagged']==TRUE) echo ' class="disabled"'; ?>><a href="#NewTicketModal" data-toggle="modal">New Ticket</a></li>
             <li class="divider"></li>
 <?php } ?>
             <li>
