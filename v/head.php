@@ -14,7 +14,7 @@
 <!-- Font Awesome v 3 (need to convert!) -->
 	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 <!-- Font Awesome v 4 Soon! -->
-	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
         <link href="v/css/chosen/chosen/chosen.css" rel="stylesheet">
         <link href="v/css/style.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="v/js/jquery-1.7.2.min.js"></script>

@@ -249,16 +249,18 @@ class tickets extends framework {
 	 * getBulkOpen(int $limit, int $page)
 	 * Same as getBulk, except just open
 	 */
-	public function getBulkOpen($limit, $page) {
-		$offset = $page * $limit;
-		$sql = "SELECT * FROM tickets as ticket ".
-			"LEFT JOIN statuses AS status ON ticket.status = status.id " .
-			"LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
-			"LEFT JOIN users AS user ON ticket.creator = user.id " .
-			"where status.status != 'Closed' and status.status != 'Cancelled' " .
-			"and status.status != 'eBay item sold' and status.status != 'Canceled' " .
-			"ORDER BY ticket.id DESC ".
-			"LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+        public function getBulkOpen($limit, $page) {
+                $offset = $page * $limit;
+                $sql = "SELECT * FROM tickets as ticket ".
+                        "LEFT JOIN statuses AS status ON ticket.status = status.id " .
+                        "LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
+                        "LEFT JOIN users AS user ON ticket.creator = user.id " .
+                        "where " .
+                        "status.status != 'Closed' and status.status != 'Cancelled' " .
+                        "and status.status != 'eBay item sold' and status.status != 'Canceled' " .
+                        "and customer.name != 'Nintendocore' " .
+                        "ORDER BY ticket.id DESC ".
+                        "LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
 
 		$result = parent::get('db')->mysqli()->query($sql);
 		return parent::get('db')->fetchArray($result);
@@ -304,36 +306,51 @@ class tickets extends framework {
 			switch ($ticket['status.status']) {
 				case "Pending Payment":
 					$btn_atr='badge-success';
-					$btn_char=' icon-money">';
+					$btn_char=' fa-dollar">';
 				break;
+				case "Pending Pickup":
+					$btn_atr='badge-important';
+					$btn_char=' fa-cube">';
+				break;
+                                case "Post Payment":
+                                        $btn_atr='badge-important';
+                                        $btn_char=' fa-warning">';
+                                break;
 				case "Call Customer Admin":
+					$btn_atr='badge-warning';
+					$btn_char=' fa-phone">';
+				break;
 				case "Call Customer Tech":
 					$btn_atr='badge-warning';
-					$btn_char=' icon-phone">';
+					$btn_char=' fa-comments-o">';
 				break;
 				case "In Progress":
 					$btn_atr='';
-					$btn_char=' icon-stethoscope">';
+					$btn_char=' fa-gear fa-spin">';
 				break;
 				case "Parts need to be ordered":
 					$btn_atr='badge-info';
-					$btn_char=' icon-shopping-cart">';
-				break;
-				case "Post Payment":
-					$btn_atr='badge-important';
-					$btn_char=' icon-bolt">';
+					$btn_char=' fa-credit-card">';
 				break;
 				case "Waiting for Parts":
 					$btn_atr='badge-info';
-					$btn_char=' icon-time">';
+					$btn_char=' fa-truck">';
+				break;
+				case "Parts have arrived":
+					$btn_atr='badge-info';
+					$btn_char=' fa-clock-o">';
 				break;
 				case "Closed":
 					$btn_atr='badge-inverse';
-					$btn_char=' icon-lock">';
+					$btn_char=' fa-lock">';
 				break;
+                                case "Waiting for Customer Update":
+                                        $btn_atr='badge-inverse';
+                                        $btn_char=' fa-question">';
+                                break;
 				default:
 					$btn_atr='';
-					$btn_char=' icon-hand-right">';
+					$btn_char=' fa-repeat fa-spin">';
 				break;
 			}
 			$result .= '<tr><td><a href="#" rel="tooltip" placement="left" title="';

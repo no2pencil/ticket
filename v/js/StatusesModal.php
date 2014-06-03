@@ -1,5 +1,5 @@
 <div id="StatusesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="StatusesModalLabel" aria-hidden="false">
-  <form action="statuses.php" method="get" class="form-horizontal">
+  <!-- <form action="statuses.php" method="get" class="form-horizontal"> -->
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h3 id="StatusesModalLabel">Status Management</h3>
@@ -8,7 +8,7 @@
     <input type="hidden" name="new" value="process">
     <fieldset>
     <legend>Statuses</legend>
-    <div class="control-group">
+    <div class="control-group" id="status_management">
       <ul class="nav nav-pills">
         <?php foreach($Statuses as $Status) { 
           $status_content = '<span class="badge badge-';
@@ -18,12 +18,15 @@
           $status_content .= '" data-value="';
           $status_content .= $Status['text'];
           $status_content .= '"> '.$Status['text'].'</i></span>';
-          $status_content .= '<span class="badge badge-invert"><a href="#" class="icon-edit"> Edit</a></span>';
+          $status_content .= '<span class="badge badge-invert"><a class="icon icon-edit" href="#"> Edit</a></span>';
           echo $status_content;
         ?>
         </li><br><br>
         <?php } ?>
       </ul>
+    </div>
+    <div class="control-group" id='add-status'>
+      <input type='button' id='add-status' value='Add'></button>
     </div>
 
     <legend>New Status</legend>
@@ -57,7 +60,7 @@
       <button class="btn btn-primary">Save</button>
       <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Cancel</button>
     </div>
-    </form>
+    <!-- </form> -->
   </div>
 </div>
 <script>

@@ -10,6 +10,7 @@
 			"<option value='2011'>2011</option>" .
 			"<option value='2012'>2012</option>" .
 			"<option value='2013'>2013</option>" .
+			"<option value='2014'>2014</option>" .
 			"<option value='0'>All Time</option>" .
 			"</select><input type='submit'></form>";
 

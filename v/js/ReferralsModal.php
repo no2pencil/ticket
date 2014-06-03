@@ -6,10 +6,10 @@
   </div>
   <div class="modal-body">
     <div id='body'>
-      <i class="icon-spinner icon-spin icon-large"></i> aving...
+      <i class="icon-spinner icon-spin icon-large"></i> Saving...
     </div>
     <fieldset>
-    <table id='referrals_management' class="table table-striped">
+    <table class="table table-striped">
       <tbody>
         <tr><td>#</td><td>Referral</td></tr>
         <?php
@@ -18,7 +18,10 @@
             echo '<tr><td>'.$referral['reff.id'].'</td><td>'.$referral['reff.reff'].'</td></tr>';
           }
         ?>
-        <tr><td colspan=2 id='add'><button>Add</button></td></tr>
+        <tr><td colspan=2 id='referrals_management'>&nbsp;</td></tr>
+	<tr><td colspan=2>
+          <input type='button' id='add-referral' value='Add'></button>
+        </td></tr>
       </tbody>
     </table>
     </fieldset>
@@ -30,27 +33,3 @@
   </div>
   </form>
 </div>
-<script>
-  $('#add').click(function (e) {
-    e.preventDefault();
-    $('#add').hide(500);
-    $('#referrals_management').append('<tr><td>&nbsp;</td><td><input type="text" name=""></td></tr>');
-  });
-
-  $('#save').click(function (e) {
-    e.preventDefault();
-    $.ajax({
-      url: 'v/ReferralsEngine.php',
-      type: 'POST',
-      data: 'test',
-      success: function (response) {
-        var temp = new Array();
-        temp = response.split(" ");
-        $("#body span").text(temp[1]);
-      },
-      error: function (response) {
-        var temp = 'Something went horribly wrong!';
-      }
-    });
-  });
-</script>

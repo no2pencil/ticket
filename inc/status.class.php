@@ -4,8 +4,8 @@
 	 */
 class status extends framework {
 	public function getStatuses(){
-		//$sql = "SELECT id, status, description FROM statuses";
-		$sql = "SELECT id, text, icon, color from statuses_d";
+		$sql = "SELECT id, status, description FROM statuses";
+		//$sql = "SELECT id, text, icon, color from statuses_d";
 		$query = parent::get('db')->mysqli()->query($sql);
 		$result = array();
 		while($row = $query->fetch_array()){
