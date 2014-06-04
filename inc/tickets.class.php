@@ -266,6 +266,24 @@ class tickets extends framework {
 		return parent::get('db')->fetchArray($result);
 	}
 
+        public function getFilter($limit, $page, $repair=0, $status=0) {
+                $offset = $page * $limit;
+                $sql = "SELECT * FROM tickets as ticket ".
+                        "LEFT JOIN statuses AS status ON ticket.status = status.id " .
+                        "LEFT JOIN customers AS customer ON ticket.customer = customer.id " .
+                        "LEFT JOIN users AS user ON ticket.creator = user.id " .
+                        "where ";
+                        if($status > 0) $sql .= "status.id = $status ";
+			if($status > 0 && $repair > 0) $sql .= " and ";
+			if($repair > 0) $sql .= "repair = $repair "; 
+                        $sql .= "ORDER BY ticket.id DESC ".
+                        "LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+                         
+                $result = parent::get('db')->mysqli()->query($sql);
+                return parent::get('db')->fetchArray($result);
+        }
+
+
 	/*
 	 * getBulk(int $limit, int $page, int $year)
 	 * Returns an array full of tickets

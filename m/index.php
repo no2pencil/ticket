@@ -1,24 +1,54 @@
 <?php
-//$content .= '<h2>Home</h2>';
 
-/* There should be a function to gather this number, not in the file */
-/*
-$tickets = $framework->get('tickets')->getAll();
-$ticketcount = count($tickets);
-$ticketopen = 0;
-foreach($tickets as $ticket){
-	if($ticket['status.status'] != 'Closed') {
-		if($ticket['status.status'] != 'Canceled'){
-			$ticketopen++;
-		}
+	if(!$framework->get('ring_central')->get_creds()) {
+		echo "<h2>Ring Central</h2>";
 	}
-}
-*/
 
-//$content .= $framework->get('tickets')->generateListDisplay($ticket);
+	if(!isset($Statuses)) {
+		$Statuses = $framework->get('status')->getStatuses();
+		$StatusTypes = $framework->get('status')->getTypes();
+	}
+         
+	if(!isset($Repairs)) {
+		$Repairs = $framework->get('tickets')->getRepairs();
+	}
+
+
         $page = (isset($_GET['page'])) ? (int)$_GET['page'] : 0;
-        $data = $framework->get('tickets')->getBulkOpen(25, $page);
-        $content .= '<h3>Viewing current open tickets</h3>';
+	if($_POST['filter']) {
+		$repair_id = 0;
+		$status_id = 0;
+		$repair_id = strip_tags($_POST[repair]);
+		$status_id = strip_tags($_POST[status]);
+		$data = $framework->get('tickets')->getFilter(25, $page, $repair_id, $status_id);
+		$view_text = "Viewing selected tickets";
+	} else {
+        	$data = $framework->get('tickets')->getBulkOpen(25, $page);
+		$view_text = "Viewing current open tickets";
+	}
+        $content .= '<h3>'.$view_text.' : ';
+	$content .= '<form name="filter" id="filter" method="POST">';
+	$content .= '<input type="hidden" name="filter" value="true">';
+	$content .= '<select name="repair"><option value=0>All</option>';
+	foreach($Repairs as $key => $value) {
+		$content .= '<option value='.$value[id];
+		if($repair_id == $value[id]) $content .= ' selected';
+		$content .= '>'.$value[description].'</option>';
+	}
+	$content .= '</select>&nbsp; ';
+
+        $content .= '<select name="status"><option value=0>All</option>';
+        foreach($Statuses as $key => $value) {
+		// Not sure WHY this is, this really needs to be troubleshot & figured out!
+		if($value[description] == 12) {
+                	$content .= '<option value='.$value[id];
+			if($status_id == $value[id]) $content .= ' selected';
+			$content .= '>'.$value[status].'</option>';
+		}
+        }
+        $content .= '</select>&nbsp;';
+	$content .= '<button type="submit" class="btn btn-default"><i class="icon-white icon-fire"></i> Filter Tickets</button></form>';
+	$content .= '</h3>';
 
         if($page<1){
                 $previousBtn = '<li class="disabled">
@@ -52,11 +82,3 @@ foreach($tickets as $ticket){
 	$content .= '
                         </ul>
                 </div>';
-
-/*
-$content .='<h5>There are ';
-$content .= $ticketcount;
-$content .= ' tickets. ';
-$content .= $ticketopen;
-$content .= ' of which are not closed.</h5>';
-*/
