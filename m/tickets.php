@@ -54,14 +54,19 @@ if(isset($_GET['search'])) {
 					break;
 				case 20:
 				case 55:
+				case 81:
 					$info[status]='<a href="#" class="btn btn-mini btn-info">'.$status[status].'</a>';
 					break;
 				case 55:
+				case 79:
 					$info[status]='<a href="#" class="btn btn-mini btn-success">'.$status[status].'</a>';
 					break;
 				case 70:
+				case 80:
 					$info[status]='<a href="#" class="btn btn-mini btn-primary">'.$status[status].'</a>';
 					break;
+ 				/* Pending Pickup
+				   Parts have arrived */
 				default :
 					//$info[status]="Status!";
 					break;
@@ -205,11 +210,19 @@ if(isset($_GET['view'])){
 						<tr><th>Status</th><td colspan="2">';
 		$content .= '<select name="status">';
 		foreach($Statuses as $id => $Status) {
-			if($Status['description']==$info['status.description']) {
+/*
+			$content .= '<option value="'.$Status['id'].'"';
+			$content .= '>'.$Status['description'].' -> '.$info['status.description'].'</option>';
+*/
+			//if($Status['description']==$info['status.description']) {
+			if($Status['description']==12) {
 				$content .= '<option value="'.$Status['id'].'"';
 				if($Status['id']==$info['ticket.status']) {
 					$content .= ' selected="selected"';
 				}
+				// Dynamic! -->
+				//$content .= '>'.$Status['text'].'</option>';
+				// Old :( -->
 				$content .= '>'.$Status['status'].'</option>';
 			}
 		}

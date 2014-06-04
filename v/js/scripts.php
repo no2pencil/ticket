@@ -63,4 +63,42 @@
 			e.preventDefault();
 		}
 	});
+
+	$("input").click(function(e) {
+		e.preventDefault();
+		var id=this.id;
+		$('#' + id).hide(500);
+		switch(id) {
+			case 'add-status':
+				var line = '...';
+				var action = '#status_management';
+			break;
+			case 'add-referral':
+				//var line = '<tr><td>&nbsp;</td><td><input type="text" name=""></td></tr>';
+				var line = '<input type="text" name="">';
+				var action = '#referrals_management';
+			break;
+		}
+		console.log("Doing " + action + " on " + line);
+		$(action).append(line);
+		$('#' + id).show(500);
+	});
+
+	$('#save').click(function (e) {
+		e.preventDefault();
+		$.ajax({
+			// Need to dynamically pass url!
+			url: 'v/ReferralsEngine.php',
+			type: 'POST',
+			data: 'test',
+			success: function (response) {
+				var temp = new Array();
+				temp = response.split(" ");
+				$("#body span").text(temp[1]);
+			},
+			error: function (response) {
+				var temp = 'Something went horribly wrong!';
+			}
+		});
+	});
 </script>

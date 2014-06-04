@@ -81,6 +81,7 @@ if(isset($_GET['view'])) {
 	}
         $content .= '
                         <h4>Customer ID : '.$data['customer.id'].'</h4>
+			<h3><i class="fa fa-exclamation-circle" style="color:red"></i></h3>
                         <div class="control-group">
                                 <label class="control-label">Name : '.$data['customer.name'].'</label>
                         </div>
@@ -164,35 +165,51 @@ if(isset($_GET['view'])) {
 							break;
 					}
 		                        switch ($ticket_data_element['status.status']) {
-                		                case "Pending Payment":
-                                		        $btn_atr='btn-success';
-                                        		$btn_char=' icon-money">';
-                                		break;
-                                		case "Call Customer Admin":
-                                		case "Call Customer Tech":
-                                        		$btn_atr='btn-warning';
-                                        		$btn_char=' icon-phone">';
-                                		break;
-                                		case "In Progress":
-                                        		$btn_atr='';
-                                        		$btn_char=' icon-stethoscope">';
-                                		break;
-                                		case "Parts need to be ordered":
-                                        		$btn_atr='btn-info';
-                                        		$btn_char=' icon-shopping-cart">';
-                                		break;	
-                                		case "Post Payment":
-                                        		$btn_atr='btn-danger';
-                                        		$btn_char=' icon-bolt">';
-                                		break;
-                                		case "Waiting for Parts":
-                                        		$btn_atr='btn-info';
-                                        		$btn_char=' icon-time">';
-                                		break;
-                                		case "Closed":
-                                        		$btn_atr='btn-inverse';
-                                        		$btn_char=' icon-lock">';
+						case "Pending Payment":
+							$btn_atr='btn-success';
+							$btn_char=' fa-dollar">';
 						break;
+						case "Pending Pickup":
+							$btn_atr='btn-danger';
+							$btn_char=' fa-cube">';
+						break;
+						case "Post Payment":
+							$btn_atr='btn-danger';
+							$btn_char=' fa-warning">';
+						break;
+						case "Call Customer Admin":
+							$btn_atr='btn-warning';
+							$btn_char=' fa-phone">';
+						break;
+						case "Call Customer Tech":
+							$btn_atr='btn-warning';
+							$btn_char=' fa-comments-o">';
+						break;
+						case "In Progress":
+							$btn_atr='';
+							$btn_char=' fa-gear fa-spin">';
+						break;
+						case "Parts need to be ordered":
+							$btn_atr='btn-info';
+							$btn_char=' fa-credit-card">';
+						break;
+						case "Waiting for Parts":
+							$btn_atr='btn-info';
+							$btn_char=' fa-truck">';
+						break;
+						case "Parts have arrived":
+							$btn_atr='btn-info';
+							$btn_char=' fa-clock-o">';
+						break;
+						case "Waiting for Customer Update":
+							$btn_atr='btn-inverse';
+							$btn_char=' fa-question">';
+						break;
+						case "Closed":
+							$btn_atr='btn-inverse';
+							$btn_char=' fa-lock">';
+						break;
+
                                			default:
                                         		$btn_atr='';
                                         		$btn_char=' icon-hand-left">';
